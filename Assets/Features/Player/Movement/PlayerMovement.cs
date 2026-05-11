@@ -1,33 +1,41 @@
 using UnityEngine;
 
 /// <summary>
-/// Handles lane-based player movement. The player moves forward automatically and can switch lanes based on swipe input.
+/// Moves the player forward automatically and sideways between lane positions.
 /// </summary>
 public class PlayerMovement : MonoBehaviour
 {
+    /// <summary>Detects player swipes.</summary>
+    [Header("References")]
     [SerializeField] private SwipeInput swipeInput;
+    /// <summary>Defines the player's width in lanes.</summary>
+    [SerializeField] private Carriage carriage;
+    /// <summary>Used for lane position calculations.</summary>
+    [SerializeField] private LaneSystem laneSystem;
 
-    [Header("Lane Settings")]
-    [SerializeField] private int roadLaneCount = 7;
-    [SerializeField] private float laneWidth = 1.5f;
-    [SerializeField] private float laneStepPerSwipe = 0.5f;
+    /// <summary>How many lane positions the player moves per swipe.</summary>
+    [Header("Lane Movement")]
+    [SerializeField] private float laneStepPerSwipe = 0.5f; // 
 
+    /// <summary>Forward movement speed in units per second.</summary>
     [Header("Movement")]
     [SerializeField] private float forwardSpeed = 6f;
+    /// <summary>Sideways movement speed in units per second.</summary>
     [SerializeField] private float sideMoveSpeed = 10f;
 
+    /// <summary>Initial center lane position at the start of the game.</summary>
     [Header("Start")]
-    [SerializeField] private float startCenterLane = 3f;
+    [SerializeField] private float startCenterLane = 3f; // Default starting lane position
 
     private float currentCenterLane;
+    /// <summary>Leftmost allowed center lane position</summary>
     private float minCenterLane;
+    /// <summary>Rightmost allowed center lane position</summary>
     private float maxCenterLane;
 
     private void Awake()
     {
-        minCenterLane = 1f;
-        maxCenterLane = roadLaneCount - 2f;
-
+        CalculateAllowedLaneRange();
         currentCenterLane = Mathf.Clamp(startCenterLane, minCenterLane, maxCenterLane);
     }
 
@@ -49,6 +57,28 @@ public class PlayerMovement : MonoBehaviour
         MoveSidewaysToCurrentLane();
     }
 
+    private void CalculateAllowedLaneRange()
+    {
+        int carriageLaneCount = carriage.GetCarriageLaneCount();
+
+        if (carriageLaneCount > laneSystem.RoadLaneCount)
+        {
+            Debug.LogError(
+                "PlayerMovement setup is invalid: Carriage is wider than the road. " +
+                "Carriage Lane Count: " + carriageLaneCount +
+                " | Road Lane Count: " + laneSystem.RoadLaneCount
+            );
+
+            enabled = false;
+            return;
+        }
+
+        float carriageSideExtensionInLanes = (carriageLaneCount - 1f) / 2f;
+
+        minCenterLane = carriageSideExtensionInLanes;
+        maxCenterLane = laneSystem.MaxRoadLane - carriageSideExtensionInLanes;
+    }
+
     private void MoveForward()
     {
         transform.position += Vector3.forward * forwardSpeed * Time.deltaTime;
@@ -57,9 +87,9 @@ public class PlayerMovement : MonoBehaviour
     private void MoveSidewaysToCurrentLane()
     {
         Vector3 targetPosition = transform.position;
-        targetPosition.x = GetWorldXForLanePosition(currentCenterLane);
+        targetPosition.x = laneSystem.GetWorldXForLanePosition(currentCenterLane);
 
-        transform.position = Vector3.Lerp(
+        transform.position = Vector3.MoveTowards(
             transform.position,
             targetPosition,
             sideMoveSpeed * Time.deltaTime
@@ -73,8 +103,6 @@ public class PlayerMovement : MonoBehaviour
             minCenterLane,
             maxCenterLane
         );
-
-        Debug.Log("Move Left. Current Center Lane: " + currentCenterLane);
     }
 
     private void MoveRight()
@@ -84,23 +112,10 @@ public class PlayerMovement : MonoBehaviour
             minCenterLane,
             maxCenterLane
         );
-
-        Debug.Log("Move Right. Current Center Lane: " + currentCenterLane);
     }
 
     public float GetCurrentCenterLane()
     {
         return currentCenterLane;
-    }
-
-    public float GetLaneWidth()
-    {
-        return laneWidth;
-    }
-
-    public float GetWorldXForLanePosition(float lanePosition)
-    {
-        float roadCenterOffset = (roadLaneCount - 1) * 0.5f;
-        return (lanePosition - roadCenterOffset) * laneWidth;
     }
 }

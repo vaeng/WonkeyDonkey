@@ -3,27 +3,27 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-/// <summary>
-/// Detects horizontal swipe gestures and raises events when a left or right swipe is performed.
-/// </summary>
-/// <remarks>This component can be attached to a GameObject to enable swipe detection using either 
-/// touch input on mobile devices or mouse input in the Unity Editor. 
-/// The minimum swipe distance required to trigger a swipe event can be configured in the Inspector. 
-/// Only horizontal swipes are detected; vertical or diagonal swipes are ignored.
-/// </remarks>
 public class SwipeInput : MonoBehaviour
 {
     public event Action OnSwipeLeft;
     public event Action OnSwipeRight;
 
+    /// <summary>Minimum distance in pixels for a swipe to be registered.</summary>
+    [Header("Swipe Settings")]
     [SerializeField] private float minSwipeDistance = 50f;
+
+    /// <summary>Allows using keyboard input for left/right swipes.</summary>
+    [Header("Debug / Fallback Input")]
+    [SerializeField] private bool allowKeyboardInput = true;
 
     private Vector2 startPosition;
     private bool isSwiping;
 
     private void Update()
     {
-        HandleKeyboardInput();
+        if (allowKeyboardInput)
+            HandleKeyboardInput();
+
         HandleMouseInput();
         HandleTouchInput();
     }
@@ -33,15 +33,15 @@ public class SwipeInput : MonoBehaviour
         if (Keyboard.current == null)
             return;
 
-        if (Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame)
+        if (Keyboard.current.aKey.wasPressedThisFrame ||
+            Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
-            Debug.Log("Keyboard Left erkannt.");
             OnSwipeLeft?.Invoke();
         }
 
-        if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
+        if (Keyboard.current.dKey.wasPressedThisFrame ||
+            Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
-            Debug.Log("Keyboard Right erkannt.");
             OnSwipeRight?.Invoke();
         }
     }
@@ -90,29 +90,15 @@ public class SwipeInput : MonoBehaviour
     {
         Vector2 swipeDelta = endPosition - startPosition;
 
-        Debug.Log("Swipe Delta: " + swipeDelta);
-
         if (Mathf.Abs(swipeDelta.x) < minSwipeDistance)
-        {
-            Debug.Log("Swipe zu kurz.");
             return;
-        }
 
         if (Mathf.Abs(swipeDelta.x) < Mathf.Abs(swipeDelta.y))
-        {
-            Debug.Log("Swipe war eher vertikal.");
             return;
-        }
 
         if (swipeDelta.x > 0)
-        {
-            Debug.Log("Swipe Right erkannt.");
             OnSwipeRight?.Invoke();
-        }
         else
-        {
-            Debug.Log("Swipe Left erkannt.");
             OnSwipeLeft?.Invoke();
-        }
     }
 }
