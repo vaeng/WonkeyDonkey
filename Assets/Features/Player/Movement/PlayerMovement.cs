@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Moves the player forward automatically and sideways between lane positions.
+/// Moves the player sideways between lane positions.
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -19,10 +19,6 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>How many lane positions the player moves per swipe.</summary>
     [Header("Lane Movement")]
     [SerializeField] private float laneStepPerSwipe = 0.5f;
-
-    /// <summary>Forward movement speed in units per second.</summary>
-    [Header("Movement")]
-    [SerializeField] private float forwardSpeed = 6f;
 
     /// <summary>Sideways movement speed in units per second.</summary>
     [SerializeField] private float sideMoveSpeed = 10f;
@@ -52,6 +48,13 @@ public class PlayerMovement : MonoBehaviour
             minCenterLane,
             maxCenterLane
         );
+
+        Vector3 startPosition = rb.position;
+
+        startPosition.x =
+            laneSystem.GetWorldXForLanePosition(currentCenterLane);
+
+        rb.position = startPosition;
     }
 
     private void OnEnable()
@@ -68,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MoveWithRigidbody();
+        MoveSidewaysWithRigidbody();
     }
 
     private void CalculateAllowedLaneRange()
@@ -91,11 +94,12 @@ public class PlayerMovement : MonoBehaviour
             (carriageLaneCount - 1f) / 2f;
 
         minCenterLane = carriageSideExtensionInLanes;
+
         maxCenterLane =
             laneSystem.MaxRoadLane - carriageSideExtensionInLanes;
     }
 
-    private void MoveWithRigidbody()
+    private void MoveSidewaysWithRigidbody()
     {
         Vector3 currentPosition = rb.position;
 
@@ -108,13 +112,10 @@ public class PlayerMovement : MonoBehaviour
             sideMoveSpeed * Time.fixedDeltaTime
         );
 
-        float newZ =
-            currentPosition.z + forwardSpeed * Time.fixedDeltaTime;
-
         Vector3 nextPosition = new Vector3(
             newX,
             currentPosition.y,
-            newZ
+            currentPosition.z
         );
 
         rb.MovePosition(nextPosition);

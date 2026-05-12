@@ -1,11 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// Spawns collectable items ahead of the stationary player.
+/// </summary>
 public class ItemSpawner : MonoBehaviour
 {
-    /// <summary>Used to determine where to spawn items ahead of the player.</summary>
-    [Header("References")]
-    [SerializeField] private Transform player;
     /// <summary>Used for lane position calculations.</summary>
+    [Header("References")]
     [SerializeField] private LaneSystem laneSystem;
 
     /// <summary>Prefabs of items to spawn.</summary>
@@ -16,16 +17,21 @@ public class ItemSpawner : MonoBehaviour
     [Header("Spawn Timing")]
     [SerializeField] private float spawnInterval = 1.5f;
 
-    /// <summary>Distance ahead of the player to spawn items.</summary>
+    /// <summary>Distance in front of the player where items spawn.</summary>
     [Header("Spawn Position")]
-    [SerializeField] private float spawnDistanceAhead = 25f;
-    /// <summary>Y position (height) for spawned items. Adjust based on item prefab heights.</summary>
+    [SerializeField] private float spawnZPosition = 25f;
+
+    /// <summary>Y position for spawned items.</summary>
     [SerializeField] private float itemYPosition = 0.5f;
 
-    /// <summary>Min lane index to spawn items in. Should be greater than or equal to the min lane defined in LaneSystem.</summary>
+    /// <summary>Movement speed of spawned world items.</summary>
+    [SerializeField] private float worldMoveSpeed = 6f;
+
+    /// <summary>Min lane index to spawn items in.</summary>
     [Header("Lane Range")]
     [SerializeField] private int minSpawnLane = 0;
-    /// <summary>Max lane index to spawn items in. Should be less than or equal to the max lane defined in LaneSystem.</summary>
+
+    /// <summary>Max lane index to spawn items in.</summary>
     [SerializeField] private int maxSpawnLane = 6;
 
     private float timer;
@@ -69,16 +75,26 @@ public class ItemSpawner : MonoBehaviour
 
         int randomLane = Random.Range(minLane, maxLane + 1);
 
-        GameObject randomPrefab = itemPrefabs[
-            Random.Range(0, itemPrefabs.Length)
-        ];
+        GameObject randomPrefab =
+            itemPrefabs[Random.Range(0, itemPrefabs.Length)];
 
         Vector3 spawnPosition = new Vector3(
             laneSystem.GetWorldXForLanePosition(randomLane),
             itemYPosition,
-            player.position.z + spawnDistanceAhead
+            spawnZPosition
         );
 
-        Instantiate(randomPrefab, spawnPosition, Quaternion.identity);
+        GameObject spawnedItem = Instantiate(
+            randomPrefab,
+            spawnPosition,
+            Quaternion.identity
+        );
+
+        WorldMover worldMover = spawnedItem.GetComponent<WorldMover>();
+
+        if (worldMover == null)
+            worldMover = spawnedItem.AddComponent<WorldMover>();
+
+        worldMover.SetMoveSpeed(worldMoveSpeed);
     }
 }

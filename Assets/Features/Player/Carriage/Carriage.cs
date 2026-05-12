@@ -71,4 +71,9 @@ public class Carriage : MonoBehaviour
 
         return new Vector3(x, 0f, 0f);
     }
+
+    public float GetLaneWidth()
+    {
+        return laneSystem.LaneWidth;
+    }
 }
