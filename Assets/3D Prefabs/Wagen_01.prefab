@@ -48,6 +48,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: cc198f52e7a029c428f929d3a12e0034, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: bb7ac80bf4a322e4897377a9dcc5438f, type: 2}
+    - target: {fileID: -7511558181221131132, guid: cc198f52e7a029c428f929d3a12e0034, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 19e3df857c7c688439510397b9e9633a, type: 2}
     - target: {fileID: 919132149155446097, guid: cc198f52e7a029c428f929d3a12e0034, type: 3}
       propertyPath: m_Name
       value: Wagen_01
