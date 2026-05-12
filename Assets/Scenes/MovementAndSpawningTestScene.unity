@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.6901961, g: 0.49803922, b: 0.3019608, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.02
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -119,6 +119,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &7771679 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4470170687207048565, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+  m_PrefabInstance: {fileID: 1359412209}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7771681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7771679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0f0b49519652e40ada08a8d5811a8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Animateable
+  animateOnStart: 0
+  isLooping: 0
+  ignoreDirection: 0
+  goal: 0
+  start: 0
+  current: 0
+  currentStart: 0
+  speed: 0
+  animCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &447263214
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,8 +388,8 @@ Camera:
   m_GameObject: {fileID: 557705212}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.7137255, g: 0.7607843, b: 0.5372549, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -407,8 +438,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557705212}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13917309, y: 0, z: 0, w: 0.9902681}
-  m_LocalPosition: {x: 0, y: 3, z: -5}
+  m_LocalRotation: {x: 0.1840371, y: -0, z: -0, w: 0.98291934}
+  m_LocalPosition: {x: 0, y: 3.92, z: -5.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -469,6 +500,7 @@ GameObject:
   - component: {fileID: 826179256}
   - component: {fileID: 826179255}
   - component: {fileID: 826179257}
+  - component: {fileID: 826179259}
   - component: {fileID: 826179258}
   m_Layer: 0
   m_Name: Player
@@ -492,8 +524,8 @@ MonoBehaviour:
   swipeInput: {fileID: 826179257}
   carriage: {fileID: 2037516943}
   laneSystem: {fileID: 1398317069}
+  animationSystem: {fileID: 826179259}
   laneStepPerSwipe: 0.5
-  forwardSpeed: 6
   sideMoveSpeed: 10
   startCenterLane: 3
 --- !u!4 &826179256
@@ -556,11 +588,156 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &826179259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826179254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ef90b081f4d43346806caedf0742de7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationSystem
+  donkey: {fileID: 1089321267}
+  carrotStick: {fileID: 1005394693}
+  rider: {fileID: 0}
+  riderHat: {fileID: 1675990342}
+  waggon: {fileID: 0}
+  wheel: {fileID: 0}
+--- !u!1 &1005394689 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1337787541167778780, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+  m_PrefabInstance: {fileID: 1359412209}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1005394693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005394689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b116ffd0ea0d4964580c6498ce09a96e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PitchYawRollAnim
+  animateOnStart: 0
+  isLooping: 0
+  ignoreDirection: 0
+  goal: 0
+  start: 0
+  current: 0
+  currentStart: 0
+  speed: 1
+  animCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.809523
+      outSlope: 0.809523
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.4
+    - serializedVersion: 3
+      time: 0.22560549
+      value: 0.9378488
+      inSlope: 0.61115
+      outSlope: 0.61115
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.28988332
+    - serializedVersion: 3
+      time: 0.7780909
+      value: 0.9461739
+      inSlope: -0.23940147
+      outSlope: -0.23940147
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.64275056
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2.5580354
+      outSlope: -2.5580354
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.20983607
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  axesMultiplyer: {x: 0, y: -30, z: 0}
 --- !u!4 &1064441370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6153773663982354595, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
   m_PrefabInstance: {fileID: 1359412209}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1089321263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5825818916478489860, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+  m_PrefabInstance: {fileID: 1359412209}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1089321267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089321263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b116ffd0ea0d4964580c6498ce09a96e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PitchYawRollAnim
+  animateOnStart: 0
+  isLooping: 0
+  ignoreDirection: 0
+  goal: 0
+  start: 0
+  current: 0
+  currentStart: 0
+  speed: 1
+  animCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.11806339
+      outSlope: 0.11806339
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.50416666
+    - serializedVersion: 3
+      time: 0.48386982
+      value: 0.9489937
+      inSlope: 0.5354259
+      outSlope: 0.5354259
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.73052466
+      outWeight: 0.48846632
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.55185866
+      outSlope: -0.55185866
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.30416667
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  axesMultiplyer: {x: 0, y: -30, z: -30}
 --- !u!1001 &1359412209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -617,10 +794,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8504466944051845089, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.184
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4470170687207048565, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7771681}
+    - targetCorrespondingSourceObject: {fileID: 1337787541167778780, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1005394693}
+    - targetCorrespondingSourceObject: {fileID: 2931926356475456510, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1675990342}
+    - targetCorrespondingSourceObject: {fileID: 5825818916478489860, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1089321267}
   m_SourcePrefab: {fileID: 100100000, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
 --- !u!1 &1362172764
 GameObject:
@@ -810,13 +1003,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f518009e276c73e4796770e06590ca53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemSpawner
-  player: {fileID: 826179256}
   laneSystem: {fileID: 1398317069}
   itemPrefabs:
   - {fileID: 1913678160417714669, guid: 002f5752ae2a1c0419cb87ae56194742, type: 3}
+  - {fileID: 1310453082972999147, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
+  - {fileID: 5057030877971071467, guid: b83f56a2c86d49941a08eb8f7eba7fbd, type: 3}
   spawnInterval: 3
-  spawnDistanceAhead: 25
+  spawnZPosition: 25
   itemYPosition: 0.5
+  worldMoveSpeed: 6
   minSpawnLane: 2
   maxSpawnLane: 4
 --- !u!4 &1410558093
@@ -834,6 +1029,64 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1675990341 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2931926356475456510, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+  m_PrefabInstance: {fileID: 1359412209}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1675990342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675990341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0f0b49519652e40ada08a8d5811a8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Animateable
+  animateOnStart: 0
+  isLooping: 1
+  ignoreDirection: 0
+  goal: 0
+  start: 0
+  current: 0
+  currentStart: 0
+  speed: 2
+  animCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.5
+      inSlope: 0.00468387
+      outSlope: 0.00468387
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.5083333
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0.004957404
+      outSlope: 0.004957404
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.42052734
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1684649151
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,8 +1220,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0142d590f6d48f944b0543b21ef4306a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoadSpawner
-  player: {fileID: 826179256}
   roadSegmentPrefab: {fileID: 4521223830304431437, guid: f12e552fd825510428304bf8c71ad7cb, type: 3}
+  worldMoveSpeed: 6
   segmentLength: 20
   initialSegments: 5
   spawnAheadDistance: 200
@@ -1056,6 +1309,8 @@ MonoBehaviour:
   raycastDistance: 20
   itemDepth: 0.8
   scaleStackedItemsFromData: 0
+  linearDamping: 0.2
+  angularDamping: 0.8
   stackSurfaceLayers:
     serializedVersion: 2
     m_Bits: 4294967295
