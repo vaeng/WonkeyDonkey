@@ -603,7 +603,7 @@ MonoBehaviour:
   donkey: {fileID: 1089321267}
   carrotStick: {fileID: 1005394693}
   rider: {fileID: 0}
-  riderHat: {fileID: 1675990342}
+  riderHat: {fileID: 0}
   waggon: {fileID: 0}
   wheel: {fileID: 0}
 --- !u!1 &1005394689 stripped
@@ -808,9 +808,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1337787541167778780, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1005394693}
-    - targetCorrespondingSourceObject: {fileID: 2931926356475456510, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1675990342}
     - targetCorrespondingSourceObject: {fileID: 5825818916478489860, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1089321267}
@@ -1029,64 +1026,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1675990341 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2931926356475456510, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
-  m_PrefabInstance: {fileID: 1359412209}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1675990342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1675990341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc0f0b49519652e40ada08a8d5811a8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Animateable
-  animateOnStart: 0
-  isLooping: 1
-  ignoreDirection: 0
-  goal: 0
-  start: 0
-  current: 0
-  currentStart: 0
-  speed: 2
-  animCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.5
-      value: 0.5
-      inSlope: 0.00468387
-      outSlope: 0.00468387
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.5083333
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0.004957404
-      outSlope: 0.004957404
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.42052734
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1684649151
 GameObject:
   m_ObjectHideFlags: 0

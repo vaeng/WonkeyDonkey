@@ -16,6 +16,9 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>Used for lane position calculations.</summary>
     [SerializeField] private LaneSystem laneSystem;
 
+    /// <summary>Animates the graphic Object and its components procedurally.</summary>
+    [SerializeField] private AnimationSystem animationSystem;
+
     /// <summary>How many lane positions the player moves per swipe.</summary>
     [Header("Lane Movement")]
     [SerializeField] private float laneStepPerSwipe = 0.5f;
@@ -128,6 +131,8 @@ public class PlayerMovement : MonoBehaviour
             minCenterLane,
             maxCenterLane
         );
+
+        animationSystem?.StartAnimation(1f);
     }
 
     private void MoveRight()
@@ -137,6 +142,8 @@ public class PlayerMovement : MonoBehaviour
             minCenterLane,
             maxCenterLane
         );
+
+        animationSystem?.StartAnimation(-1f);
     }
 
     public float GetCurrentCenterLane()
