@@ -49,6 +49,10 @@ PrefabInstance:
       value: Wagen_01
       objectReference: {fileID: 0}
     - target: {fileID: 3277845302216608296, guid: ebe83bef734432a4a96c437feff058d6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277845302216608296, guid: ebe83bef734432a4a96c437feff058d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}

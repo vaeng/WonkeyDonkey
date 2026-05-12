@@ -9,14 +9,20 @@ public class ItemCollector : MonoBehaviour
     /// <summary>Used for lane position calculations.</summary>
     [Header("References")]
     [SerializeField] private LaneSystem laneSystem;
+
     /// <summary>Used to determine the player's current center lane position.</summary>
     [SerializeField] private PlayerMovement playerMovement;
+
     /// <summary>Used to determine the width of the carriage and available spots for collected items.</summary>
     [SerializeField] private Carriage carriage;
+
+    /// <summary>Places collected items on the carriage.</summary>
+    [SerializeField] private CarriageStackManager stackManager;
 
     /// <summary>Height of the collector trigger area in world units.</summary>
     [Header("Collector Size")]
     [SerializeField] private float collectorHeight = 1.5f;
+
     /// <summary>Depth of the collector trigger area in world units.</summary>
     [SerializeField] private float collectorDepth = 1f;
 
@@ -55,7 +61,6 @@ public class ItemCollector : MonoBehaviour
             return;
 
         float itemWorldX = other.transform.position.x;
-        float roadLanePosition = laneSystem.GetLanePositionForWorldX(itemWorldX);
         float carriageCenterLane = playerMovement.GetCurrentCenterLane();
 
         bool hasValidSpot = carriage.TryGetClosestSpotForWorldX(
@@ -83,11 +88,25 @@ public class ItemCollector : MonoBehaviour
             carriageLocalSpotPosition
         );
 
-        Debug.Log(collectedItemInfo.Item + " collected on carriage spot: " + collectedItemInfo.CarriageSpotIndex);
+        Debug.Log(
+            item.name +
+            " collected on carriage spot: " +
+            carriageSpotIndex
+        );
 
         item.MarkAsCollected();
-        item.DestroyItem();
+
+        if (stackManager != null)
+        {
+            stackManager.PlaceCollectedItem(item, carriageSpotIndex);
+        }
+        else
+        {
+            Debug.LogWarning("No CarriageStackManager assigned to ItemCollector.");
+        }
 
         OnItemCollected?.Invoke(collectedItemInfo);
+
+        item.DestroyItem();
     }
 }

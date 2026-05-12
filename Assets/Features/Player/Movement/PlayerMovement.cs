@@ -3,40 +3,55 @@ using UnityEngine;
 /// <summary>
 /// Moves the player forward automatically and sideways between lane positions.
 /// </summary>
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     /// <summary>Detects player swipes.</summary>
     [Header("References")]
     [SerializeField] private SwipeInput swipeInput;
+
     /// <summary>Defines the player's width in lanes.</summary>
     [SerializeField] private Carriage carriage;
+
     /// <summary>Used for lane position calculations.</summary>
     [SerializeField] private LaneSystem laneSystem;
 
     /// <summary>How many lane positions the player moves per swipe.</summary>
     [Header("Lane Movement")]
-    [SerializeField] private float laneStepPerSwipe = 0.5f; // 
+    [SerializeField] private float laneStepPerSwipe = 0.5f;
 
     /// <summary>Forward movement speed in units per second.</summary>
     [Header("Movement")]
     [SerializeField] private float forwardSpeed = 6f;
+
     /// <summary>Sideways movement speed in units per second.</summary>
     [SerializeField] private float sideMoveSpeed = 10f;
 
     /// <summary>Initial center lane position at the start of the game.</summary>
     [Header("Start")]
-    [SerializeField] private float startCenterLane = 3f; // Default starting lane position
+    [SerializeField] private float startCenterLane = 3f;
+
+    private Rigidbody rb;
 
     private float currentCenterLane;
-    /// <summary>Leftmost allowed center lane position</summary>
     private float minCenterLane;
-    /// <summary>Rightmost allowed center lane position</summary>
     private float maxCenterLane;
 
     private void Awake()
     {
+        rb = GetComponent<Rigidbody>();
+
+        rb.isKinematic = true;
+        rb.useGravity = false;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+
         CalculateAllowedLaneRange();
-        currentCenterLane = Mathf.Clamp(startCenterLane, minCenterLane, maxCenterLane);
+
+        currentCenterLane = Mathf.Clamp(
+            startCenterLane,
+            minCenterLane,
+            maxCenterLane
+        );
     }
 
     private void OnEnable()
@@ -51,10 +66,9 @@ public class PlayerMovement : MonoBehaviour
         swipeInput.OnSwipeRight -= MoveRight;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        MoveForward();
-        MoveSidewaysToCurrentLane();
+        MoveWithRigidbody();
     }
 
     private void CalculateAllowedLaneRange()
@@ -73,27 +87,37 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        float carriageSideExtensionInLanes = (carriageLaneCount - 1f) / 2f;
+        float carriageSideExtensionInLanes =
+            (carriageLaneCount - 1f) / 2f;
 
         minCenterLane = carriageSideExtensionInLanes;
-        maxCenterLane = laneSystem.MaxRoadLane - carriageSideExtensionInLanes;
+        maxCenterLane =
+            laneSystem.MaxRoadLane - carriageSideExtensionInLanes;
     }
 
-    private void MoveForward()
+    private void MoveWithRigidbody()
     {
-        transform.position += Vector3.forward * forwardSpeed * Time.deltaTime;
-    }
+        Vector3 currentPosition = rb.position;
 
-    private void MoveSidewaysToCurrentLane()
-    {
-        Vector3 targetPosition = transform.position;
-        targetPosition.x = laneSystem.GetWorldXForLanePosition(currentCenterLane);
+        float targetX =
+            laneSystem.GetWorldXForLanePosition(currentCenterLane);
 
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            targetPosition,
-            sideMoveSpeed * Time.deltaTime
+        float newX = Mathf.MoveTowards(
+            currentPosition.x,
+            targetX,
+            sideMoveSpeed * Time.fixedDeltaTime
         );
+
+        float newZ =
+            currentPosition.z + forwardSpeed * Time.fixedDeltaTime;
+
+        Vector3 nextPosition = new Vector3(
+            newX,
+            currentPosition.y,
+            newZ
+        );
+
+        rb.MovePosition(nextPosition);
     }
 
     private void MoveLeft()
