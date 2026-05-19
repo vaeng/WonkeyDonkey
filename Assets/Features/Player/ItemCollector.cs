@@ -32,7 +32,6 @@ public class ItemCollector : MonoBehaviour
     {
         if (carriage == null)
         {
-            Debug.LogWarning("ItemCollector: No carriage assigned.");
             return;
         }
 
@@ -54,7 +53,6 @@ public class ItemCollector : MonoBehaviour
 
         if (laneMovement == null || carriage == null)
         {
-            Debug.LogWarning("ItemCollector: Missing lane movement or carriage.");
             return;
         }
 
@@ -69,9 +67,6 @@ public class ItemCollector : MonoBehaviour
 
         if (!foundSpot)
         {
-            Debug.LogWarning(
-                $"{item.name} hit collector but was outside the carriage. Item lane: {itemLane}, carriage lane: {carriageLane}"
-            );
             return;
         }
 
@@ -87,12 +82,9 @@ public class ItemCollector : MonoBehaviour
 
         if (stackManager != null)
             stackManager.PlaceCollectedItem(item, spotIndex);
-        else
-            Debug.LogWarning("ItemCollector: No stack manager assigned.");
 
         OnItemCollected?.Invoke(itemInfo);
 
-        Debug.Log($"{item.name} collected on carriage spot {spotIndex}.");
 
         item.DestroyItem();
     }

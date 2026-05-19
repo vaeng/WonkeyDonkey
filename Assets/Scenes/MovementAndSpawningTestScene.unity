@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 447263215}
   - component: {fileID: 447263216}
   - component: {fileID: 447263217}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CarriageSurface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1448,7 +1448,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684649152}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StackSpawnRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1604,7 +1604,7 @@ GameObject:
   - component: {fileID: 2037516942}
   - component: {fileID: 2037516943}
   - component: {fileID: 2037516944}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Carriage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1656,16 +1656,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CarriageStackManager
   carriage: {fileID: 2037516943}
   stackRoot: {fileID: 1684649152}
-  spawnBottomOffset: 0.15
+  spawnBottomOffset: 0.03
   raycastStartHeight: 10
   raycastDistance: 20
   itemDepth: 0.8
   scaleStackedItemsFromData: 0
-  linearDamping: 0.2
-  angularDamping: 0.8
+  linearDamping: 0.5
+  angularDamping: 1.5
+  stackItemLayerName: StackItem
   stackSurfaceLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 192
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

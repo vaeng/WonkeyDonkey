@@ -68,13 +68,11 @@ public class ItemSpawner : MonoBehaviour
     {
         if (laneSystem == null || laneMovement == null)
         {
-            Debug.LogWarning("ItemSpawner: Missing lane system or lane movement.");
             return false;
         }
 
         if (itemPrefabs == null || itemPrefabs.Length == 0)
         {
-            Debug.LogWarning("ItemSpawner: No item prefabs assigned.");
             return false;
         }
 
@@ -88,7 +86,6 @@ public class ItemSpawner : MonoBehaviour
 
         if (minLane > maxLane)
         {
-            Debug.LogWarning("ItemSpawner: Invalid lane range. Using center lane.");
             return laneSystem.RoadLaneCount / 2f;
         }
 

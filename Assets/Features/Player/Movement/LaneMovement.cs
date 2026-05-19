@@ -87,7 +87,6 @@ public class LaneMovement : MonoBehaviour
     {
         if (carriage == null || laneSystem == null)
         {
-            Debug.LogError("LaneMovement: Missing carriage or lane system.");
             enabled = false;
             return false;
         }
@@ -96,10 +95,6 @@ public class LaneMovement : MonoBehaviour
 
         if (carriageLaneCount > laneSystem.RoadLaneCount)
         {
-            Debug.LogError(
-                $"LaneMovement: Carriage is wider than the road. Carriage: {carriageLaneCount}, road: {laneSystem.RoadLaneCount}"
-            );
-
             enabled = false;
             return false;
         }

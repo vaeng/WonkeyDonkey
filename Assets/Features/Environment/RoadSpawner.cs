@@ -52,7 +52,6 @@ public class RoadSpawner : MonoBehaviour
     {
         if (laneMovement == null || roadSegmentPrefab == null)
         {
-            Debug.LogWarning("RoadSpawner: Missing lane movement or road prefab.");
             return;
         }
 

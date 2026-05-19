@@ -7,15 +7,18 @@ public class CarriageStackManager : MonoBehaviour
     [SerializeField] private Transform stackRoot;
 
     [Header("Spawn")]
-    [SerializeField] private float spawnBottomOffset = 0.05f;
+    [SerializeField] private float spawnBottomOffset = 0.03f;
     [SerializeField] private float raycastStartHeight = 10f;
     [SerializeField] private float raycastDistance = 20f;
     [SerializeField] private float itemDepth = 0.8f;
     [SerializeField] private bool scaleStackedItemsFromData = false;
 
     [Header("Physics")]
-    [SerializeField] private float linearDamping = 0.2f;
-    [SerializeField] private float angularDamping = 0.8f;
+    [SerializeField] private float linearDamping = 0.5f;
+    [SerializeField] private float angularDamping = 1.5f;
+
+    [Header("Layers")]
+    [SerializeField] private string stackItemLayerName = "StackItem";
 
     [Header("Raycast")]
     [SerializeField] private LayerMask stackSurfaceLayers = ~0;
@@ -31,24 +34,21 @@ public class CarriageStackManager : MonoBehaviour
         GameObject stackedItem = Instantiate(item.StackedPrefab, spawnBase, stackRoot.rotation);
 
         RemoveWorldMover(stackedItem);
+        SetLayerRecursively(stackedItem, LayerMask.NameToLayer(stackItemLayerName));
         ScaleItemIfNeeded(stackedItem, item);
         MoveItemOnTopOfStack(stackedItem, spawnBase, item);
         SetupPhysics(stackedItem, item);
-
-        Debug.Log($"Placed {item.ItemType} on carriage spot {spotIndex}.");
     }
 
     private bool CanPlaceItem(CollectableItem item)
     {
         if (carriage == null || stackRoot == null)
         {
-            Debug.LogWarning("CarriageStackManager: Missing carriage or stack root.");
             return false;
         }
 
         if (item == null || item.StackedPrefab == null)
         {
-            Debug.LogWarning("CarriageStackManager: Missing collected item or stacked prefab.");
             return false;
         }
 
@@ -61,6 +61,19 @@ public class CarriageStackManager : MonoBehaviour
 
         if (mover != null)
             Destroy(mover);
+    }
+
+    private void SetLayerRecursively(GameObject obj, int layer)
+    {
+        if (layer < 0)
+        {
+            return;
+        }
+
+        obj.layer = layer;
+
+        foreach (Transform child in obj.transform)
+            SetLayerRecursively(child.gameObject, layer);
     }
 
     private void ScaleItemIfNeeded(GameObject stackedItem, CollectableItem item)
@@ -83,12 +96,9 @@ public class CarriageStackManager : MonoBehaviour
 
         if (itemCollider == null)
         {
-            Debug.LogWarning($"{stackedItem.name} has no collider.");
             return;
         }
 
-        // Collider kurz anlassen, damit bounds korrekt sind
-        Bounds itemBounds = itemCollider.bounds;
         Vector3 localBottomOffset = itemCollider.bounds.min - stackedItem.transform.position;
 
         itemCollider.enabled = false;
@@ -121,6 +131,7 @@ public class CarriageStackManager : MonoBehaviour
         foreach (Vector3 offset in rayOffsets)
         {
             Vector3 samplePosition = center + carriage.transform.TransformDirection(offset);
+
             Vector3 rayStart = new Vector3(
                 samplePosition.x,
                 stackRoot.position.y + raycastStartHeight,
@@ -145,8 +156,6 @@ public class CarriageStackManager : MonoBehaviour
         if (highestY != float.MinValue)
             return highestY;
 
-        Debug.LogWarning("CarriageStackManager: No stack surface found. Using stack root height.");
-
         return stackRoot.position.y;
     }
 
@@ -164,11 +173,6 @@ public class CarriageStackManager : MonoBehaviour
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.linearDamping = linearDamping;
         rb.angularDamping = angularDamping;
-
-        rb.constraints =
-            RigidbodyConstraints.FreezePositionZ |
-            RigidbodyConstraints.FreezeRotationX |
-            RigidbodyConstraints.FreezeRotationY;
 
         StackableItemPhysics itemPhysics = stackedItem.GetComponent<StackableItemPhysics>();
 

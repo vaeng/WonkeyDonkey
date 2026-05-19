@@ -52,9 +52,6 @@ public class CameraViewSettings : MonoBehaviour
                 SetFrontView();
                 break;
         }
-
-        if (showDebugLogs)
-            Debug.Log("Current camera view: " + selectedView);
     }
 
     private void SetBackView()

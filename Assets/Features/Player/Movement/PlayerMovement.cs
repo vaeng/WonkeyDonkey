@@ -83,12 +83,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (carriageLaneCount > laneSystem.RoadLaneCount)
         {
-            Debug.LogError(
-                "PlayerMovement setup is invalid: Carriage is wider than the road. " +
-                "Carriage Lane Count: " + carriageLaneCount +
-                " | Road Lane Count: " + laneSystem.RoadLaneCount
-            );
-
             enabled = false;
             return;
         }
