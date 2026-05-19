@@ -51,7 +51,15 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 2a41468ff56123148a2954f11f735b97, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: c58b0db7bee7e2b4e9b7c1a51429431f, type: 2}
+      objectReference: {fileID: 2100000, guid: cd3bf7039783d214b8a591ddd624a9b9, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 2a41468ff56123148a2954f11f735b97, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8134e60516a68724a9d0aef91ea14ce7, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 2a41468ff56123148a2954f11f735b97, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3df5386a3530bb5409cfb5562bb756f7, type: 2}
     - target: {fileID: 919132149155446097, guid: 2a41468ff56123148a2954f11f735b97, type: 3}
       propertyPath: m_Name
       value: Hombire_02
