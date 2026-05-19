@@ -439,8 +439,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557705212}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0038016918, y: -0.9952466, z: 0.087072834, w: 0.04345352}
-  m_LocalPosition: {x: 1.5, y: 4, z: 20}
+  m_LocalRotation: {x: 0.0871992, y: 0, z: 0, w: 0.9961909}
+  m_LocalPosition: {x: 0, y: 5, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -502,9 +502,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a0693970ee0ed2438f66f6ef8d04655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraViewSettings
-  selectedView: 1
+  selectedView: 0
   applyInEditor: 1
   swipeInput: {fileID: 826179257}
+  showDebugLogs: 0
 --- !u!1 &670662630
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,7 +715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwipeInput
   minSwipeDistance: 10
-  invertHorizontalInput: 1
+  invertHorizontalInput: 0
   useKeyboardInput: 1
 --- !u!54 &826179258
 Rigidbody:
@@ -1283,12 +1284,13 @@ MonoBehaviour:
   - {fileID: 1913678160417714669, guid: 002f5752ae2a1c0419cb87ae56194742, type: 3}
   - {fileID: 1310453082972999147, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
   - {fileID: 5057030877971071467, guid: b83f56a2c86d49941a08eb8f7eba7fbd, type: 3}
-  spawnInterval: 3
+  spawnInterval: 6
   spawnZPosition: 25
   itemYPosition: 0.5
-  worldMoveSpeed: 6
+  worldMoveSpeed: 4
   minSpawnLane: 2
   maxSpawnLane: 4
+  allowSpawnBetweenLanes: 1
 --- !u!4 &1410558093
 Transform:
   m_ObjectHideFlags: 0
@@ -1573,7 +1575,7 @@ MonoBehaviour:
   roadSegmentPrefab: {fileID: 4521223830304431437, guid: f12e552fd825510428304bf8c71ad7cb, type: 3}
   segmentLength: 20
   startSegmentCount: 5
-  worldMoveSpeed: 6
+  worldMoveSpeed: 4
   spawnAheadDistance: 200
   despawnBehindDistance: 30
 --- !u!4 &1827828317

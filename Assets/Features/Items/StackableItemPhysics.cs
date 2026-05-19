@@ -7,6 +7,15 @@ public class StackableItemPhysics : MonoBehaviour
     [SerializeField] private float fallYThreshold = -1f;
     [SerializeField] private float sideFallMargin = 0.5f;
 
+    [Header("Anti Slide")]
+    [SerializeField] private float maxAngleForSideBrake = 5f;
+
+    [Tooltip("Seitliche Bewegungen unter dieser Geschwindigkeit werden abgebremst.")]
+    [SerializeField] private float minSideSpeedToSlide = 0.45f;
+
+    [Tooltip("Wie stark kleine seitliche Bewegungen abgebremst werden.")]
+    [SerializeField] private float sideBrake = 16f;
+
     private Rigidbody rb;
     private Carriage carriage;
     private bool hasFallen;
@@ -31,6 +40,11 @@ public class StackableItemPhysics : MonoBehaviour
             RigidbodyConstraints.FreezeRotationY;
     }
 
+    private void FixedUpdate()
+    {
+        StopSmallSideMovement();
+    }
+
     private void Update()
     {
         if (hasFallen || carriage == null)
@@ -40,10 +54,30 @@ public class StackableItemPhysics : MonoBehaviour
             return;
 
         hasFallen = true;
-
         Debug.Log($"{name} fell from the carriage.");
-
         Destroy(gameObject, 2f);
+    }
+
+    private void StopSmallSideMovement()
+    {
+        float angle = Mathf.Abs(Mathf.DeltaAngle(0f, transform.eulerAngles.z));
+        float sideSpeed = Mathf.Abs(rb.linearVelocity.x);
+
+        bool isNotTiltedTooMuch = angle < maxAngleForSideBrake;
+        bool isMovingTooSlowlyToSlide = sideSpeed < minSideSpeedToSlide;
+
+        if (!isNotTiltedTooMuch || !isMovingTooSlowlyToSlide)
+            return;
+
+        Vector3 velocity = rb.linearVelocity;
+
+        velocity.x = Mathf.MoveTowards(
+            velocity.x,
+            0f,
+            sideBrake * Time.fixedDeltaTime
+        );
+
+        rb.linearVelocity = velocity;
     }
 
     private bool IsOffCarriage()

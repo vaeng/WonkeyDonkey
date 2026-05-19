@@ -9,12 +9,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1051624322295365924, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
+      propertyPath: m_Size.x
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051624322295365924, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051624322295365924, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
+      propertyPath: m_Size.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051624322295365924, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 13400000, guid: 210ab0c7503486f438c19ca2d7fd4aa2, type: 2}
     - target: {fileID: 1310453082972999147, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: m_Name
       value: Stack_HighBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057919632167937422, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.49
       objectReference: {fileID: 0}
     - target: {fileID: 3981096490230816767, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: stackedPrefab
@@ -85,9 +101,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2834646521571764583}
   serializedVersion: 5
-  m_Mass: 5
-  m_LinearDamping: 1
-  m_AngularDamping: 4
+  m_Mass: 10
+  m_LinearDamping: 10
+  m_AngularDamping: 10
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -116,8 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8492241613fcef4fba8a8a410e31925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StackableItemPhysics
-  followCarriageMovement: 1
-  lockLocalZPosition: 1
-  lockForwardBackwardRotation: 1
-  fallYThreshold: -2
+  fallYThreshold: -1
   sideFallMargin: 0.5
+  maxAngleForSideBrake: 5
+  minSideSpeedToSlide: 0.35
+  sideBrake: 12

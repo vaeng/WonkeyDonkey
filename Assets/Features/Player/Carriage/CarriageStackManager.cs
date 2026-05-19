@@ -87,18 +87,22 @@ public class CarriageStackManager : MonoBehaviour
             return;
         }
 
+        // Collider kurz anlassen, damit bounds korrekt sind
+        Bounds itemBounds = itemCollider.bounds;
+        Vector3 localBottomOffset = itemCollider.bounds.min - stackedItem.transform.position;
+
         itemCollider.enabled = false;
         Physics.SyncTransforms();
 
         float itemWidth = item.WidthInLanes * carriage.GetLaneWidth();
         float surfaceY = GetHighestSurfaceY(spawnBase, itemWidth);
 
+        Vector3 finalPosition = spawnBase;
+        finalPosition.y = surfaceY + spawnBottomOffset - localBottomOffset.y;
+
+        stackedItem.transform.position = finalPosition;
+
         itemCollider.enabled = true;
-        Physics.SyncTransforms();
-
-        float neededYOffset = surfaceY + spawnBottomOffset - itemCollider.bounds.min.y;
-        stackedItem.transform.position += Vector3.up * neededYOffset;
-
         Physics.SyncTransforms();
     }
 

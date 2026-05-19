@@ -23,6 +23,9 @@ public class ItemSpawner : MonoBehaviour
     [SerializeField] private int minSpawnLane = 0;
     [SerializeField] private int maxSpawnLane = 6;
 
+    [Header("Lane Placement")]
+    [SerializeField] private bool allowSpawnBetweenLanes = false;
+
     private float spawnTimer;
 
     private void Update()
@@ -41,10 +44,10 @@ public class ItemSpawner : MonoBehaviour
         if (!CanSpawn())
             return;
 
-        int lane = GetRandomLane();
+        float lanePosition = GetRandomLanePosition();
         GameObject prefab = itemPrefabs[Random.Range(0, itemPrefabs.Length)];
 
-        float roadX = laneSystem.GetWorldXForLanePosition(lane);
+        float roadX = laneSystem.GetWorldXForLanePosition(lanePosition);
         float visualX = laneMovement.GetVisualWorldXForRoadX(roadX);
 
         GameObject item = Instantiate(
@@ -78,7 +81,7 @@ public class ItemSpawner : MonoBehaviour
         return true;
     }
 
-    private int GetRandomLane()
+    private float GetRandomLanePosition()
     {
         int minLane = Mathf.Clamp(minSpawnLane, 0, laneSystem.RoadLaneCount - 1);
         int maxLane = Mathf.Clamp(maxSpawnLane, 0, laneSystem.RoadLaneCount - 1);
@@ -86,9 +89,17 @@ public class ItemSpawner : MonoBehaviour
         if (minLane > maxLane)
         {
             Debug.LogWarning("ItemSpawner: Invalid lane range. Using center lane.");
-            return laneSystem.RoadLaneCount / 2;
+            return laneSystem.RoadLaneCount / 2f;
         }
 
-        return Random.Range(minLane, maxLane + 1);
+        if (!allowSpawnBetweenLanes)
+            return Random.Range(minLane, maxLane + 1);
+
+        int minStep = minLane * 2;
+        int maxStep = maxLane * 2;
+
+        int randomStep = Random.Range(minStep, maxStep + 1);
+
+        return randomStep * 0.5f;
     }
 }
