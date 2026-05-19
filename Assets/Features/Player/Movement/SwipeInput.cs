@@ -8,45 +8,45 @@ public class SwipeInput : MonoBehaviour
     public event Action OnSwipeLeft;
     public event Action OnSwipeRight;
 
-    /// <summary>Minimum distance in pixels for a swipe to be registered.</summary>
-    [Header("Swipe Settings")]
+    [Header("Swipe")]
     [SerializeField] private float minSwipeDistance = 50f;
 
-    /// <summary>Allows using keyboard input for left/right swipes.</summary>
-    [Header("Debug / Fallback Input")]
-    [SerializeField] private bool allowKeyboardInput = true;
+    [Header("Input Direction")]
+    [SerializeField] private bool invertHorizontalInput;
+
+    [Header("Debug")]
+    [SerializeField] private bool useKeyboardInput = true;
 
     private Vector2 startPosition;
-    private bool isSwiping;
+    private bool hasStartedSwipe;
+
+    public void SetInvertHorizontalInput(bool shouldInvert)
+    {
+        invertHorizontalInput = shouldInvert;
+    }
 
     private void Update()
     {
-        if (allowKeyboardInput)
-            HandleKeyboardInput();
+        if (useKeyboardInput)
+            CheckKeyboard();
 
-        HandleMouseInput();
-        HandleTouchInput();
+        CheckMouse();
+        CheckTouch();
     }
 
-    private void HandleKeyboardInput()
+    private void CheckKeyboard()
     {
         if (Keyboard.current == null)
             return;
 
-        if (Keyboard.current.aKey.wasPressedThisFrame ||
-            Keyboard.current.leftArrowKey.wasPressedThisFrame)
-        {
-            OnSwipeLeft?.Invoke();
-        }
+        if (Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame)
+            SwipeLeft();
 
-        if (Keyboard.current.dKey.wasPressedThisFrame ||
-            Keyboard.current.rightArrowKey.wasPressedThisFrame)
-        {
-            OnSwipeRight?.Invoke();
-        }
+        if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
+            SwipeRight();
     }
 
-    private void HandleMouseInput()
+    private void CheckMouse()
     {
         if (Mouse.current == null)
             return;
@@ -54,51 +54,70 @@ public class SwipeInput : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             startPosition = Mouse.current.position.ReadValue();
-            isSwiping = true;
+            hasStartedSwipe = true;
         }
 
-        if (Mouse.current.leftButton.wasReleasedThisFrame && isSwiping)
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
-            Vector2 endPosition = Mouse.current.position.ReadValue();
-            DetectSwipe(endPosition);
-            isSwiping = false;
+            CheckSwipe(Mouse.current.position.ReadValue());
         }
     }
 
-    private void HandleTouchInput()
+    private void CheckTouch()
     {
         if (Touchscreen.current == null)
             return;
 
-        TouchControl primaryTouch = Touchscreen.current.primaryTouch;
+        TouchControl touch = Touchscreen.current.primaryTouch;
 
-        if (primaryTouch.press.wasPressedThisFrame)
+        if (touch.press.wasPressedThisFrame)
         {
-            startPosition = primaryTouch.position.ReadValue();
-            isSwiping = true;
+            startPosition = touch.position.ReadValue();
+            hasStartedSwipe = true;
         }
 
-        if (primaryTouch.press.wasReleasedThisFrame && isSwiping)
+        if (touch.press.wasReleasedThisFrame)
         {
-            Vector2 endPosition = primaryTouch.position.ReadValue();
-            DetectSwipe(endPosition);
-            isSwiping = false;
+            CheckSwipe(touch.position.ReadValue());
         }
     }
 
-    private void DetectSwipe(Vector2 endPosition)
+    private void CheckSwipe(Vector2 endPosition)
     {
-        Vector2 swipeDelta = endPosition - startPosition;
-
-        if (Mathf.Abs(swipeDelta.x) < minSwipeDistance)
+        if (!hasStartedSwipe)
             return;
 
-        if (Mathf.Abs(swipeDelta.x) < Mathf.Abs(swipeDelta.y))
+        Vector2 swipe = endPosition - startPosition;
+        hasStartedSwipe = false;
+
+        float xDistance = Mathf.Abs(swipe.x);
+        float yDistance = Mathf.Abs(swipe.y);
+
+        if (xDistance < minSwipeDistance)
             return;
 
-        if (swipeDelta.x > 0)
+        if (xDistance <= yDistance)
+            return;
+
+        if (swipe.x < 0f)
+            SwipeLeft();
+        else
+            SwipeRight();
+    }
+
+    private void SwipeLeft()
+    {
+        if (invertHorizontalInput)
             OnSwipeRight?.Invoke();
         else
             OnSwipeLeft?.Invoke();
+    }
+
+    private void SwipeRight()
+    {
+        if (invertHorizontalInput)
+            OnSwipeLeft?.Invoke();
+        else
+            OnSwipeRight?.Invoke();
     }
 }

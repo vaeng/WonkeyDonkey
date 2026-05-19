@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class Carriage : MonoBehaviour
 {
-    /// <summary>Used for lane position calculations.</summary>
     [Header("References")]
     [SerializeField] private LaneSystem laneSystem;
 
-    /// <summary>Number of lanes the carriage occupies.</summary>
-    [Header("Carriage Settings")]
+    [Header("Carriage")]
     [SerializeField] private int carriageLaneCount = 3;
 
     public int GetCarriageLaneCount()
@@ -25,55 +23,34 @@ public class Carriage : MonoBehaviour
         return carriageLaneCount * laneSystem.LaneWidth;
     }
 
-    public bool TryGetClosestSpotForWorldX(
-        float worldX,
-        float carriageCenterLane,
-        out int spotIndex
-    )
+    public float GetLaneWidth()
     {
-        float itemRoadLanePosition =
-            laneSystem.GetLanePositionForWorldX(worldX);
+        return laneSystem.LaneWidth;
+    }
 
-        float leftCarriageLaneCenter =
-            carriageCenterLane - ((carriageLaneCount - 1) * 0.5f);
+    public bool TryGetClosestSpotForWorldX(float worldX, float carriageCenterLane, out int spotIndex)
+    {
+        float itemLane = laneSystem.GetLanePositionForWorldX(worldX);
+        return TryGetClosestSpotForRoadLanePosition(itemLane, carriageCenterLane, out spotIndex);
+    }
 
-        float relativeLanePosition =
-            itemRoadLanePosition - leftCarriageLaneCenter;
+    public bool TryGetClosestSpotForRoadLanePosition(float itemLane, float carriageCenterLane, out int spotIndex)
+    {
+        float leftLane = carriageCenterLane - (carriageLaneCount - 1) * 0.5f;
+        float laneOnCarriage = itemLane - leftLane;
 
-        int calculatedSpotIndex =
-            Mathf.RoundToInt(relativeLanePosition * 2f);
+        spotIndex = Mathf.RoundToInt(laneOnCarriage * 2f);
 
-        if (calculatedSpotIndex < 0 || calculatedSpotIndex >= GetCarriageSpotCount())
-        {
-            spotIndex = -1;
-            return false;
-        }
-
-        spotIndex = calculatedSpotIndex;
-        return true;
+        return spotIndex >= 0 && spotIndex < GetCarriageSpotCount();
     }
 
     public Vector3 GetLocalPositionForSpot(int spotIndex)
     {
-        spotIndex = Mathf.Clamp(
-            spotIndex,
-            0,
-            GetCarriageSpotCount() - 1
-        );
+        spotIndex = Mathf.Clamp(spotIndex, 0, GetCarriageSpotCount() - 1);
 
-        float laneWidth = laneSystem.LaneWidth;
-
-        float leftX =
-            -((carriageLaneCount - 1) * 0.5f * laneWidth);
-
-        float x =
-            leftX + (spotIndex * 0.5f * laneWidth);
+        float leftX = -(carriageLaneCount - 1) * 0.5f * laneSystem.LaneWidth;
+        float x = leftX + spotIndex * 0.5f * laneSystem.LaneWidth;
 
         return new Vector3(x, 0f, 0f);
-    }
-
-    public float GetLaneWidth()
-    {
-        return laneSystem.LaneWidth;
     }
 }

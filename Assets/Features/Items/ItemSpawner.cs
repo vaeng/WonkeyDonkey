@@ -1,100 +1,94 @@
 using UnityEngine;
 
-/// <summary>
-/// Spawns collectable items ahead of the stationary player.
-/// </summary>
 public class ItemSpawner : MonoBehaviour
 {
-    /// <summary>Used for lane position calculations.</summary>
     [Header("References")]
     [SerializeField] private LaneSystem laneSystem;
+    [SerializeField] private LaneMovement laneMovement;
 
-    /// <summary>Prefabs of items to spawn.</summary>
-    [Header("Item Prefabs")]
+    [Header("Items")]
     [SerializeField] private GameObject[] itemPrefabs;
 
-    /// <summary>Time in seconds between spawns.</summary>
     [Header("Spawn Timing")]
     [SerializeField] private float spawnInterval = 1.5f;
 
-    /// <summary>Distance in front of the player where items spawn.</summary>
     [Header("Spawn Position")]
     [SerializeField] private float spawnZPosition = 25f;
-
-    /// <summary>Y position for spawned items.</summary>
     [SerializeField] private float itemYPosition = 0.5f;
 
-    /// <summary>Movement speed of spawned world items.</summary>
+    [Header("Movement")]
     [SerializeField] private float worldMoveSpeed = 6f;
 
-    /// <summary>Min lane index to spawn items in.</summary>
     [Header("Lane Range")]
     [SerializeField] private int minSpawnLane = 0;
-
-    /// <summary>Max lane index to spawn items in.</summary>
     [SerializeField] private int maxSpawnLane = 6;
 
-    private float timer;
+    private float spawnTimer;
 
     private void Update()
     {
-        timer += Time.deltaTime;
+        spawnTimer += Time.deltaTime;
 
-        if (timer < spawnInterval)
+        if (spawnTimer < spawnInterval)
             return;
 
-        SpawnRandomItem();
-        timer = 0f;
+        SpawnItem();
+        spawnTimer = 0f;
     }
 
-    private void SpawnRandomItem()
+    private void SpawnItem()
     {
-        if (itemPrefabs.Length == 0)
-        {
-            Debug.LogWarning("No item prefabs assigned to ItemSpawner.");
+        if (!CanSpawn())
             return;
-        }
 
-        int minLane = Mathf.Clamp(
-            minSpawnLane,
-            Mathf.RoundToInt(laneSystem.MinRoadLane),
-            Mathf.RoundToInt(laneSystem.MaxRoadLane)
-        );
+        int lane = GetRandomLane();
+        GameObject prefab = itemPrefabs[Random.Range(0, itemPrefabs.Length)];
 
-        int maxLane = Mathf.Clamp(
-            maxSpawnLane,
-            Mathf.RoundToInt(laneSystem.MinRoadLane),
-            Mathf.RoundToInt(laneSystem.MaxRoadLane)
-        );
+        float roadX = laneSystem.GetWorldXForLanePosition(lane);
+        float visualX = laneMovement.GetVisualWorldXForRoadX(roadX);
 
-        if (minLane > maxLane)
-        {
-            Debug.LogWarning("ItemSpawner has invalid lane range.");
-            return;
-        }
-
-        int randomLane = Random.Range(minLane, maxLane + 1);
-
-        GameObject randomPrefab =
-            itemPrefabs[Random.Range(0, itemPrefabs.Length)];
-
-        Vector3 spawnPosition = new Vector3(
-            laneSystem.GetWorldXForLanePosition(randomLane),
-            itemYPosition,
-            spawnZPosition
-        );
-
-        GameObject spawnedItem = Instantiate(
-            randomPrefab,
-            spawnPosition,
+        GameObject item = Instantiate(
+            prefab,
+            new Vector3(visualX, itemYPosition, spawnZPosition),
             Quaternion.identity
         );
 
-        WorldMover worldMover = spawnedItem.GetComponent<WorldMover>();
+        WorldMover mover = item.GetComponent<WorldMover>();
 
-        if (worldMover == null)
-            worldMover = spawnedItem.AddComponent<WorldMover>();
+        if (mover == null)
+            mover = item.AddComponent<WorldMover>();
 
-        worldMover.SetMoveSpeed(worldMoveSpeed);
+        mover.Initialize(laneMovement, worldMoveSpeed, roadX);
+    }
+
+    private bool CanSpawn()
+    {
+        if (laneSystem == null || laneMovement == null)
+        {
+            Debug.LogWarning("ItemSpawner: Missing lane system or lane movement.");
+            return false;
+        }
+
+        if (itemPrefabs == null || itemPrefabs.Length == 0)
+        {
+            Debug.LogWarning("ItemSpawner: No item prefabs assigned.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private int GetRandomLane()
+    {
+        int minLane = Mathf.Clamp(minSpawnLane, 0, laneSystem.RoadLaneCount - 1);
+        int maxLane = Mathf.Clamp(maxSpawnLane, 0, laneSystem.RoadLaneCount - 1);
+
+        if (minLane > maxLane)
+        {
+            Debug.LogWarning("ItemSpawner: Invalid lane range. Using center lane.");
+            return laneSystem.RoadLaneCount / 2;
+        }
+
+        return Random.Range(minLane, maxLane + 1);
     }
 }

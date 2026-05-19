@@ -6,32 +6,21 @@ public class ItemCollector : MonoBehaviour
 {
     public event Action<CollectedItemInfo> OnItemCollected;
 
-    /// <summary>Used for lane position calculations.</summary>
     [Header("References")]
-    [SerializeField] private LaneSystem laneSystem;
-
-    /// <summary>Used to determine the player's current center lane position.</summary>
-    [SerializeField] private PlayerMovement playerMovement;
-
-    /// <summary>Used to determine the width of the carriage and available spots for collected items.</summary>
+    [SerializeField] private LaneMovement laneMovement;
     [SerializeField] private Carriage carriage;
-
-    /// <summary>Places collected items on the carriage.</summary>
     [SerializeField] private CarriageStackManager stackManager;
 
-    /// <summary>Height of the collector trigger area in world units.</summary>
     [Header("Collector Size")]
     [SerializeField] private float collectorHeight = 1.5f;
-
-    /// <summary>Depth of the collector trigger area in world units.</summary>
     [SerializeField] private float collectorDepth = 1f;
 
-    private BoxCollider boxCollider;
+    private BoxCollider collectorTrigger;
 
     private void Awake()
     {
-        boxCollider = GetComponent<BoxCollider>();
-        boxCollider.isTrigger = true;
+        collectorTrigger = GetComponent<BoxCollider>();
+        collectorTrigger.isTrigger = true;
     }
 
     private void Start()
@@ -41,71 +30,69 @@ public class ItemCollector : MonoBehaviour
 
     private void UpdateCollectorSize()
     {
-        boxCollider.size = new Vector3(
+        if (carriage == null)
+        {
+            Debug.LogWarning("ItemCollector: No carriage assigned.");
+            return;
+        }
+
+        collectorTrigger.size = new Vector3(
             carriage.GetCarriageWidthInWorldUnits(),
             collectorHeight,
             collectorDepth
         );
 
-        boxCollider.center = Vector3.zero;
+        collectorTrigger.center = Vector3.zero;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         CollectableItem item = other.GetComponent<CollectableItem>();
 
-        if (item == null)
+        if (item == null || item.WasCollected)
             return;
 
-        if (item.WasCollected)
+        if (laneMovement == null || carriage == null)
+        {
+            Debug.LogWarning("ItemCollector: Missing lane movement or carriage.");
             return;
+        }
 
-        float itemWorldX = other.transform.position.x;
-        float carriageCenterLane = playerMovement.GetCurrentCenterLane();
+        float itemLane = laneMovement.GetRoadLaneForVisualWorldX(other.transform.position.x);
+        float carriageLane = laneMovement.CurrentCenterLane;
 
-        bool hasValidSpot = carriage.TryGetClosestSpotForWorldX(
-            itemWorldX,
-            carriageCenterLane,
-            out int carriageSpotIndex
+        bool foundSpot = carriage.TryGetClosestSpotForRoadLanePosition(
+            itemLane,
+            carriageLane,
+            out int spotIndex
         );
 
-        if (!hasValidSpot)
+        if (!foundSpot)
         {
             Debug.LogWarning(
-                "Item touched collector but was outside carriage spots: " +
-                other.gameObject.name
+                $"{item.name} hit collector but was outside the carriage. Item lane: {itemLane}, carriage lane: {carriageLane}"
             );
-
             return;
         }
 
-        Vector3 carriageLocalSpotPosition =
-            carriage.GetLocalPositionForSpot(carriageSpotIndex);
+        CollectItem(item, spotIndex);
+    }
 
-        CollectedItemInfo collectedItemInfo = new CollectedItemInfo(
-            item,
-            carriageSpotIndex,
-            carriageLocalSpotPosition
-        );
-
-        Debug.Log(
-            item.name +
-            " collected on carriage spot: " +
-            carriageSpotIndex
-        );
-
+    private void CollectItem(CollectableItem item, int spotIndex)
+    {
         item.MarkAsCollected();
 
-        if (stackManager != null)
-        {
-            stackManager.PlaceCollectedItem(item, carriageSpotIndex);
-        }
-        else
-        {
-            Debug.LogWarning("No CarriageStackManager assigned to ItemCollector.");
-        }
+        Vector3 localSpot = carriage.GetLocalPositionForSpot(spotIndex);
+        CollectedItemInfo itemInfo = new CollectedItemInfo(item, spotIndex, localSpot);
 
-        OnItemCollected?.Invoke(collectedItemInfo);
+        if (stackManager != null)
+            stackManager.PlaceCollectedItem(item, spotIndex);
+        else
+            Debug.LogWarning("ItemCollector: No stack manager assigned.");
+
+        OnItemCollected?.Invoke(itemInfo);
+
+        Debug.Log($"{item.name} collected on carriage spot {spotIndex}.");
 
         item.DestroyItem();
     }
