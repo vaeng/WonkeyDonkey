@@ -11,11 +11,18 @@ public class StackableItemPhysics : MonoBehaviour
     [SerializeField] private float sideFallMargin = 0.5f;
 
     [Header("Balance")]
-    [SerializeField] private float centerOfMassEdgeMargin = 0.03f;
+    [SerializeField] private float centerOfMassEdgeMargin = 0.04f;
     [SerializeField] private float wobbleEdgeDistance = 0.15f;
+    [SerializeField] private float minOverhangToTip = 0.35f;
     [SerializeField] private float supportCheckDepth = 0.12f;
     [SerializeField] private float aboveItemTolerance = 0.15f;
     [SerializeField] private LayerMask supportLayers;
+
+    [Header("Tipping")]
+    [SerializeField] private float tippingTorque = 0.7f;
+    [SerializeField] private float tippingVelocityTorque = 0.25f;
+    [SerializeField] private float maxTippingAngularSpeed = 4f;
+    [SerializeField] private float slideBrakeWhileTipping = 12f;
 
     [Header("Stabilizing")]
     [SerializeField] private float maxAngleToStabilize = 8f;
@@ -29,17 +36,13 @@ public class StackableItemPhysics : MonoBehaviour
     [SerializeField] private float uprightSpeed = 90f;
     [SerializeField] private float uprightAngularBrake = 25f;
 
-    [Header("Debug")]
-    [SerializeField] private bool showDebugLogs;
-    [SerializeField] private bool drawDebug;
-
     private Rigidbody rb;
     private Collider itemCollider;
     private Carriage carriage;
 
     private bool hasFallen;
-    private bool isUnstable;
     private bool isWobbling;
+    private float fallDirection;
 
     private void Awake()
     {
@@ -75,68 +78,13 @@ public class StackableItemPhysics : MonoBehaviour
         if (hasFallen || carriage == null || itemCollider == null)
             return;
 
-        CheckIfBalanced();
-        ReactToBalanceState();
-    }
+        CheckBalance();
 
-    private void Update()
-    {
-        if (hasFallen || carriage == null)
-            return;
-
-        if (!IsOffCarriage())
-            return;
-
-        hasFallen = true;
-
-        if (showDebugLogs)
-            Debug.Log($"{name} fell from the carriage.");
-
-        Destroy(gameObject, 2f);
-    }
-
-    private void CheckIfBalanced()
-    {
-        Bounds bounds = itemCollider.bounds;
-
-        if (!TryGetSupportArea(bounds, out float supportLeft, out float supportRight))
-        {
-            isUnstable = true;
-            isWobbling = false;
-            return;
-        }
-
-        float centerX = GetCenterOfMassWithWeightAbove(bounds);
-
-        float distanceToLeftEdge = centerX - supportLeft;
-        float distanceToRightEdge = supportRight - centerX;
-        float closestEdgeDistance = Mathf.Min(distanceToLeftEdge, distanceToRightEdge);
-
-        isUnstable = closestEdgeDistance <= centerOfMassEdgeMargin;
-        isWobbling = !isUnstable && closestEdgeDistance <= wobbleEdgeDistance;
-
-        if (drawDebug)
-            DrawDebugLines(bounds, supportLeft, supportRight, centerX);
-
-        if (showDebugLogs && (isUnstable || isWobbling))
-        {
-            string state = isUnstable ? "unstable" : "wobbling";
-
-            Debug.Log(
-                $"{name} is {state}. " +
-                $"Support: {supportLeft:0.00} to {supportRight:0.00}, " +
-                $"Center: {centerX:0.00}, " +
-                $"Edge Distance: {closestEdgeDistance:0.00}"
-            );
-        }
-    }
-
-    private void ReactToBalanceState()
-    {
-        if (isUnstable)
+        if (fallDirection != 0f)
         {
             FreezeZRotation(false);
-            PushTowardsFallDirection();
+            BrakeSideMovement();
+            TipOver();
             return;
         }
 
@@ -152,18 +100,58 @@ public class StackableItemPhysics : MonoBehaviour
         SlowDownSmallMovement();
     }
 
-    private bool TryGetSupportArea(Bounds bounds, out float supportLeft, out float supportRight)
+    private void Update()
+    {
+        if (hasFallen || carriage == null || !IsOffCarriage())
+            return;
+
+        hasFallen = true;
+        Destroy(gameObject, 2f);
+    }
+
+    private void CheckBalance()
+    {
+        Bounds bounds = itemCollider.bounds;
+
+        fallDirection = 0f;
+        isWobbling = false;
+
+        if (!FindSupport(bounds, out float supportLeft, out float supportRight))
+        {
+            fallDirection = GetFallDirection(bounds);
+            return;
+        }
+
+        float centerX = GetWeightedCenterX(bounds);
+
+        float leftDistance = centerX - supportLeft;
+        float rightDistance = supportRight - centerX;
+
+        float leftOverhang = Mathf.Max(0f, supportLeft - bounds.min.x);
+        float rightOverhang = Mathf.Max(0f, bounds.max.x - supportRight);
+
+        float maxOverhang = bounds.size.x * minOverhangToTip;
+
+        if (leftDistance <= centerOfMassEdgeMargin || leftOverhang >= maxOverhang)
+            fallDirection = 1f;
+        else if (rightDistance <= centerOfMassEdgeMargin || rightOverhang >= maxOverhang)
+            fallDirection = -1f;
+        else
+            isWobbling = Mathf.Min(leftDistance, rightDistance) <= wobbleEdgeDistance;
+    }
+
+    private bool FindSupport(Bounds bounds, out float supportLeft, out float supportRight)
     {
         supportLeft = float.MaxValue;
         supportRight = float.MinValue;
 
-        Vector3 checkCenter = new Vector3(
+        Vector3 checkCenter = new(
             bounds.center.x,
             bounds.min.y - supportCheckDepth * 0.5f,
             bounds.center.z
         );
 
-        Vector3 checkSize = new Vector3(
+        Vector3 checkSize = new(
             bounds.extents.x * 0.98f,
             supportCheckDepth * 0.5f,
             bounds.extents.z * 0.98f
@@ -182,10 +170,8 @@ public class StackableItemPhysics : MonoBehaviour
             if (!CanBeSupport(hit, bounds))
                 continue;
 
-            Bounds supportBounds = hit.bounds;
-
-            float left = Mathf.Max(bounds.min.x, supportBounds.min.x);
-            float right = Mathf.Min(bounds.max.x, supportBounds.max.x);
+            float left = Mathf.Max(bounds.min.x, hit.bounds.min.x);
+            float right = Mathf.Min(bounds.max.x, hit.bounds.max.x);
 
             if (right <= left)
                 continue;
@@ -205,51 +191,68 @@ public class StackableItemPhysics : MonoBehaviour
         if (hit.transform.IsChildOf(transform))
             return false;
 
-        bool isBelowItem = hit.bounds.max.y <= ownBounds.min.y + supportCheckDepth * 2f;
-
-        return isBelowItem;
+        return hit.bounds.max.y <= ownBounds.min.y + supportCheckDepth * 2f;
     }
 
-    private float GetCenterOfMassWithWeightAbove(Bounds ownBounds)
+    private float GetWeightedCenterX(Bounds ownBounds)
     {
-        float totalMass = rb.mass;
-        float weightedX = rb.worldCenterOfMass.x * rb.mass;
+        float mass = rb.mass;
+        float x = rb.worldCenterOfMass.x * rb.mass;
 
         foreach (StackableItemPhysics item in allItems)
         {
-            if (!IsWeightAbove(item, ownBounds))
+            if (!IsOnTopOfMe(item, ownBounds))
                 continue;
 
-            float itemMass = item.rb.mass;
-
-            totalMass += itemMass;
-            weightedX += item.rb.worldCenterOfMass.x * itemMass;
+            mass += item.rb.mass;
+            x += item.rb.worldCenterOfMass.x * item.rb.mass;
         }
 
-        return weightedX / totalMass;
+        return x / mass;
     }
 
-    private bool IsWeightAbove(StackableItemPhysics otherItem, Bounds ownBounds)
+    private bool IsOnTopOfMe(StackableItemPhysics item, Bounds ownBounds)
     {
-        if (otherItem == null || otherItem == this)
+        if (item == null || item == this || item.rb == null || item.itemCollider == null)
             return false;
 
-        if (otherItem.rb == null || otherItem.itemCollider == null)
-            return false;
+        Bounds otherBounds = item.itemCollider.bounds;
 
-        Bounds otherBounds = otherItem.itemCollider.bounds;
+        bool aboveMe = otherBounds.min.y >= ownBounds.max.y - aboveItemTolerance;
+        bool sameXArea = otherBounds.max.x > ownBounds.min.x && otherBounds.min.x < ownBounds.max.x;
+        bool sameZArea = otherBounds.max.z > ownBounds.min.z && otherBounds.min.z < ownBounds.max.z;
 
-        bool isAbove = otherBounds.min.y >= ownBounds.max.y - aboveItemTolerance;
+        return aboveMe && sameXArea && sameZArea;
+    }
 
-        bool overlapsX =
-            otherBounds.max.x > ownBounds.min.x &&
-            otherBounds.min.x < ownBounds.max.x;
+    private void TipOver()
+    {
+        if (Mathf.Abs(rb.linearVelocity.x) > 0.05f)
+            fallDirection = rb.linearVelocity.x > 0f ? -1f : 1f;
 
-        bool overlapsZ =
-            otherBounds.max.z > ownBounds.min.z &&
-            otherBounds.min.z < ownBounds.max.z;
+        rb.AddTorque(Vector3.forward * fallDirection * tippingTorque, ForceMode.Acceleration);
 
-        return isAbove && overlapsX && overlapsZ;
+        float extraTorque = Mathf.Abs(rb.linearVelocity.x) * tippingVelocityTorque;
+        rb.AddTorque(Vector3.forward * fallDirection * extraTorque, ForceMode.Acceleration);
+
+        Vector3 angularVelocity = rb.angularVelocity;
+        angularVelocity.z = Mathf.Clamp(angularVelocity.z, -maxTippingAngularSpeed, maxTippingAngularSpeed);
+        rb.angularVelocity = angularVelocity;
+    }
+
+    private void BrakeSideMovement()
+    {
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = Mathf.MoveTowards(velocity.x, 0f, slideBrakeWhileTipping * Time.fixedDeltaTime);
+        rb.linearVelocity = velocity;
+    }
+
+    private float GetFallDirection(Bounds bounds)
+    {
+        if (Mathf.Abs(rb.linearVelocity.x) > 0.05f)
+            return rb.linearVelocity.x > 0f ? -1f : 1f;
+
+        return bounds.center.x >= carriage.transform.position.x ? -1f : 1f;
     }
 
     private void StandStraightIfPossible()
@@ -258,31 +261,15 @@ public class StackableItemPhysics : MonoBehaviour
 
         if (angle <= angleToFreezeAsStraight)
         {
-            SetStraightRotation();
+            SnapStraight();
             FreezeZRotation(true);
             return;
         }
 
-        if (angle <= maxAngleToAutoUpright)
-        {
-            FreezeZRotation(false);
-            RotateBackToStraight();
-            return;
-        }
-
-        // Zu schief soll nicht einfach magisch zurückgesetzt werden.
         FreezeZRotation(false);
-    }
 
-    private void FreezeZRotation(bool shouldFreeze)
-    {
-        rb.constraints =
-            RigidbodyConstraints.FreezePositionZ |
-            RigidbodyConstraints.FreezeRotationX |
-            RigidbodyConstraints.FreezeRotationY;
-
-        if (shouldFreeze)
-            rb.constraints |= RigidbodyConstraints.FreezeRotationZ;
+        if (angle <= maxAngleToAutoUpright)
+            RotateBackToStraight();
     }
 
     private void SlowDownSmallMovement()
@@ -305,13 +292,13 @@ public class StackableItemPhysics : MonoBehaviour
     {
         Vector3 euler = rb.rotation.eulerAngles;
 
-        float newZ = Mathf.MoveTowardsAngle(
+        euler.z = Mathf.MoveTowardsAngle(
             euler.z,
             0f,
             uprightSpeed * Time.fixedDeltaTime
         );
 
-        rb.MoveRotation(Quaternion.Euler(euler.x, euler.y, newZ));
+        rb.MoveRotation(Quaternion.Euler(euler));
 
         Vector3 angularVelocity = rb.angularVelocity;
         angularVelocity.z = Mathf.MoveTowards(
@@ -323,11 +310,12 @@ public class StackableItemPhysics : MonoBehaviour
         rb.angularVelocity = angularVelocity;
     }
 
-    private void SetStraightRotation()
+    private void SnapStraight()
     {
         Vector3 euler = rb.rotation.eulerAngles;
+        euler.z = 0f;
 
-        rb.MoveRotation(Quaternion.Euler(euler.x, euler.y, 0f));
+        rb.MoveRotation(Quaternion.Euler(euler));
 
         Vector3 angularVelocity = rb.angularVelocity;
         angularVelocity.z = 0f;
@@ -337,54 +325,25 @@ public class StackableItemPhysics : MonoBehaviour
     private void AddWobble()
     {
         float wobble = Mathf.Sin(Time.time * 12f) * wobbleTorque;
-
-        rb.AddTorque(
-            Vector3.forward * wobble,
-            ForceMode.VelocityChange
-        );
+        rb.AddTorque(Vector3.forward * wobble, ForceMode.VelocityChange);
     }
 
-    private void PushTowardsFallDirection()
+    private void FreezeZRotation(bool freezeZ)
     {
-        Bounds bounds = itemCollider.bounds;
-        float centerX = GetCenterOfMassWithWeightAbove(bounds);
+        rb.constraints =
+            RigidbodyConstraints.FreezePositionZ |
+            RigidbodyConstraints.FreezeRotationX |
+            RigidbodyConstraints.FreezeRotationY;
 
-        float direction = centerX >= bounds.center.x ? -1f : 1f;
-
-        rb.AddTorque(
-            Vector3.forward * direction * 0.18f,
-            ForceMode.VelocityChange
-        );
+        if (freezeZ)
+            rb.constraints |= RigidbodyConstraints.FreezeRotationZ;
     }
 
     private bool IsOffCarriage()
     {
         Vector3 localPosition = carriage.transform.InverseTransformPoint(transform.position);
-        float halfWidth = carriage.GetCarriageWidthInWorldUnits() * 0.5f;
+        float maxX = carriage.GetCarriageWidthInWorldUnits() * 0.5f + sideFallMargin;
 
-        bool fellDown = localPosition.y < fallYThreshold;
-        bool fellSideways = Mathf.Abs(localPosition.x) > halfWidth + sideFallMargin;
-
-        return fellDown || fellSideways;
-    }
-
-    private void DrawDebugLines(Bounds bounds, float supportLeft, float supportRight, float centerX)
-    {
-        Color supportColor = Color.green;
-
-        if (isUnstable)
-            supportColor = Color.red;
-        else if (isWobbling)
-            supportColor = Color.yellow;
-
-        Vector3 supportStart = new Vector3(supportLeft, bounds.min.y - 0.05f, bounds.center.z);
-        Vector3 supportEnd = new Vector3(supportRight, bounds.min.y - 0.05f, bounds.center.z);
-
-        Debug.DrawLine(supportStart, supportEnd, supportColor);
-
-        Vector3 centerStart = new Vector3(centerX, bounds.min.y, bounds.center.z);
-        Vector3 centerEnd = new Vector3(centerX, bounds.max.y + 0.5f, bounds.center.z);
-
-        Debug.DrawLine(centerStart, centerEnd, Color.cyan);
+        return localPosition.y < fallYThreshold || Mathf.Abs(localPosition.x) > maxX;
     }
 }

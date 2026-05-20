@@ -13,6 +13,8 @@ public class ItemPlacementPreview : MonoBehaviour
     [SerializeField] private LayerMask itemLayers;
     [SerializeField] private float previewDistance = 30f;
     [SerializeField] private LayerMask stackSurfaceLayers;
+    [SerializeField] private int maxPlacementChecks = 8;
+    [SerializeField] private float placementCheckPadding = 0.03f;
 
     private float previewDepth = 0.5f;
     private float raycastStartHeight = 100f;
@@ -113,7 +115,7 @@ public class ItemPlacementPreview : MonoBehaviour
         float itemWidth = item.WidthInLanes * carriage.GetLaneWidth();
         float itemHeight = item.HeightInLanes;
 
-        float itemBottomY = GetSurfaceYAt(spotPosition, itemWidth);
+        float itemBottomY = FindFreeBottomY(spotPosition, itemWidth, itemHeight);
         float columnHeight = Mathf.Max(0.01f, itemBottomY - stackRoot.position.y);
 
         SetBox(
@@ -129,6 +131,53 @@ public class ItemPlacementPreview : MonoBehaviour
         );
 
         SetPreviewVisible(true);
+    }
+
+    private float FindFreeBottomY(Vector3 center, float itemWidth, float itemHeight)
+    {
+        float bottomY = GetSurfaceYAt(center, itemWidth);
+
+        for (int i = 0; i < maxPlacementChecks; i++)
+        {
+            Vector3 boxCenter = new Vector3(
+                center.x,
+                bottomY + itemHeight * 0.5f,
+                center.z
+            );
+
+            Vector3 halfSize = new Vector3(
+                itemWidth * 0.5f - placementCheckPadding,
+                itemHeight * 0.5f - placementCheckPadding,
+                previewDepth * 0.5f - placementCheckPadding
+            );
+
+            Collider[] hits = Physics.OverlapBox(
+                boxCenter,
+                halfSize,
+                stackRoot.rotation,
+                stackSurfaceLayers,
+                QueryTriggerInteraction.Ignore
+            );
+
+            float blockedUntilY = bottomY;
+            bool isBlocked = false;
+
+            foreach (Collider hit in hits)
+            {
+                if (hit.transform.IsChildOf(carriage.transform))
+                    continue;
+
+                isBlocked = true;
+                blockedUntilY = Mathf.Max(blockedUntilY, hit.bounds.max.y);
+            }
+
+            if (!isBlocked)
+                return bottomY;
+
+            bottomY = blockedUntilY + 0.03f;
+        }
+
+        return bottomY;
     }
 
     private float GetSurfaceYAt(Vector3 center, float itemWidth)

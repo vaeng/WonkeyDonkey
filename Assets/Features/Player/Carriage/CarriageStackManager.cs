@@ -12,6 +12,8 @@ public class CarriageStackManager : MonoBehaviour
     [SerializeField] private float raycastDistance = 20f;
     [SerializeField] private float itemDepth = 0.8f;
     [SerializeField] private bool scaleStackedItemsFromData = false;
+    [SerializeField] private int maxPlacementChecks = 8;
+    [SerializeField] private float placementCheckPadding = 0.03f;
 
     [Header("Physics")]
     [SerializeField] private float linearDamping = 0.5f;
@@ -105,15 +107,65 @@ public class CarriageStackManager : MonoBehaviour
         Physics.SyncTransforms();
 
         float itemWidth = item.WidthInLanes * carriage.GetLaneWidth();
+        float itemHeight = item.HeightInLanes;
+
         float surfaceY = GetHighestSurfaceY(spawnBase, itemWidth);
+        float bottomY = FindFreeBottomY(spawnBase, itemWidth, itemHeight, surfaceY);
 
         Vector3 finalPosition = spawnBase;
-        finalPosition.y = surfaceY + spawnBottomOffset - localBottomOffset.y;
+        finalPosition.y = bottomY + spawnBottomOffset - localBottomOffset.y;
 
         stackedItem.transform.position = finalPosition;
 
         itemCollider.enabled = true;
         Physics.SyncTransforms();
+    }
+
+    private float FindFreeBottomY(Vector3 center, float itemWidth, float itemHeight, float startY)
+    {
+        float bottomY = startY + spawnBottomOffset;
+
+        for (int i = 0; i < maxPlacementChecks; i++)
+        {
+            Vector3 boxCenter = new Vector3(
+                center.x,
+                bottomY + itemHeight * 0.5f,
+                center.z
+            );
+
+            Vector3 halfSize = new Vector3(
+                itemWidth * 0.5f - placementCheckPadding,
+                itemHeight * 0.5f - placementCheckPadding,
+                itemDepth * 0.5f - placementCheckPadding
+            );
+
+            Collider[] hits = Physics.OverlapBox(
+                boxCenter,
+                halfSize,
+                stackRoot.rotation,
+                stackSurfaceLayers,
+                QueryTriggerInteraction.Ignore
+            );
+
+            float blockedUntilY = bottomY;
+            bool isBlocked = false;
+
+            foreach (Collider hit in hits)
+            {
+                if (hit.transform.IsChildOf(carriage.transform))
+                    continue;
+
+                isBlocked = true;
+                blockedUntilY = Mathf.Max(blockedUntilY, hit.bounds.max.y);
+            }
+
+            if (!isBlocked)
+                return bottomY;
+
+            bottomY = blockedUntilY + spawnBottomOffset;
+        }
+
+        return bottomY;
     }
 
     private float GetHighestSurfaceY(Vector3 center, float itemWidth)
