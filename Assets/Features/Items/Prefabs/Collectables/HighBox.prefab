@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7557080498592676364}
   - component: {fileID: 3981096490230816767}
   - component: {fileID: 1051624322295365924}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HighBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,6 +194,10 @@ PrefabInstance:
     - target: {fileID: 2274989481767191784, guid: 7891c60caa40cc548acbc2a557c97863, type: 3}
       propertyPath: m_Name
       value: 21_Box_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274989481767191784, guid: 7891c60caa40cc548acbc2a557c97863, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

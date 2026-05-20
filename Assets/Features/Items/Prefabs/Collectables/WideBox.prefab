@@ -86,11 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3981096490230816767, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: widthInLanes
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3981096490230816767, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: heightInLanes
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3981096490230816767, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: stackedPrefab
