@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MenuTest.uss?fileID=7433441132597879392&amp;guid=0580197f42570074ebcf2d3311c0d943&amp;type=3#MenuTest"/>
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:Label text="WONKEY DONKEY" name="Header" class="header"/>
+        <ui:Label text="Collect all &lt;color=#EC6327&gt;BOXES&lt;/color&gt;&#10;and deliever them!&#10;&#10;Control by &lt;color=#EC6327&gt;SWIPING&lt;/color&gt;&#10;(or Arrow Keys) to &#10;switch between Lanes&#10;&#10;&lt;color=#EC6327&gt;STACK&lt;/color&gt; Boxes! &#10;Beware -  they can fall" name="Tutorial" class="normalText" style="left: 15%; width: 165px; font-size: 20px; text-shadow: 0.5px 1px 0 rgb(0, 0, 0);"/>
+    </ui:VisualElement>
+    <ui:Image name="Donkey" source="project://database/Assets/2D%20Assets/Donkey_Transparent.PNG?fileID=2800000&amp;guid=956b5692fcc0046499ee59a72a4ab35d&amp;type=3#Donkey_Transparent" scale-mode="ScaleAndCrop" uv="0,0,1,1" style="-unity-text-align: lower-left; bottom: 0; transform-origin: bottom; position: relative; left: 0; flex-grow: 1; flex-basis: 0%; font-size: 0; scale: 2 2 2;"/>
+    <ui:Button text="" enable-rich-text="true" style="position: absolute; background-image: url(&quot;project://database/Assets/2D%20Assets/Karotte_transparent_crop_flipped.PNG?fileID=2800000&amp;guid=e18df3992f27aa344ac5b87d3d92461a&amp;type=3#Karotte_transparent_crop_flipped&quot;); aspect-ratio: 1; height: 120px; top: 288px; left: 116px; background-color: rgba(255, 255, 255, 0); -unity-background-scale-mode: scale-and-crop; width: 120px; -unity-background-image-tint-color: rgb(255, 255, 255);">
+        <ui:Image source="project://database/Assets/2D%20Assets/Play_Sprite_cropped.PNG?fileID=2800000&amp;guid=41eae7ee4e12b5146afe62de76120772&amp;type=3#Play_Sprite_cropped" scale-mode="ScaleToFit" uv="0,0,1.03,1.41" name="PLAY" style="font-size: 14px;"/>
+    </ui:Button>
+    <ui:Image name="BOX" style="background-image: url(&quot;project://database/Assets/2D%20Assets/Box_Sprite_crop.PNG?fileID=2800000&amp;guid=f85383cb00613ca44b3804a10594132b&amp;type=3#Box_Sprite_crop&quot;); position: absolute;"/>
+</ui:UXML>

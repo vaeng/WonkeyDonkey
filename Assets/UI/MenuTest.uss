@@ -1,0 +1,23 @@
+:root {
+}
+
+
+
+.normalText {
+    top: 5%;
+    -unity-text-align: upper-left;
+    left: 20%;
+    -unity-font-definition: url("project://database/Assets/Fonts/Life%20is%20goofy.ttf?fileID=12800000&guid=f6d4ace7c1d17324b9330a835305f695&type=3#Life is goofy");
+    font-size: 19px;
+    color: rgb(118, 47, 90);
+}
+
+.header {
+    -unity-font-definition: url("project://database/Assets/Fonts/Hippie%20Movement.ttf?fileID=12800000&guid=8f061257f79ec7e41b67ef1a84ff4f72&type=3#Hippie Movement");
+    color: rgb(209, 11, 131);
+    -unity-text-align: upper-center;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.82);
+    top: 20px;
+    font-size: 20px;
+}
