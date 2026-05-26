@@ -7,9 +7,12 @@ public class RoadSpawner : MonoBehaviour
     [SerializeField] private LaneMovement laneMovement;
 
     [Header("Road")]
-    [SerializeField] private GameObject roadSegmentPrefab;
+    [SerializeField] private GameObject[] roadSegmentPrefabs;
     [SerializeField] private float segmentLength = 20f;
     [SerializeField] private int startSegmentCount = 5;
+
+    [Header("Variation")]
+    [SerializeField] private int avoidRepeatForSpawns = 3;
 
     [Header("Movement")]
     [SerializeField] private float worldMoveSpeed = 6f;
@@ -19,6 +22,7 @@ public class RoadSpawner : MonoBehaviour
     [SerializeField] private float despawnBehindDistance = 30f;
 
     private readonly List<GameObject> spawnedSegments = new();
+    private readonly Queue<GameObject> recentlyUsedPrefabs = new();
 
     private void Start()
     {
@@ -34,6 +38,7 @@ public class RoadSpawner : MonoBehaviour
     private void SpawnStartSegments()
     {
         spawnedSegments.Clear();
+        recentlyUsedPrefabs.Clear();
 
         for (int i = 0; i < startSegmentCount; i++)
             SpawnSegment(i * segmentLength);
@@ -50,16 +55,15 @@ public class RoadSpawner : MonoBehaviour
 
     private void SpawnSegment(float zPosition)
     {
-        if (laneMovement == null || roadSegmentPrefab == null)
-        {
+        if (!CanSpawn())
             return;
-        }
 
         float roadX = 0f;
         float visualX = laneMovement.GetVisualWorldXForRoadX(roadX);
+        GameObject prefab = GetRandomRoadSegment();
 
         GameObject segment = Instantiate(
-            roadSegmentPrefab,
+            prefab,
             new Vector3(visualX, 0f, zPosition),
             Quaternion.identity
         );
@@ -72,6 +76,43 @@ public class RoadSpawner : MonoBehaviour
         mover.Initialize(laneMovement, worldMoveSpeed, roadX);
 
         spawnedSegments.Add(segment);
+        RememberPrefab(prefab);
+    }
+
+    private bool CanSpawn()
+    {
+        return laneMovement != null
+            && roadSegmentPrefabs != null
+            && roadSegmentPrefabs.Length > 0;
+    }
+
+    private GameObject GetRandomRoadSegment()
+    {
+        List<GameObject> possiblePrefabs = new();
+
+        foreach (GameObject prefab in roadSegmentPrefabs)
+        {
+            if (prefab == null)
+                continue;
+
+            if (recentlyUsedPrefabs.Contains(prefab))
+                continue;
+
+            possiblePrefabs.Add(prefab);
+        }
+
+        if (possiblePrefabs.Count == 0)
+            return roadSegmentPrefabs[Random.Range(0, roadSegmentPrefabs.Length)];
+
+        return possiblePrefabs[Random.Range(0, possiblePrefabs.Count)];
+    }
+
+    private void RememberPrefab(GameObject prefab)
+    {
+        recentlyUsedPrefabs.Enqueue(prefab);
+
+        while (recentlyUsedPrefabs.Count > avoidRepeatForSpawns)
+            recentlyUsedPrefabs.Dequeue();
     }
 
     private void RemoveOldSegments()

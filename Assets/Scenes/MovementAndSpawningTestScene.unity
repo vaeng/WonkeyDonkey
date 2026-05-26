@@ -471,7 +471,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557705212}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
+  m_LocalRotation: {x: 0.0871992, y: 0, z: 0, w: 0.9961909}
   m_LocalPosition: {x: 0, y: 5, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1805,7 +1805,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoadSpawner
   laneMovement: {fileID: 826179260}
-  roadSegmentPrefab: {fileID: 4521223830304431437, guid: f12e552fd825510428304bf8c71ad7cb, type: 3}
+  roadSegmentPrefabs:
+  - {fileID: 4521223830304431437, guid: f12e552fd825510428304bf8c71ad7cb, type: 3}
+  - {fileID: 4521223830304431437, guid: 7ef11f71be4f19c478e38c3a8eeaca77, type: 3}
+  - {fileID: 4521223830304431437, guid: 6c5ad625e4b94a34d90f21b50325d581, type: 3}
+  - {fileID: 4521223830304431437, guid: eb8477318047ed64db4ed18472aeb90f, type: 3}
+  - {fileID: 4521223830304431437, guid: c645c9643c7969a4c9521017b18320f2, type: 3}
+  - {fileID: 4521223830304431437, guid: 240c2d0ac972e8346885f4ec44f4bb05, type: 3}
+  - {fileID: 4521223830304431437, guid: f76a1954094f56e44bee77c4cf9923d0, type: 3}
+  - {fileID: 4521223830304431437, guid: 1a07ec9b7c1fafa449c597d8ef6d9908, type: 3}
   segmentLength: 20
   startSegmentCount: 5
   worldMoveSpeed: 6
