@@ -15,7 +15,7 @@ public class LevelFlow : MonoBehaviour
     [SerializeField] private Text timerText;
 
     [Header("End")]
-    [SerializeField] private float slowDownTime = 2f;
+    [SerializeField] private float slowDownTime = 0.5f;
     [SerializeField] private float distanceToStopItemsBeforeFinish = 5f;
 
     private float timeLeft;
