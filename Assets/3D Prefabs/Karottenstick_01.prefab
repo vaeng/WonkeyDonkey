@@ -48,6 +48,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: b74a8996cdf415347b7a1c513d1bcba9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9837c98ae8977e54d9935f81df4e231c, type: 2}
+    - target: {fileID: -7511558181221131132, guid: b74a8996cdf415347b7a1c513d1bcba9, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f5350cdeadc36074ea23ac62336dcc23, type: 2}
+    - target: {fileID: -7511558181221131132, guid: b74a8996cdf415347b7a1c513d1bcba9, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0456a9dc6cf525b47b74b79919238376, type: 2}
     - target: {fileID: 919132149155446097, guid: b74a8996cdf415347b7a1c513d1bcba9, type: 3}
       propertyPath: m_Name
       value: Karottenstick_01

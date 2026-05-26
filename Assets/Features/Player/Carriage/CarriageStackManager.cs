@@ -1,235 +1,236 @@
 using UnityEngine;
 
-/// <summary>
-/// Places collected items on the carriage as physical stackable objects.
-/// </summary>
 public class CarriageStackManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Carriage carriage;
     [SerializeField] private Transform stackRoot;
 
-    [Header("Spawn Settings")]
-    [SerializeField] private float spawnBottomOffset = 0.05f;
+    [Header("Spawn")]
+    [SerializeField] private float spawnBottomOffset = 0.03f;
     [SerializeField] private float raycastStartHeight = 10f;
     [SerializeField] private float raycastDistance = 20f;
     [SerializeField] private float itemDepth = 0.8f;
     [SerializeField] private bool scaleStackedItemsFromData = false;
+    [SerializeField] private int maxPlacementChecks = 8;
+    [SerializeField] private float placementCheckPadding = 0.03f;
 
-    [Header("Physics Settings")]
-    [SerializeField] private float linearDamping = 0.2f;
-    [SerializeField] private float angularDamping = 0.8f;
+    [Header("Physics")]
+    [SerializeField] private float linearDamping = 0.5f;
+    [SerializeField] private float angularDamping = 1.5f;
 
-    [Header("Raycast Settings")]
+    [Header("Layers")]
+    [SerializeField] private string stackItemLayerName = "StackItem";
+
+    [Header("Raycast")]
     [SerializeField] private LayerMask stackSurfaceLayers = ~0;
 
-    public void PlaceCollectedItem(
-        CollectableItem collectedItem,
-        int carriageSpotIndex
-    )
+    public void PlaceCollectedItem(CollectableItem item, int spotIndex)
     {
-        if (collectedItem == null)
+        if (!CanPlaceItem(item))
+            return;
+
+        Vector3 localSpot = carriage.GetLocalPositionForSpot(spotIndex);
+        Vector3 spawnBase = stackRoot.TransformPoint(new Vector3(localSpot.x, 0f, 0f));
+
+        GameObject stackedItem = Instantiate(item.StackedPrefab, spawnBase, stackRoot.rotation);
+
+        RemoveWorldMover(stackedItem);
+        SetLayerRecursively(stackedItem, LayerMask.NameToLayer(stackItemLayerName));
+        ScaleItemIfNeeded(stackedItem, item);
+        MoveItemOnTopOfStack(stackedItem, spawnBase, item);
+        SetupPhysics(stackedItem, item);
+    }
+
+    private bool CanPlaceItem(CollectableItem item)
+    {
+        if (carriage == null || stackRoot == null)
         {
-            Debug.LogWarning("Cannot place collected item because item is null.");
+            return false;
+        }
+
+        if (item == null || item.StackedPrefab == null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void RemoveWorldMover(GameObject stackedItem)
+    {
+        WorldMover mover = stackedItem.GetComponent<WorldMover>();
+
+        if (mover != null)
+            Destroy(mover);
+    }
+
+    private void SetLayerRecursively(GameObject obj, int layer)
+    {
+        if (layer < 0)
+        {
             return;
         }
 
-        if (collectedItem.StackedPrefab == null)
+        obj.layer = layer;
+
+        foreach (Transform child in obj.transform)
+            SetLayerRecursively(child.gameObject, layer);
+    }
+
+    private void ScaleItemIfNeeded(GameObject stackedItem, CollectableItem item)
+    {
+        if (!scaleStackedItemsFromData)
+            return;
+
+        stackedItem.transform.localScale = new Vector3(
+            item.WidthInLanes,
+            item.HeightInLanes,
+            itemDepth
+        );
+    }
+
+    private void MoveItemOnTopOfStack(GameObject stackedItem, Vector3 spawnBase, CollectableItem item)
+    {
+        Physics.SyncTransforms();
+
+        Collider itemCollider = stackedItem.GetComponentInChildren<Collider>();
+
+        if (itemCollider == null)
         {
-            Debug.LogWarning(
-                "Collected item has no stacked prefab assigned: " +
-                collectedItem.name
-            );
             return;
         }
 
-        Vector3 localSpotPosition =
-            carriage.GetLocalPositionForSpot(carriageSpotIndex);
+        Vector3 localBottomOffset = itemCollider.bounds.min - stackedItem.transform.position;
 
-        Vector3 localSpawnBasePosition = new Vector3(
-            localSpotPosition.x,
-            0f,
-            0f
-        );
+        itemCollider.enabled = false;
+        Physics.SyncTransforms();
 
-        Vector3 worldSpawnBasePosition =
-            stackRoot.TransformPoint(localSpawnBasePosition);
+        float itemWidth = item.WidthInLanes * carriage.GetLaneWidth();
+        float itemHeight = item.HeightInLanes;
 
-        GameObject stackedObject = Instantiate(
-            collectedItem.StackedPrefab,
-            worldSpawnBasePosition,
-            stackRoot.rotation
-        );
+        float surfaceY = GetHighestSurfaceY(spawnBase, itemWidth);
+        float bottomY = FindFreeBottomY(spawnBase, itemWidth, itemHeight, surfaceY);
 
-        RemoveWorldMoverIfPresent(stackedObject);
+        Vector3 finalPosition = spawnBase;
+        finalPosition.y = bottomY + spawnBottomOffset - localBottomOffset.y;
 
-        if (scaleStackedItemsFromData)
-        {
-            stackedObject.transform.localScale = new Vector3(
-                collectedItem.WidthInLanes,
-                collectedItem.HeightInLanes,
-                itemDepth
-            );
-        }
+        stackedItem.transform.position = finalPosition;
 
-        MoveItemBottomAboveHighestSurface(
-            stackedObject,
-            worldSpawnBasePosition,
-            collectedItem
-        );
-
-        SetupStackedItemPhysics(stackedObject, collectedItem);
-
-        Debug.Log(
-            "Placed " +
-            collectedItem.ItemType +
-            " on carriage spot " +
-            carriageSpotIndex
-        );
+        itemCollider.enabled = true;
+        Physics.SyncTransforms();
     }
 
-    private void RemoveWorldMoverIfPresent(GameObject stackedObject)
+    private float FindFreeBottomY(Vector3 center, float itemWidth, float itemHeight, float startY)
     {
-        WorldMover worldMover = stackedObject.GetComponent<WorldMover>();
+        float bottomY = startY + spawnBottomOffset;
 
-        if (worldMover != null)
-            Destroy(worldMover);
-    }
-
-    private void MoveItemBottomAboveHighestSurface(GameObject stackedObject, Vector3 worldSpawnBasePosition, CollectableItem collectedItem)
+        for (int i = 0; i < maxPlacementChecks; i++)
         {
-            Physics.SyncTransforms();
+            Vector3 boxCenter = new Vector3(
+                center.x,
+                bottomY + itemHeight * 0.5f,
+                center.z
+            );
 
-            Collider itemCollider =
-                stackedObject.GetComponentInChildren<Collider>();
+            Vector3 halfSize = new Vector3(
+                itemWidth * 0.5f - placementCheckPadding,
+                itemHeight * 0.5f - placementCheckPadding,
+                itemDepth * 0.5f - placementCheckPadding
+            );
 
-            if (itemCollider == null)
+            Collider[] hits = Physics.OverlapBox(
+                boxCenter,
+                halfSize,
+                stackRoot.rotation,
+                stackSurfaceLayers,
+                QueryTriggerInteraction.Ignore
+            );
+
+            float blockedUntilY = bottomY;
+            bool isBlocked = false;
+
+            foreach (Collider hit in hits)
             {
-                Debug.LogWarning(
-                    "Stacked object has no collider: " +
-                    stackedObject.name
-                );
-                return;
-            }
-
-            bool previousColliderState = itemCollider.enabled;
-            itemCollider.enabled = false;
-
-            Physics.SyncTransforms();
-
-            float itemWidthInWorldUnits =
-                collectedItem.WidthInLanes * carriage.GetLaneWidth();
-
-            float surfaceY =
-                GetHighestSurfaceYBelowItemFootprint(
-                    worldSpawnBasePosition,
-                    itemWidthInWorldUnits
-                );
-
-            itemCollider.enabled = previousColliderState;
-
-            Physics.SyncTransforms();
-
-            float desiredBottomY =
-                surfaceY + spawnBottomOffset;
-
-            float currentBottomY =
-                itemCollider.bounds.min.y;
-
-            float yCorrection =
-                desiredBottomY - currentBottomY;
-
-            stackedObject.transform.position += Vector3.up * yCorrection;
-
-            Physics.SyncTransforms();
-        }
-
-
-    private float GetHighestSurfaceYBelowItemFootprint(
-        Vector3 worldCenterPosition,
-        float itemWidthInWorldUnits
-    )
-        {
-            float highestSurfaceY = float.MinValue;
-
-            float halfWidth = itemWidthInWorldUnits * 0.5f;
-
-            Vector3[] sampleOffsets =
-            {
-            new Vector3(-halfWidth * 0.45f, 0f, 0f),
-            Vector3.zero,
-            new Vector3(halfWidth * 0.45f, 0f, 0f)
-        };
-
-            foreach (Vector3 offset in sampleOffsets)
-            {
-                Vector3 samplePosition =
-                    worldCenterPosition + carriage.transform.TransformDirection(offset);
-
-                Vector3 rayStart = new Vector3(
-                    samplePosition.x,
-                    stackRoot.position.y + raycastStartHeight,
-                    samplePosition.z
-                );
-
-                bool hitSomething = Physics.Raycast(
-                    rayStart,
-                    Vector3.down,
-                    out RaycastHit hit,
-                    raycastDistance,
-                    stackSurfaceLayers,
-                    QueryTriggerInteraction.Ignore
-                );
-
-                if (!hitSomething)
+                if (hit.transform.IsChildOf(carriage.transform))
                     continue;
 
-                if (hit.point.y > highestSurfaceY)
-                    highestSurfaceY = hit.point.y;
+                isBlocked = true;
+                blockedUntilY = Mathf.Max(blockedUntilY, hit.bounds.max.y);
             }
 
-            if (highestSurfaceY != float.MinValue)
-                return highestSurfaceY;
+            if (!isBlocked)
+                return bottomY;
 
-            Debug.LogWarning(
-                "No stack surface found below item footprint. " +
-                "Using StackSpawnRoot height instead."
-            );
-
-            return stackRoot.position.y;
+            bottomY = blockedUntilY + spawnBottomOffset;
         }
 
+        return bottomY;
+    }
 
-    private void SetupStackedItemPhysics(
-        GameObject stackedObject,
-        CollectableItem collectedItem
-    )
+    private float GetHighestSurfaceY(Vector3 center, float itemWidth)
     {
-        Rigidbody rb = stackedObject.GetComponent<Rigidbody>();
+        float highestY = float.MinValue;
+        float halfWidth = itemWidth * 0.5f;
+
+        Vector3[] rayOffsets =
+        {
+            Vector3.left * halfWidth * 0.45f,
+            Vector3.zero,
+            Vector3.right * halfWidth * 0.45f
+        };
+
+        foreach (Vector3 offset in rayOffsets)
+        {
+            Vector3 samplePosition = center + carriage.transform.TransformDirection(offset);
+
+            Vector3 rayStart = new Vector3(
+                samplePosition.x,
+                stackRoot.position.y + raycastStartHeight,
+                samplePosition.z
+            );
+
+            bool hitSomething = Physics.Raycast(
+                rayStart,
+                Vector3.down,
+                out RaycastHit hit,
+                raycastDistance,
+                stackSurfaceLayers,
+                QueryTriggerInteraction.Ignore
+            );
+
+            if (!hitSomething)
+                continue;
+
+            highestY = Mathf.Max(highestY, hit.point.y);
+        }
+
+        if (highestY != float.MinValue)
+            return highestY;
+
+        return stackRoot.position.y;
+    }
+
+    private void SetupPhysics(GameObject stackedItem, CollectableItem item)
+    {
+        Rigidbody rb = stackedItem.GetComponent<Rigidbody>();
 
         if (rb == null)
-            rb = stackedObject.AddComponent<Rigidbody>();
+            rb = stackedItem.AddComponent<Rigidbody>();
 
-        rb.mass = collectedItem.Mass;
+        rb.mass = item.Mass;
         rb.useGravity = true;
         rb.isKinematic = false;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
         rb.linearDamping = linearDamping;
         rb.angularDamping = angularDamping;
 
-        rb.constraints =
-            RigidbodyConstraints.FreezePositionZ |
-            RigidbodyConstraints.FreezeRotationX |
-            RigidbodyConstraints.FreezeRotationY;
+        StackableItemPhysics itemPhysics = stackedItem.GetComponent<StackableItemPhysics>();
 
-        StackableItemPhysics stackable =
-            stackedObject.GetComponent<StackableItemPhysics>();
+        if (itemPhysics == null)
+            itemPhysics = stackedItem.AddComponent<StackableItemPhysics>();
 
-        if (stackable == null)
-            stackable = stackedObject.AddComponent<StackableItemPhysics>();
-
-        stackable.Initialize(carriage);
+        itemPhysics.Initialize(carriage);
     }
 }

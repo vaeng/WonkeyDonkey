@@ -1,122 +1,155 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Spawns road segments ahead and despawns them behind the stationary player.
-/// </summary>
 public class RoadSpawner : MonoBehaviour
 {
-    [Header("Road Prefab")]
-    [SerializeField] private GameObject roadSegmentPrefab;
+    [Header("References")]
+    [SerializeField] private LaneMovement laneMovement;
 
-    [Header("World Movement")]
-    [SerializeField] private float worldMoveSpeed = 6f;
-
-    [Header("Road Settings")]
+    [Header("Road")]
+    [SerializeField] private GameObject[] roadSegmentPrefabs;
     [SerializeField] private float segmentLength = 20f;
-    [SerializeField] private int initialSegments = 5;
+    [SerializeField] private int startSegmentCount = 5;
+
+    [Header("Variation")]
+    [SerializeField] private int avoidRepeatForSpawns = 3;
+
+    [Header("Movement")]
+    [SerializeField] private float worldMoveSpeed = 6f;
 
     [Header("Spawn / Despawn")]
     [SerializeField] private float spawnAheadDistance = 80f;
     [SerializeField] private float despawnBehindDistance = 30f;
 
-    private readonly List<GameObject> activeSegments = new List<GameObject>();
+    private readonly List<GameObject> spawnedSegments = new();
+    private readonly Queue<GameObject> recentlyUsedPrefabs = new();
 
     private void Start()
     {
-        SpawnInitialSegments();
+        SpawnStartSegments();
     }
 
     private void Update()
     {
-        DespawnSegmentsBehind();
-        SpawnSegmentsAhead();
+        RemoveOldSegments();
+        SpawnMissingSegments();
     }
 
-    private void SpawnInitialSegments()
+    private void SpawnStartSegments()
     {
-        activeSegments.Clear();
+        spawnedSegments.Clear();
+        recentlyUsedPrefabs.Clear();
 
-        for (int i = 0; i < initialSegments; i++)
+        for (int i = 0; i < startSegmentCount; i++)
+            SpawnSegment(i * segmentLength);
+    }
+
+    private void SpawnMissingSegments()
+    {
+        while (GetLastSegmentZ() < spawnAheadDistance)
         {
-            float spawnZ = i * segmentLength;
-            SpawnSegment(spawnZ);
+            float nextZ = GetLastSegmentZ() + segmentLength;
+            SpawnSegment(nextZ);
         }
     }
 
-    private void SpawnSegmentsAhead()
+    private void SpawnSegment(float zPosition)
     {
-        while (GetFarthestSegmentZ() < spawnAheadDistance)
-        {
-            float spawnZ = GetFarthestSegmentZ() + segmentLength;
-            SpawnSegment(spawnZ);
-        }
-    }
+        if (!CanSpawn())
+            return;
 
-    private void SpawnSegment(float spawnZ)
-    {
-        Vector3 spawnPosition = new Vector3(0f, 0f, spawnZ);
+        float roadX = 0f;
+        float visualX = laneMovement.GetVisualWorldXForRoadX(roadX);
+        GameObject prefab = GetRandomRoadSegment();
 
-        GameObject newSegment = Instantiate(
-            roadSegmentPrefab,
-            spawnPosition,
+        GameObject segment = Instantiate(
+            prefab,
+            new Vector3(visualX, 0f, zPosition),
             Quaternion.identity
         );
 
-        WorldMover worldMover = newSegment.GetComponent<WorldMover>();
+        WorldMover mover = segment.GetComponent<WorldMover>();
 
-        if (worldMover == null)
-            worldMover = newSegment.AddComponent<WorldMover>();
+        if (mover == null)
+            mover = segment.AddComponent<WorldMover>();
 
-        worldMover.SetMoveSpeed(worldMoveSpeed);
+        mover.Initialize(laneMovement, worldMoveSpeed, roadX);
 
-        activeSegments.Add(newSegment);
+        spawnedSegments.Add(segment);
+        RememberPrefab(prefab);
     }
 
-    private void DespawnSegmentsBehind()
+    private bool CanSpawn()
     {
-        for (int i = activeSegments.Count - 1; i >= 0; i--)
+        return laneMovement != null
+            && roadSegmentPrefabs != null
+            && roadSegmentPrefabs.Length > 0;
+    }
+
+    private GameObject GetRandomRoadSegment()
+    {
+        List<GameObject> possiblePrefabs = new();
+
+        foreach (GameObject prefab in roadSegmentPrefabs)
         {
-            GameObject segment = activeSegments[i];
+            if (prefab == null)
+                continue;
+
+            if (recentlyUsedPrefabs.Contains(prefab))
+                continue;
+
+            possiblePrefabs.Add(prefab);
+        }
+
+        if (possiblePrefabs.Count == 0)
+            return roadSegmentPrefabs[Random.Range(0, roadSegmentPrefabs.Length)];
+
+        return possiblePrefabs[Random.Range(0, possiblePrefabs.Count)];
+    }
+
+    private void RememberPrefab(GameObject prefab)
+    {
+        recentlyUsedPrefabs.Enqueue(prefab);
+
+        while (recentlyUsedPrefabs.Count > avoidRepeatForSpawns)
+            recentlyUsedPrefabs.Dequeue();
+    }
+
+    private void RemoveOldSegments()
+    {
+        for (int i = spawnedSegments.Count - 1; i >= 0; i--)
+        {
+            GameObject segment = spawnedSegments[i];
 
             if (segment == null)
             {
-                activeSegments.RemoveAt(i);
+                spawnedSegments.RemoveAt(i);
                 continue;
             }
 
-            float segmentEndZ = segment.transform.position.z + segmentLength;
-
-            bool isBehindPlayer =
-                segmentEndZ < -despawnBehindDistance;
+            bool isBehindPlayer = segment.transform.position.z + segmentLength < -despawnBehindDistance;
 
             if (!isBehindPlayer)
                 continue;
 
-            activeSegments.RemoveAt(i);
+            spawnedSegments.RemoveAt(i);
             Destroy(segment);
         }
     }
 
-    private float GetFarthestSegmentZ()
+    private float GetLastSegmentZ()
     {
-        if (activeSegments.Count == 0)
-            return 0f;
+        float lastZ = 0f;
 
-        float farthestZ = float.MinValue;
-
-        foreach (GameObject segment in activeSegments)
+        foreach (GameObject segment in spawnedSegments)
         {
             if (segment == null)
                 continue;
 
-            if (segment.transform.position.z > farthestZ)
-                farthestZ = segment.transform.position.z;
+            if (segment.transform.position.z > lastZ)
+                lastZ = segment.transform.position.z;
         }
 
-        if (farthestZ == float.MinValue)
-            return 0f;
-
-        return farthestZ;
+        return lastZ;
     }
 }

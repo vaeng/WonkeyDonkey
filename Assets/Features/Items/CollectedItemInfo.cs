@@ -6,11 +6,7 @@ public class CollectedItemInfo
     public int CarriageSpotIndex { get; }
     public Vector3 CarriageLocalSpotPosition { get; }
 
-    public CollectedItemInfo(
-        CollectableItem item,
-        int carriageSpotIndex,
-        Vector3 carriageLocalSpotPosition
-    )
+    public CollectedItemInfo(CollectableItem item, int carriageSpotIndex, Vector3 carriageLocalSpotPosition)
     {
         Item = item;
         CarriageSpotIndex = carriageSpotIndex;

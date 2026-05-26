@@ -1,6 +1,6 @@
-using UnityEngine;
-
 public enum ItemType
 {
-    SmallBox, WideBox, HighBox
+    SmallBox,
+    WideBox,
+    HighBox
 }
