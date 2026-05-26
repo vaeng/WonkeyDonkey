@@ -37,6 +37,7 @@ public class StackableItemPhysics : MonoBehaviour
     [SerializeField] private float uprightAngularBrake = 25f;
 
     private Rigidbody rb;
+    private BoxCollider boxCollider;
     private Collider itemCollider;
     private Carriage carriage;
 
@@ -48,6 +49,7 @@ public class StackableItemPhysics : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         itemCollider = GetComponentInChildren<Collider>();
+        boxCollider = GetComponentInChildren<BoxCollider>();
     }
 
     private void OnEnable()
@@ -102,11 +104,9 @@ public class StackableItemPhysics : MonoBehaviour
 
     private void Update()
     {
-        if (hasFallen || carriage == null || !IsOffCarriage())
-            return;
-
-        hasFallen = true;
-        Destroy(gameObject, 2f);
+        float heightToDespawn = (boxCollider.size.y/2)+0.1f;
+        if (transform.position.y < heightToDespawn)
+            Destroy(gameObject);
     }
 
     private void CheckBalance()

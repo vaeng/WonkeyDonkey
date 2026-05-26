@@ -2491,6 +2491,10 @@ MonoBehaviour:
   stackRoot: {fileID: 447263215}
   previewLane: {fileID: 950499042}
   previewItemBox: {fileID: 1656743693}
+  normalLaneMaterial: {fileID: 2100000, guid: d67915e1d3c37f441ac62853b98aca3f, type: 2}
+  normalItemMaterial: {fileID: 2100000, guid: 8877ad834974a4c428b3ec7257ec8d36, type: 2}
+  fallLaneMaterial: {fileID: 2100000, guid: a3c7fa84287c6a74c86c49c01faf2b12, type: 2}
+  fallItemMaterial: {fileID: 2100000, guid: 9bd32db3376c844429dbbf167d7e876c, type: 2}
   itemLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -2551,6 +2555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Carriage
   laneSystem: {fileID: 1398317069}
   carriageLaneCount: 3
+  extraPickupLanesPerSide: 2
 --- !u!114 &2037516944
 MonoBehaviour:
   m_ObjectHideFlags: 0

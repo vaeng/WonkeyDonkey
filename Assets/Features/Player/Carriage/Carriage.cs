@@ -7,6 +7,7 @@ public class Carriage : MonoBehaviour
 
     [Header("Carriage")]
     [SerializeField] private int carriageLaneCount = 3;
+    [SerializeField] private int extraPickupLanesPerSide = 2;
 
     public int GetCarriageLaneCount()
     {
@@ -15,7 +16,7 @@ public class Carriage : MonoBehaviour
 
     public int GetCarriageSpotCount()
     {
-        return carriageLaneCount * 2 - 1;
+        return GetPickupLaneCount() * 2 - 1;
     }
 
     public float GetCarriageWidthInWorldUnits()
@@ -23,9 +24,27 @@ public class Carriage : MonoBehaviour
         return carriageLaneCount * laneSystem.LaneWidth;
     }
 
+    public float GetPickupWidthInWorldUnits()
+    {
+        return GetPickupLaneCount() * laneSystem.LaneWidth;
+    }
+
     public float GetLaneWidth()
     {
         return laneSystem.LaneWidth;
+    }
+
+    public bool IsSpotOnCarriage(int spotIndex)
+    {
+        float localX = GetLocalPositionForSpot(spotIndex).x;
+        float halfWidth = GetCarriageWidthInWorldUnits() * 0.5f;
+
+        return Mathf.Abs(localX) <= halfWidth;
+    }
+
+    private int GetPickupLaneCount()
+    {
+        return carriageLaneCount + extraPickupLanesPerSide * 2;
     }
 
     public bool TryGetClosestSpotForWorldX(float worldX, float carriageCenterLane, out int spotIndex)
@@ -36,7 +55,7 @@ public class Carriage : MonoBehaviour
 
     public bool TryGetClosestSpotForRoadLanePosition(float itemLane, float carriageCenterLane, out int spotIndex)
     {
-        float leftLane = carriageCenterLane - (carriageLaneCount - 1) * 0.5f;
+        float leftLane = carriageCenterLane - (GetPickupLaneCount() - 1) * 0.5f;
         float laneOnCarriage = itemLane - leftLane;
 
         spotIndex = Mathf.RoundToInt(laneOnCarriage * 2f);
@@ -48,7 +67,7 @@ public class Carriage : MonoBehaviour
     {
         spotIndex = Mathf.Clamp(spotIndex, 0, GetCarriageSpotCount() - 1);
 
-        float leftX = -(carriageLaneCount - 1) * 0.5f * laneSystem.LaneWidth;
+        float leftX = -(GetPickupLaneCount() - 1) * 0.5f * laneSystem.LaneWidth;
         float x = leftX + spotIndex * 0.5f * laneSystem.LaneWidth;
 
         return new Vector3(x, 0f, 0f);

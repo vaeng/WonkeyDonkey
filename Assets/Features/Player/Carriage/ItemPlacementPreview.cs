@@ -9,6 +9,12 @@ public class ItemPlacementPreview : MonoBehaviour
     [SerializeField] private GameObject previewLane;
     [SerializeField] private GameObject previewItemBox;
 
+    [Header("Materials")]
+    [SerializeField] private Material normalLaneMaterial;
+    [SerializeField] private Material normalItemMaterial;
+    [SerializeField] private Material fallLaneMaterial;
+    [SerializeField] private Material fallItemMaterial;
+
     [Header("Detection")]
     [SerializeField] private LayerMask itemLayers;
     [SerializeField] private float previewDistance = 30f;
@@ -54,7 +60,14 @@ public class ItemPlacementPreview : MonoBehaviour
             return;
         }
 
-        ShowPreviewFor(item, spotIndex);
+        bool itemWillFall = !carriage.IsSpotOnCarriage(spotIndex);
+
+        SetPreviewMaterial(itemWillFall);
+
+        if (itemWillFall)
+            ShowFallPreviewFor(item, spotIndex);
+        else
+            ShowPreviewFor(item, spotIndex);
     }
 
     private bool CanShowPreview()
@@ -72,11 +85,10 @@ public class ItemPlacementPreview : MonoBehaviour
         float closestDistance = float.MaxValue;
 
         Vector3 boxCenter = transform.position + Vector3.forward * (previewDistance * 0.5f);
-        float previewWidth = carriage.GetCarriageWidthInWorldUnits() * 0.5f;
-        float previewHeight = 0.5f;
+
         Vector3 boxHalfSize = new Vector3(
-            previewWidth,
-            previewHeight,
+            carriage.GetPickupWidthInWorldUnits() * 0.5f,
+            0.5f,
             previewDistance * 0.5f
         );
 
@@ -127,6 +139,32 @@ public class ItemPlacementPreview : MonoBehaviour
         SetBox(
             previewItemBox,
             new Vector3(spotPosition.x, itemBottomY + itemHeight * 0.5f, spotPosition.z),
+            new Vector3(itemWidth, itemHeight, previewDepth)
+        );
+
+        SetPreviewVisible(true);
+    }
+
+    private void ShowFallPreviewFor(CollectableItem item, int spotIndex)
+    {
+        Vector3 localSpot = carriage.GetLocalPositionForSpot(spotIndex);
+        Vector3 spotPosition = stackRoot.TransformPoint(localSpot);
+
+        float itemWidth = item.WidthInLanes * carriage.GetLaneWidth();
+        float itemHeight = item.HeightInLanes;
+
+        float columnHeight = 0.7f;
+        float bottomY = stackRoot.position.y;
+
+        SetBox(
+            previewLane,
+            new Vector3(spotPosition.x, stackRoot.position.y + columnHeight * 0.5f, spotPosition.z),
+            new Vector3(itemWidth, columnHeight, previewDepth)
+        );
+
+        SetBox(
+            previewItemBox,
+            new Vector3(spotPosition.x, bottomY + itemHeight * 0.5f, spotPosition.z),
             new Vector3(itemWidth, itemHeight, previewDepth)
         );
 
@@ -216,6 +254,31 @@ public class ItemPlacementPreview : MonoBehaviour
         box.transform.localScale = scale;
     }
 
+    private void SetPreviewMaterial(bool itemWillFall)
+    {
+        if (itemWillFall)
+        {
+            SetMaterial(previewLane, fallLaneMaterial);
+            SetMaterial(previewItemBox, fallItemMaterial);
+        }
+        else
+        {
+            SetMaterial(previewLane, normalLaneMaterial);
+            SetMaterial(previewItemBox, normalItemMaterial);
+        }
+    }
+
+    private void SetMaterial(GameObject obj, Material material)
+    {
+        if (obj == null || material == null)
+            return;
+
+        MeshRenderer renderer = obj.GetComponent<MeshRenderer>();
+
+        if (renderer != null)
+            renderer.material = material;
+    }
+
     private void SetPreviewVisible(bool visible)
     {
         if (previewLane != null)
@@ -227,12 +290,18 @@ public class ItemPlacementPreview : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (carriage == null)
+            return;
+
         Gizmos.color = Color.cyan;
-        float previewWidth = carriage.GetCarriageWidthInWorldUnits();
-        float previewHeight = 0.5f;
 
         Vector3 boxCenter = transform.position + Vector3.forward * (previewDistance * 0.5f);
-        Vector3 boxSize = new Vector3(previewWidth, previewHeight, previewDistance);
+
+        Vector3 boxSize = new Vector3(
+            carriage.GetPickupWidthInWorldUnits(),
+            1f,
+            previewDistance
+        );
 
         Gizmos.DrawWireCube(boxCenter, boxSize);
     }

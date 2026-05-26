@@ -31,12 +31,10 @@ public class ItemCollector : MonoBehaviour
     private void UpdateCollectorSize()
     {
         if (carriage == null)
-        {
             return;
-        }
 
         collectorTrigger.size = new Vector3(
-            carriage.GetCarriageWidthInWorldUnits(),
+            carriage.GetPickupWidthInWorldUnits(),
             collectorHeight,
             collectorDepth
         );
@@ -52,9 +50,7 @@ public class ItemCollector : MonoBehaviour
             return;
 
         if (laneMovement == null || carriage == null)
-        {
             return;
-        }
 
         float itemLane = laneMovement.GetRoadLaneForVisualWorldX(other.transform.position.x);
         float carriageLane = laneMovement.CurrentCenterLane;
@@ -66,9 +62,7 @@ public class ItemCollector : MonoBehaviour
         );
 
         if (!foundSpot)
-        {
             return;
-        }
 
         CollectItem(item, spotIndex);
     }
@@ -84,7 +78,6 @@ public class ItemCollector : MonoBehaviour
             stackManager.PlaceCollectedItem(item, spotIndex);
 
         OnItemCollected?.Invoke(itemInfo);
-
 
         item.DestroyItem();
     }
