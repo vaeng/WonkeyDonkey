@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class WorldMover : MonoBehaviour
 {
+    public static float SpeedMultiplier { get; set; } = 1f;
+
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 6f;
 
@@ -23,7 +25,7 @@ public class WorldMover : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 position = transform.position;
-        position.z -= moveSpeed * Time.fixedDeltaTime;
+        position.z -= moveSpeed * SpeedMultiplier * Time.fixedDeltaTime;
         transform.position = position;
 
         UpdateVisualX();

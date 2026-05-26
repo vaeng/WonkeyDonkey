@@ -8,8 +8,13 @@ public class RoadSpawner : MonoBehaviour
 
     [Header("Road")]
     [SerializeField] private GameObject[] roadSegmentPrefabs;
+    [SerializeField] private GameObject finishSegmentPrefab;
     [SerializeField] private float segmentLength = 20f;
     [SerializeField] private int startSegmentCount = 5;
+
+    [Header("Level")]
+    [SerializeField] private float levelDuration = 30f;
+    [SerializeField] private float finishLineZ = 0f;
 
     [Header("Variation")]
     [SerializeField] private int avoidRepeatForSpawns = 3;
@@ -21,52 +26,81 @@ public class RoadSpawner : MonoBehaviour
     [SerializeField] private float spawnAheadDistance = 80f;
     [SerializeField] private float despawnBehindDistance = 30f;
 
-    private readonly List<GameObject> spawnedSegments = new();
-    private readonly Queue<GameObject> recentlyUsedPrefabs = new();
+    private readonly List<GameObject> segments = new();
+    private readonly Queue<GameObject> recentlyUsed = new();
+
+    private GameObject finishSegment;
+    private float finishSegmentStartZ;
+    private bool finishSegmentSpawned;
+
+    public float LevelDuration => levelDuration;
+
+    public bool HasReachedFinish
+    {
+        get
+        {
+            if (finishSegment == null)
+                return false;
+
+            return finishSegment.transform.position.z <= finishLineZ;
+        }
+    }
 
     private void Start()
     {
-        SpawnStartSegments();
+        finishSegmentStartZ = CalculateFinishSegmentZ();
+
+        for (int i = 0; i < startSegmentCount; i++)
+            SpawnRoadSegment(i * segmentLength);
     }
 
     private void Update()
     {
         RemoveOldSegments();
-        SpawnMissingSegments();
-    }
 
-    private void SpawnStartSegments()
-    {
-        spawnedSegments.Clear();
-        recentlyUsedPrefabs.Clear();
-
-        for (int i = 0; i < startSegmentCount; i++)
-            SpawnSegment(i * segmentLength);
-    }
-
-    private void SpawnMissingSegments()
-    {
         while (GetLastSegmentZ() < spawnAheadDistance)
         {
             float nextZ = GetLastSegmentZ() + segmentLength;
-            SpawnSegment(nextZ);
+
+            if (!finishSegmentSpawned && nextZ >= finishSegmentStartZ)
+                SpawnFinishSegment();
+            else
+                SpawnRoadSegment(nextZ);
         }
     }
 
-    private void SpawnSegment(float zPosition)
+    private float CalculateFinishSegmentZ()
     {
-        if (!CanSpawn())
+        float distance = levelDuration * worldMoveSpeed;
+        float roundedDistance = Mathf.Round(distance / segmentLength) * segmentLength;
+        float firstPossibleFinish = startSegmentCount * segmentLength;
+
+        return Mathf.Max(roundedDistance, firstPossibleFinish);
+    }
+
+    private void SpawnRoadSegment(float z)
+    {
+        if (laneMovement == null || roadSegmentPrefabs == null || roadSegmentPrefabs.Length == 0)
             return;
 
+        SpawnSegment(PickRoadPrefab(), z);
+    }
+
+    private void SpawnFinishSegment()
+    {
+        if (laneMovement == null || finishSegmentPrefab == null)
+            return;
+
+        finishSegment = SpawnSegment(finishSegmentPrefab, finishSegmentStartZ);
+        finishSegmentSpawned = true;
+    }
+
+    private GameObject SpawnSegment(GameObject prefab, float z)
+    {
         float roadX = 0f;
         float visualX = laneMovement.GetVisualWorldXForRoadX(roadX);
-        GameObject prefab = GetRandomRoadSegment();
 
-        GameObject segment = Instantiate(
-            prefab,
-            new Vector3(visualX, 0f, zPosition),
-            Quaternion.identity
-        );
+        GameObject segment = Instantiate(prefab, new Vector3(visualX, 0f, z), Quaternion.identity);
 
         WorldMover mover = segment.GetComponent<WorldMover>();
 
@@ -75,64 +109,51 @@ public class RoadSpawner : MonoBehaviour
 
         mover.Initialize(laneMovement, worldMoveSpeed, roadX);
 
-        spawnedSegments.Add(segment);
-        RememberPrefab(prefab);
+        segments.Add(segment);
+        return segment;
     }
 
-    private bool CanSpawn()
+    private GameObject PickRoadPrefab()
     {
-        return laneMovement != null
-            && roadSegmentPrefabs != null
-            && roadSegmentPrefabs.Length > 0;
-    }
-
-    private GameObject GetRandomRoadSegment()
-    {
-        List<GameObject> possiblePrefabs = new();
+        List<GameObject> choices = new();
 
         foreach (GameObject prefab in roadSegmentPrefabs)
         {
-            if (prefab == null)
-                continue;
-
-            if (recentlyUsedPrefabs.Contains(prefab))
-                continue;
-
-            possiblePrefabs.Add(prefab);
+            if (prefab != null && !recentlyUsed.Contains(prefab))
+                choices.Add(prefab);
         }
 
-        if (possiblePrefabs.Count == 0)
-            return roadSegmentPrefabs[Random.Range(0, roadSegmentPrefabs.Length)];
+        GameObject picked;
 
-        return possiblePrefabs[Random.Range(0, possiblePrefabs.Count)];
-    }
+        if (choices.Count > 0)
+            picked = choices[Random.Range(0, choices.Count)];
+        else
+            picked = roadSegmentPrefabs[Random.Range(0, roadSegmentPrefabs.Length)];
 
-    private void RememberPrefab(GameObject prefab)
-    {
-        recentlyUsedPrefabs.Enqueue(prefab);
+        recentlyUsed.Enqueue(picked);
 
-        while (recentlyUsedPrefabs.Count > avoidRepeatForSpawns)
-            recentlyUsedPrefabs.Dequeue();
+        while (recentlyUsed.Count > avoidRepeatForSpawns)
+            recentlyUsed.Dequeue();
+
+        return picked;
     }
 
     private void RemoveOldSegments()
     {
-        for (int i = spawnedSegments.Count - 1; i >= 0; i--)
+        for (int i = segments.Count - 1; i >= 0; i--)
         {
-            GameObject segment = spawnedSegments[i];
+            GameObject segment = segments[i];
 
             if (segment == null)
             {
-                spawnedSegments.RemoveAt(i);
+                segments.RemoveAt(i);
                 continue;
             }
 
-            bool isBehindPlayer = segment.transform.position.z + segmentLength < -despawnBehindDistance;
-
-            if (!isBehindPlayer)
+            if (segment.transform.position.z + segmentLength > -despawnBehindDistance)
                 continue;
 
-            spawnedSegments.RemoveAt(i);
+            segments.RemoveAt(i);
             Destroy(segment);
         }
     }
@@ -141,15 +162,20 @@ public class RoadSpawner : MonoBehaviour
     {
         float lastZ = 0f;
 
-        foreach (GameObject segment in spawnedSegments)
+        foreach (GameObject segment in segments)
         {
-            if (segment == null)
-                continue;
-
-            if (segment.transform.position.z > lastZ)
+            if (segment != null && segment.transform.position.z > lastZ)
                 lastZ = segment.transform.position.z;
         }
 
         return lastZ;
+    }
+
+    public float GetFinishSegmentZ()
+    {
+        if (finishSegment == null)
+            return float.MaxValue;
+
+        return finishSegment.transform.position.z;
     }
 }

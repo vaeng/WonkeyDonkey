@@ -24,37 +24,41 @@ public class ItemSpawner : MonoBehaviour
     [SerializeField] private int maxSpawnLane = 6;
 
     [Header("Lane Placement")]
-    [SerializeField] private bool allowSpawnBetweenLanes = false;
+    [SerializeField] private bool allowSpawnBetweenLanes;
 
-    private float spawnTimer;
+    private float timer;
+    private bool canSpawnItems = true;
+
+    public float SpawnZPosition => spawnZPosition;
 
     private void Update()
     {
-        spawnTimer += Time.deltaTime;
+        if (!canSpawnItems)
+            return;
 
-        if (spawnTimer < spawnInterval)
+        timer += Time.deltaTime;
+
+        if (timer < spawnInterval)
             return;
 
         SpawnItem();
-        spawnTimer = 0f;
+        timer = 0f;
     }
 
     private void SpawnItem()
     {
-        if (!CanSpawn())
+        if (laneSystem == null || laneMovement == null)
             return;
 
-        float lanePosition = GetRandomLanePosition();
-        GameObject prefab = itemPrefabs[Random.Range(0, itemPrefabs.Length)];
+        if (itemPrefabs == null || itemPrefabs.Length == 0)
+            return;
 
-        float roadX = laneSystem.GetWorldXForLanePosition(lanePosition);
+        float lane = GetRandomLane();
+        float roadX = laneSystem.GetWorldXForLanePosition(lane);
         float visualX = laneMovement.GetVisualWorldXForRoadX(roadX);
 
-        GameObject item = Instantiate(
-            prefab,
-            new Vector3(visualX, itemYPosition, spawnZPosition),
-            Quaternion.identity
-        );
+        GameObject prefab = itemPrefabs[Random.Range(0, itemPrefabs.Length)];
+        GameObject item = Instantiate(prefab, new Vector3(visualX, itemYPosition, spawnZPosition), Quaternion.identity);
 
         WorldMover mover = item.GetComponent<WorldMover>();
 
@@ -64,30 +68,13 @@ public class ItemSpawner : MonoBehaviour
         mover.Initialize(laneMovement, worldMoveSpeed, roadX);
     }
 
-    private bool CanSpawn()
-    {
-        if (laneSystem == null || laneMovement == null)
-        {
-            return false;
-        }
-
-        if (itemPrefabs == null || itemPrefabs.Length == 0)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    private float GetRandomLanePosition()
+    private float GetRandomLane()
     {
         int minLane = Mathf.Clamp(minSpawnLane, 0, laneSystem.RoadLaneCount - 1);
         int maxLane = Mathf.Clamp(maxSpawnLane, 0, laneSystem.RoadLaneCount - 1);
 
         if (minLane > maxLane)
-        {
-            return laneSystem.RoadLaneCount / 2f;
-        }
+            return laneSystem.RoadLaneCount * 0.5f;
 
         if (!allowSpawnBetweenLanes)
             return Random.Range(minLane, maxLane + 1);
@@ -95,8 +82,11 @@ public class ItemSpawner : MonoBehaviour
         int minStep = minLane * 2;
         int maxStep = maxLane * 2;
 
-        int randomStep = Random.Range(minStep, maxStep + 1);
+        return Random.Range(minStep, maxStep + 1) * 0.5f;
+    }
 
-        return randomStep * 0.5f;
+    public void StopSpawning()
+    {
+        canSpawnItems = false;
     }
 }
