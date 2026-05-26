@@ -46,7 +46,7 @@ public class StartScreen : MonoBehaviour
         return false;
     }
 
-    private void StartGame()
+    public void StartGame()
     {
         started = true;
         Time.timeScale = 1f;
