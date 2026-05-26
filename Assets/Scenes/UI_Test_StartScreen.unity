@@ -303,7 +303,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 333.5}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 264, y: 100}
+  m_AnchoredPosition: {x: 221, y: 48}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &822587200
@@ -369,16 +369,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979170580}
-  m_LocalRotation: {x: 0, y: 0, z: -0.060177423, w: 0.9981877}
+  m_LocalRotation: {x: 0, y: 0, z: -0.15212336, w: 0.98836154}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2033, y: 1.2033, z: 1.2033}
+  m_LocalScale: {x: 1.7351587, y: 1.7351587, z: 1.7351587}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1702312328}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -6.9}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -17.5}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 250, y: 503}
+  m_AnchoredPosition: {x: 296, y: 414}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &979170582
@@ -983,7 +983,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Collect all BOXES\nand deliever them!\n\nControl by SWIPING\n(or Arrow
-    Keys) between Lanes\n\nSTACK Boxes! \nBeware -  they can fall"
+    Keys) to \nswitch between Lanes\n\nSTACK Boxes! \nBeware -  they can fall"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 18d4e97ed8e4040438d2137dc0f0d673, type: 2}
   m_sharedMaterial: {fileID: 2869759223585596130, guid: 18d4e97ed8e4040438d2137dc0f0d673, type: 2}
@@ -1209,7 +1209,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -17.2}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 163, y: 706}
+  m_AnchoredPosition: {x: 168, y: 676}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1728162755
@@ -1307,8 +1307,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Collect all \nand deliever them!\n\nControl by \n(or Arrow Keys) between
-    Lanes\n\n              Boxes! \nBeware -  they can fall"
+  m_text: "Collect all \nand deliever them!\n\nControl by \n(or Arrow Keys) to \nswitch
+    between Lanes\n\n              Boxes! \nBeware -  they can fall"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 18d4e97ed8e4040438d2137dc0f0d673, type: 2}
   m_sharedMaterial: {fileID: 2869759223585596130, guid: 18d4e97ed8e4040438d2137dc0f0d673, type: 2}
