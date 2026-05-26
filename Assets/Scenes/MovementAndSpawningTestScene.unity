@@ -150,6 +150,37 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &333706363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 333706364}
+  m_Layer: 7
+  m_Name: BottomAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &333706364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333706363}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.127, z: -0.718}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2037516942}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &447263214
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,6 +393,7 @@ GameObject:
   m_Component:
   - component: {fileID: 557705215}
   - component: {fileID: 557705217}
+  - component: {fileID: 557705218}
   - component: {fileID: 557705214}
   - component: {fileID: 557705213}
   - component: {fileID: 557705216}
@@ -439,7 +471,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557705212}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0871992, y: 0, z: 0, w: 0.9961909}
+  m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
   m_LocalPosition: {x: 0, y: 5, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -506,6 +538,27 @@ MonoBehaviour:
   applyInEditor: 1
   swipeInput: {fileID: 826179257}
   showDebugLogs: 0
+--- !u!114 &557705218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557705212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf666f151d33fa4c85ce8036226da9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StackCameraZoom
+  stackRoot: {fileID: 1684649152}
+  bottomAnchor: {fileID: 333706364}
+  stackItemLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  maxStackScreenHeight: 0.4
+  maxZoomOut: 5
+  maxLift: 5
+  moveSpeed: 2
 --- !u!1 &670662630
 GameObject:
   m_ObjectHideFlags: 0
@@ -1831,6 +1884,8 @@ MonoBehaviour:
   stackSurfaceLayers:
     serializedVersion: 2
     m_Bits: 192
+  maxPlacementChecks: 8
+  placementCheckPadding: 0.03
 --- !u!1 &2037516938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1865,6 +1920,7 @@ Transform:
   - {fileID: 447263215}
   - {fileID: 1684649152}
   - {fileID: 1981988839}
+  - {fileID: 333706364}
   m_Father: {fileID: 826179256}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2037516943
@@ -1900,6 +1956,8 @@ MonoBehaviour:
   raycastDistance: 20
   itemDepth: 0.8
   scaleStackedItemsFromData: 0
+  maxPlacementChecks: 8
+  placementCheckPadding: 0.03
   linearDamping: 0.5
   angularDamping: 1.5
   stackItemLayerName: StackItem
