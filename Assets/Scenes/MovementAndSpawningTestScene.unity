@@ -1673,6 +1673,7 @@ GameObject:
   - component: {fileID: 880984590}
   - component: {fileID: 880984589}
   - component: {fileID: 880984591}
+  - component: {fileID: 880984592}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1727,6 +1728,18 @@ MonoBehaviour:
   timerText: {fileID: 0}
   slowDownTime: 0.5
   distanceToStopItemsBeforeFinish: 5
+--- !u!114 &880984592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880984588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d18cf24cb700f4bac2483001574193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Highscore
 --- !u!1 &886563640 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cb24d722abf56ba4e8c8f6822ea21f09, type: 3}
@@ -1902,7 +1915,7 @@ GameObject:
   - component: {fileID: 1001819783}
   - component: {fileID: 1001819782}
   m_Layer: 5
-  m_Name: Highscore (3)
+  m_Name: BiggestStackText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2142,7 +2155,7 @@ GameObject:
   - component: {fileID: 1070632438}
   - component: {fileID: 1070632437}
   m_Layer: 5
-  m_Name: Highscore (1)
+  m_Name: GoodsDeliveredText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3752,7 +3765,7 @@ GameObject:
   - component: {fileID: 1833486865}
   - component: {fileID: 1833486864}
   m_Layer: 5
-  m_Name: Highscore (2)
+  m_Name: GoodsLostText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3978,6 +3991,7 @@ GameObject:
   - component: {fileID: 1872606267}
   - component: {fileID: 1872606269}
   - component: {fileID: 1872606268}
+  - component: {fileID: 1872606270}
   m_Layer: 5
   m_Name: ScoreScreen
   m_TagString: Untagged
@@ -4048,6 +4062,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1872606266}
   m_CullTransparentMesh: 1
+--- !u!114 &1872606270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872606266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b740536d710c87f4f986ced10df1eb2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  TotalScoreText: {fileID: 1995528190}
+  GoodsLostText: {fileID: 1833486864}
+  GoodsDeliveredText: {fileID: 1070632437}
+  BiggestStackText: {fileID: 1001819782}
 --- !u!1 &1892247087
 GameObject:
   m_ObjectHideFlags: 0
@@ -4347,7 +4377,7 @@ GameObject:
   - component: {fileID: 1995528191}
   - component: {fileID: 1995528190}
   m_Layer: 5
-  m_Name: Highscore (4)
+  m_Name: TotalScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

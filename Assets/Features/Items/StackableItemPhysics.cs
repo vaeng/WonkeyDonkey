@@ -36,6 +36,8 @@ public class StackableItemPhysics : MonoBehaviour
     [SerializeField] private float uprightSpeed = 90f;
     [SerializeField] private float uprightAngularBrake = 25f;
 
+    public static System.Action OnItemFallen;
+
     private Rigidbody rb;
     private BoxCollider boxCollider;
     private Collider itemCollider;
@@ -106,7 +108,10 @@ public class StackableItemPhysics : MonoBehaviour
     {
         float heightToDespawn = (boxCollider.size.y/2)+0.1f;
         if (transform.position.y < heightToDespawn)
+        {
+            OnItemFallen?.Invoke();
             Destroy(gameObject);
+        }
     }
 
     private void CheckBalance()
