@@ -17,7 +17,7 @@ public class ScoreScreen : MonoBehaviour
         if (highscore != null)
         {
 
-            TotalScoreText.text = highscore.TotalScore.ToString();
+            TotalScoreText.text = highscore.GetHighscore().ToString("F0");
             GoodsLostText.text = highscore.FallenCrateCount.ToString();
             GoodsDeliveredText.text = highscore.DeliveredCrateCount.ToString();
             BiggestStackText.text = highscore.GetTallestStackHeight().ToString("F2") + "m";

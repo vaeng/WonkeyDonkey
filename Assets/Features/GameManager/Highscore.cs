@@ -64,4 +64,9 @@ public class Highscore : MonoBehaviour
         }
         return height;
     }
+
+    public float GetHighscore()
+    {
+        return TotalScore * GetTallestStackHeight();
+    }
 }
