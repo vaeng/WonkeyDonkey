@@ -75,6 +75,10 @@ public class LaneMovement : MonoBehaviour
     {
         SetTargetLane(currentCenterLane + laneStepPerSwipe);
         animationSystem?.StartAnimation(-1f);
+
+        //fmod spielt einen oneshot aus der Bank Donkey ab
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Donkey");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Knarz");
     }
 
     private void SetTargetLane(float lane)
