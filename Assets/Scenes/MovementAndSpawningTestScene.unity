@@ -119,83 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &7771679 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4470170687207048565, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
-  m_PrefabInstance: {fileID: 1359412209}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7771685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7771679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b116ffd0ea0d4964580c6498ce09a96e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PitchYawRollAnim
-  animateOnStart: 0
-  isLooping: 0
-  ignoreDirection: 0
-  goal: 0
-  start: 0
-  current: 0
-  currentStart: 0
-  speed: 1
-  animCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.08992373
-      outSlope: 0.08992373
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.92712355
-    - serializedVersion: 3
-      time: 0.086340666
-      value: 0.09400715
-      inSlope: 1.7414701
-      outSlope: 1.7414701
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.31454134
-      value: 0.7870996
-      inSlope: 0.16492581
-      outSlope: 0.16492581
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 1
-    - serializedVersion: 3
-      time: 0.6217998
-      value: 0.003293924
-      inSlope: 0.5822502
-      outSlope: 0.5822502
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.16953063
-      outWeight: 0.18949199
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -2.5580354
-      outSlope: -2.5580354
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.20983607
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  axesMultiplyer: {x: 0, y: 0, z: -10}
 --- !u!1 &13827321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1501,7 +1424,6 @@ Transform:
   m_Children:
   - {fileID: 2037516942}
   - {fileID: 1723050416}
-  - {fileID: 1064441370}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &826179257
@@ -1562,7 +1484,7 @@ MonoBehaviour:
   carrotStick: {fileID: 1005394693}
   rider: {fileID: 886563642}
   riderHat: {fileID: 1841394568}
-  waggon: {fileID: 7771685}
+  waggon: {fileID: 2037516945}
   wheel: {fileID: 129994673}
 --- !u!114 &826179260
 MonoBehaviour:
@@ -1740,6 +1662,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d18cf24cb700f4bac2483001574193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Highscore
+  fallenCratePenalty: 50
+  pickedUpReward: 100
 --- !u!1 &886563640 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cb24d722abf56ba4e8c8f6822ea21f09, type: 3}
@@ -2615,7 +2539,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 826179256}
+    m_TransformParent: {fileID: 2037516942}
     m_Modifications:
     - target: {fileID: 2931926356475456510, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
       propertyPath: m_IsActive
@@ -2647,7 +2571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6153773663982354595, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6153773663982354595, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
       propertyPath: m_LocalRotation.y
@@ -2655,7 +2579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6153773663982354595, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6153773663982354595, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2687,9 +2611,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1841394565}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4470170687207048565, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7771685}
     - targetCorrespondingSourceObject: {fileID: 8139053829202730737, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 129994673}
@@ -4455,6 +4376,7 @@ GameObject:
   - component: {fileID: 2037516942}
   - component: {fileID: 2037516943}
   - component: {fileID: 2037516944}
+  - component: {fileID: 2037516945}
   m_Layer: 7
   m_Name: Carriage
   m_TagString: Untagged
@@ -4479,6 +4401,7 @@ Transform:
   - {fileID: 1684649152}
   - {fileID: 1981988839}
   - {fileID: 333706364}
+  - {fileID: 1064441370}
   m_Father: {fileID: 826179256}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2037516943
@@ -4523,6 +4446,78 @@ MonoBehaviour:
   stackSurfaceLayers:
     serializedVersion: 2
     m_Bits: 192
+--- !u!114 &2037516945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2037516938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b116ffd0ea0d4964580c6498ce09a96e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PitchYawRollAnim
+  animateOnStart: 0
+  isLooping: 0
+  ignoreDirection: 0
+  goal: 0
+  start: 0
+  current: 0
+  currentStart: 0
+  speed: 1
+  animCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.08992373
+      outSlope: 0.08992373
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.92712355
+    - serializedVersion: 3
+      time: 0.086340666
+      value: 0.09400715
+      inSlope: 1.7414701
+      outSlope: 1.7414701
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.31454134
+      value: 0.7870996
+      inSlope: 0.16492581
+      outSlope: 0.16492581
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.6217998
+      value: 0.003293924
+      inSlope: 0.5822502
+      outSlope: 0.5822502
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.16953063
+      outWeight: 0.18949199
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2.5580354
+      outSlope: -2.5580354
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.20983607
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  axesMultiplyer: {x: 0, y: 0, z: 10}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
