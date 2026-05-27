@@ -8,6 +8,7 @@ public class ScoreScreen : MonoBehaviour
     [SerializeField] private Text GoodsLostText;
     [SerializeField] private Text GoodsDeliveredText;
     [SerializeField] private Text BiggestStackText;
+    [SerializeField] private Text HighscoreText;
 
     private Highscore highscore;
 
@@ -17,10 +18,11 @@ public class ScoreScreen : MonoBehaviour
         if (highscore != null)
         {
 
-            TotalScoreText.text = highscore.GetHighscore().ToString("F0");
+            TotalScoreText.text = highscore.GetTotalScore().ToString("F0");
             GoodsLostText.text = highscore.FallenCrateCount.ToString();
             GoodsDeliveredText.text = highscore.DeliveredCrateCount.ToString();
             BiggestStackText.text = highscore.GetTallestStackHeight().ToString("F2") + "m";
+            HighscoreText.text = highscore.GetHighScore().ToString("F0");
         }
     }
 

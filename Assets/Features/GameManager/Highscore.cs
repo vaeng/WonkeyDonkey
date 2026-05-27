@@ -65,8 +65,20 @@ public class Highscore : MonoBehaviour
         return height;
     }
 
-    public float GetHighscore()
+    public float GetTotalScore()
     {
         return TotalScore * GetTallestStackHeight();
+    }
+
+    public float GetHighScore()
+    {
+        var highscore = PlayerPrefs.GetFloat("Highscore", 0);
+        var currentScore = GetTotalScore();
+        if (currentScore > highscore)
+        {
+            PlayerPrefs.SetFloat("Highscore", currentScore);
+            return currentScore;
+        }
+        return highscore;
     }
 }
