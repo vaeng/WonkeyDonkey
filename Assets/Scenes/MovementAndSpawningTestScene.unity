@@ -2830,6 +2830,7 @@ MonoBehaviour:
   laneSystem: {fileID: 1398317069}
   laneMovement: {fileID: 826179260}
   itemPrefabs:
+  - {fileID: 1310453082972999147, guid: 99f258a29c9237a4a87267857523af3e, type: 3}
   - {fileID: 1913678160417714669, guid: 002f5752ae2a1c0419cb87ae56194742, type: 3}
   - {fileID: 1310453082972999147, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
   - {fileID: 5057030877971071467, guid: b83f56a2c86d49941a08eb8f7eba7fbd, type: 3}

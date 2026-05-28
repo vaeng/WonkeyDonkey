@@ -2,5 +2,6 @@ public enum ItemType
 {
     SmallBox,
     WideBox,
-    HighBox
+    HighBox,
+    LBox
 }
