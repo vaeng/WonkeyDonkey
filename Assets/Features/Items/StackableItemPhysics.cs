@@ -39,7 +39,7 @@ public class StackableItemPhysics : MonoBehaviour
     public static System.Action OnItemFallen;
 
     private Rigidbody rb;
-    private BoxCollider boxCollider;
+    private Collider collider;
     private Collider itemCollider;
     private Carriage carriage;
 
@@ -51,7 +51,11 @@ public class StackableItemPhysics : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         itemCollider = GetComponentInChildren<Collider>();
-        boxCollider = GetComponentInChildren<BoxCollider>();
+        collider = GetComponentInChildren<BoxCollider>();
+        if (collider == null)
+        {
+            collider = GetComponent<SphereCollider>();
+        }
     }
 
     private void OnEnable()
@@ -106,7 +110,14 @@ public class StackableItemPhysics : MonoBehaviour
 
     private void Update()
     {
-        float heightToDespawn = (boxCollider.size.y/2)+0.1f;
+        float heightToDespawn = collider switch
+        {
+            BoxCollider box => (box.size.y / 2f) + 0.1f,
+            SphereCollider sphere => sphere.radius + 0.1f,
+            CapsuleCollider capsule => (capsule.height / 2f) + 0.1f,
+            MeshCollider mesh => mesh.bounds.extents.y + 0.1f,
+            _ => collider.bounds.extents.y + 0.1f
+        };
         if (transform.position.y < heightToDespawn)
         {
             OnItemFallen?.Invoke();
