@@ -11,6 +11,9 @@ public class ItemSpawner : MonoBehaviour
 
     [Header("Spawn Timing")]
     [SerializeField] private float spawnInterval = 1.5f;
+    [SerializeField] private float spawnIntervalDecreaseRate = 0.05f;
+    [SerializeField] private float spawnIntervalMin = 0.5f;
+
 
     [Header("Spawn Position")]
     [SerializeField] private float spawnZPosition = 25f;
@@ -37,6 +40,12 @@ public class ItemSpawner : MonoBehaviour
             return;
 
         timer += Time.deltaTime;
+
+        if (spawnInterval > spawnIntervalMin)
+        {
+            spawnInterval -= spawnIntervalDecreaseRate * Time.deltaTime;
+            spawnInterval = Mathf.Max(spawnInterval, spawnIntervalMin);
+        }
 
         if (timer < spawnInterval)
             return;
