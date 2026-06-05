@@ -31,6 +31,7 @@ Transform:
   m_Children:
   - {fileID: 3837889466516070351}
   - {fileID: 8914993081466029131}
+  - {fileID: 3385432940529620778}
   - {fileID: 1863107072226226534}
   - {fileID: 8504466944051845089}
   - {fileID: 6598520970485682110}
@@ -50,7 +51,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3277845302216608296, guid: ebe83bef734432a4a96c437feff058d6, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.54
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3277845302216608296, guid: ebe83bef734432a4a96c437feff058d6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -226,6 +227,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8041078243033319890, guid: 90673cd205e6f2c4592402b5050603b0, type: 3}
   m_PrefabInstance: {fileID: 3748404267516184172}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4532032608398895056
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6153773663982354595}
+    m_Modifications:
+    - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.919
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7587528
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.6513787
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 81.291
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1969667721130322496, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+      propertyPath: m_Name
+      value: Rad_02
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+--- !u!4 &3385432940529620778 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
+  m_PrefabInstance: {fileID: 4532032608398895056}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7251067647065871173
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -298,7 +361,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.884
       objectReference: {fileID: 0}
     - target: {fileID: 1161500958693716218, guid: 124deaa316ac984469e578dfdb6b22f6, type: 3}
       propertyPath: m_LocalPosition.y
