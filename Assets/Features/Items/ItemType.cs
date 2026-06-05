@@ -3,5 +3,9 @@ public enum ItemType
     SmallBox,
     WideBox,
     HighBox,
-    LBox
+    LBox,
+    Sphere,
+    Triangle,
+    HingeBox,
+    Fish
 }
