@@ -2835,7 +2835,7 @@ MonoBehaviour:
   - {fileID: 1310453082972999147, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
   - {fileID: 5057030877971071467, guid: b83f56a2c86d49941a08eb8f7eba7fbd, type: 3}
   spawnInterval: 2
-  spawnZPosition: 25
+  spawnZPosition: 50
   itemYPosition: 0.5
   worldMoveSpeed: 6
   minSpawnLane: 2

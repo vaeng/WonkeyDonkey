@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -106,11 +107,11 @@ public class StackableItemPhysics : MonoBehaviour
 
     private void Update()
     {
-        float heightToDespawn = (boxCollider.size.y/2)+0.1f;
+        float heightToDespawn = (boxCollider.size.y/2)+0.3f;
         if (transform.position.y < heightToDespawn)
         {
             OnItemFallen?.Invoke();
-            Destroy(gameObject);
+            StartCoroutine(TumbleAndDespawnAfterDelay());
         }
     }
 
@@ -350,5 +351,20 @@ public class StackableItemPhysics : MonoBehaviour
         float maxX = carriage.GetCarriageWidthInWorldUnits() * 0.5f + sideFallMargin;
 
         return localPosition.y < fallYThreshold || Mathf.Abs(localPosition.x) > maxX;
+    }
+
+    private IEnumerator TumbleAndDespawnAfterDelay()
+    {
+        float tumbleDuration = 3f;
+        float elapsed = 0f;
+        float tumbleDistance = 1.0f;
+        while (elapsed < tumbleDuration)
+        {
+            transform.Rotate(Vector3.forward, 360f * Time.deltaTime);
+            transform.Translate(Vector3.back * tumbleDistance * Time.deltaTime, Space.World);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(gameObject);
     }
 }
