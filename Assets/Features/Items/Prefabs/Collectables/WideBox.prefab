@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 863133855385416473, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 863133855385416473, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1051624322295365924, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: m_Center.y
-      value: -0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1051624322295365924, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: m_Material
@@ -79,6 +79,14 @@ PrefabInstance:
     - target: {fileID: 2057919632167937422, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3010897656550922921, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
+      propertyPath: randomRotateX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3010897656550922921, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
+      propertyPath: randomRotateY
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3981096490230816767, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
       propertyPath: itemType
@@ -136,9 +144,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3010897656550922921, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
     m_RemovedGameObjects:
     - {fileID: -5215400558714578789, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1310453082972999147, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -217098413953975629}
   m_SourcePrefab: {fileID: 100100000, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
+--- !u!1 &5057030877971071467 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1310453082972999147, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
+  m_PrefabInstance: {fileID: 6053265508324477952}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-217098413953975629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5057030877971071467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dceed2c327adf346aaefb91c7a435b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StartRotation
+  startRotation: {x: 0, y: 0, z: 0}
+  randomRotateX: 1
+  randomRotateY: 0
+  randomRotateZ: 0
+  randomRotationInterval: 90

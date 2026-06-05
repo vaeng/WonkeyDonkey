@@ -60,6 +60,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 09255d5f04e31fa4aaad3a7d7fea9a7f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ebf52356a4ef1b04880b464771f743f7, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 09255d5f04e31fa4aaad3a7d7fea9a7f, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b82afeed5571cf1499fb70cd6b6e58dc, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 09255d5f04e31fa4aaad3a7d7fea9a7f, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8f1f21231d5e53c4aaaa5d32bfbc460d, type: 2}
     - target: {fileID: 919132149155446097, guid: 09255d5f04e31fa4aaad3a7d7fea9a7f, type: 3}
       propertyPath: m_Name
       value: Fish_01

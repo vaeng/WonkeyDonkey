@@ -34,7 +34,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4980673890155305484}
+  - {fileID: 5291942779755907022}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4369205280302505959
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StackableItemPhysics
   fallYThreshold: -1
   sideFallMargin: 0.5
+  heightToDespawnOverride: 0
   centerOfMassEdgeMargin: 0.03
   wobbleEdgeDistance: 0.15
   minOverhangToTip: 0.35
@@ -184,69 +185,69 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6247253619628001251}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 49329287991615635, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
+      propertyPath: m_Name
+      value: PricklyPear_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.4
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.4
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -90
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+    - target: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
-      propertyPath: m_Name
-      value: PricklyPear_01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
---- !u!4 &4980673890155305484 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
+--- !u!4 &5291942779755907022 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d577e27fc4aaa2f469199071ed79ddba, type: 3}
+  m_CorrespondingSourceObject: {fileID: 856968250141129257, guid: cf48b988955efc245b38ec59d5e99717, type: 3}
   m_PrefabInstance: {fileID: 4797549657951075815}
   m_PrefabAsset: {fileID: 0}
