@@ -295,6 +295,9 @@ MonoBehaviour:
   animateOnStart: 0
   isLooping: 0
   ignoreDirection: 0
+  AnimateableTransforms:
+  - {fileID: 129994676}
+  - {fileID: 1865572328}
   goal: 0
   start: 0
   current: 0
@@ -352,6 +355,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   axesMultiplyer: {x: 0, y: -30, z: 0}
+--- !u!4 &129994676 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8914993081466029131, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+  m_PrefabInstance: {fileID: 1359412209}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &333706363
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,6 +1712,7 @@ MonoBehaviour:
   animateOnStart: 0
   isLooping: 0
   ignoreDirection: 1
+  AnimateableTransforms: []
   goal: 0
   start: 0
   current: 0
@@ -1941,6 +1950,7 @@ MonoBehaviour:
   animateOnStart: 0
   isLooping: 0
   ignoreDirection: 0
+  AnimateableTransforms: []
   goal: 0
   start: 0
   current: 0
@@ -2181,6 +2191,7 @@ MonoBehaviour:
   animateOnStart: 0
   isLooping: 0
   ignoreDirection: 0
+  AnimateableTransforms: []
   goal: 0
   start: 0
   current: 0
@@ -2834,12 +2845,15 @@ MonoBehaviour:
   laneSystem: {fileID: 1398317069}
   laneMovement: {fileID: 826179260}
   itemPrefabs:
+  - {fileID: 1913678160417714669, guid: 52ad1ac6c6dbd214599efc49f8c66236, type: 3}
+  - {fileID: 1310453082972999147, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
   - {fileID: 1310453082972999147, guid: 99f258a29c9237a4a87267857523af3e, type: 3}
   - {fileID: 1913678160417714669, guid: 002f5752ae2a1c0419cb87ae56194742, type: 3}
-  - {fileID: 1310453082972999147, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
-  - {fileID: 5057030877971071467, guid: b83f56a2c86d49941a08eb8f7eba7fbd, type: 3}
   - {fileID: 1310453082972999147, guid: 9bf874b8da841e149bd834def5f6e05b, type: 3}
+  - {fileID: 5057030877971071467, guid: b83f56a2c86d49941a08eb8f7eba7fbd, type: 3}
   spawnInterval: 2
+  spawnIntervalDecreaseRate: 0.05
+  spawnIntervalMin: 0.5
   spawnZPosition: 50
   itemYPosition: 0.5
   worldMoveSpeed: 6
@@ -3957,6 +3971,7 @@ MonoBehaviour:
   animateOnStart: 0
   isLooping: 0
   ignoreDirection: 1
+  AnimateableTransforms: []
   goal: 0
   start: 0
   current: 0
@@ -4080,6 +4095,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1852831624}
   m_CullTransparentMesh: 1
+--- !u!4 &1865572328 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3385432940529620778, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+  m_PrefabInstance: {fileID: 1359412209}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1872606266
 GameObject:
   m_ObjectHideFlags: 0
@@ -4276,6 +4296,7 @@ MonoBehaviour:
   animateOnStart: 0
   isLooping: 0
   ignoreDirection: 1
+  AnimateableTransforms: []
   goal: 0
   start: 0
   current: 0
@@ -4643,6 +4664,7 @@ MonoBehaviour:
   animateOnStart: 0
   isLooping: 0
   ignoreDirection: 0
+  AnimateableTransforms: []
   goal: 0
   start: 0
   current: 0
