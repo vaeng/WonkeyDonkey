@@ -12,6 +12,10 @@ public class PitchYawRollAnim : Animateable
         rotation.x = current * axesMultiplyer.x;
         rotation.y = current * axesMultiplyer.y;
         rotation.z = current * axesMultiplyer.z;
-        transform.localEulerAngles = rotation;
+
+        foreach(Transform t in AnimateableTransforms)
+        {
+            t.localEulerAngles = rotation;
+        }
     }
 }

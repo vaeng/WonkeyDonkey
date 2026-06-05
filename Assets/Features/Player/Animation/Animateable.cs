@@ -1,13 +1,23 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Animateable : MonoBehaviour, IAnimateable
 {
     [SerializeField] bool animateOnStart = false, isLooping = false, ignoreDirection = false;
+    [SerializeField] public List<Transform> AnimateableTransforms;
 
     [SerializeField] float goal, start;
     public float current, currentStart, speed;
     float animationTimer;
     [SerializeField] AnimationCurve animCurve = AnimationCurve.Linear(0, 0, 1, 1);
+
+    void Start()
+    {
+        if (AnimateableTransforms == null || AnimateableTransforms.Count == 0)
+        {
+            AnimateableTransforms = new List<Transform> { transform };
+        }
+    }
 
     public virtual void Animate(float time)
     {
