@@ -10,6 +10,8 @@ public class StackableItemPhysics : MonoBehaviour
     [Header("Fall Detection")]
     [SerializeField] private float fallYThreshold = -1f;
     [SerializeField] private float sideFallMargin = 0.5f;
+    [Tooltip("When set to 0, the height for despawn will be calculated along the first collider")]
+    [SerializeField] private float heightToDespawnOverride = 0f;
 
     [Header("Balance")]
     [SerializeField] private float centerOfMassEdgeMargin = 0.04f;
@@ -40,7 +42,7 @@ public class StackableItemPhysics : MonoBehaviour
     public static System.Action OnItemFallen;
 
     private Rigidbody rb;
-    private BoxCollider boxCollider;
+    private Collider cargoCollider;
     private Collider itemCollider;
     private Carriage carriage;
 
@@ -52,7 +54,7 @@ public class StackableItemPhysics : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         itemCollider = GetComponentInChildren<Collider>();
-        boxCollider = GetComponentInChildren<BoxCollider>();
+        cargoCollider = GetComponentInChildren<Collider>();
     }
 
     private void OnEnable()
@@ -105,9 +107,24 @@ public class StackableItemPhysics : MonoBehaviour
         SlowDownSmallMovement();
     }
 
+
+    private float CalculateHeightToDespawn()
+    {
+        float colliderHeight = cargoCollider switch
+        {
+            BoxCollider box => box.size.y / 2f,
+            SphereCollider sphere => sphere.radius,
+            CapsuleCollider capsule => capsule.height / 2f,
+            _ => cargoCollider.bounds.extents.y
+        };
+
+        return colliderHeight + 0.3f;
+    }
+
+
     private void Update()
     {
-        float heightToDespawn = (boxCollider.size.y/2)+0.3f;
+        float heightToDespawn = heightToDespawnOverride > 0? heightToDespawnOverride : CalculateHeightToDespawn();
         if (transform.position.y < heightToDespawn)
         {
             OnItemFallen?.Invoke();

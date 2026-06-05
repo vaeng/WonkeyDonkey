@@ -179,6 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StackableItemPhysics
   fallYThreshold: -1
   sideFallMargin: 0.5
+  heightToDespawnOverride: 1
   centerOfMassEdgeMargin: 0.03
   wobbleEdgeDistance: 0.15
   minOverhangToTip: 0.35

@@ -5,7 +5,7 @@ public class StartRotation : MonoBehaviour
     public bool rotateX, rotateY, rotateZ;
     [SerializeField] private float rotationInterval = 90f;
 
-    void Start()
+    void OnEnable()
     {
         int range = Mathf.RoundToInt(360f / rotationInterval);
         int randomXRotation = Random.Range(0, range) * 90;
