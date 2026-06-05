@@ -33,7 +33,7 @@ public class CarriageStackManager : MonoBehaviour
         Vector3 localSpot = carriage.GetLocalPositionForSpot(spotIndex);
         Vector3 spawnBase = stackRoot.TransformPoint(new Vector3(localSpot.x, 0f, 0f));
 
-        GameObject stackedItem = Instantiate(item.StackedPrefab, spawnBase, stackRoot.rotation);
+        GameObject stackedItem = Instantiate(item.StackedPrefab, spawnBase, item.GetComponent<StartRotation>()? item.transform.rotation : stackRoot.rotation);
 
         RemoveWorldMover(stackedItem);
         SetLayerRecursively(stackedItem, LayerMask.NameToLayer(stackItemLayerName));
