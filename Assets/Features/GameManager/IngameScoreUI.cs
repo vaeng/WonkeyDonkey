@@ -1,9 +1,15 @@
 using System.Collections;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 public class IngameScoreUI : MonoBehaviour
 {
     [SerializeField] private  UnityEngine.UI.Text scoreText;
+     [Header("Feedbacks")]
+    /// a MMF_Player to play when the Hero starts jumping
+    public MMF_Player ScoreUpFeedback;
+    /// a MMF_Player to play when the Hero lands after a jump
+    public MMF_Player ScoreDownFeedback;
     Highscore _highscore;
     int currentScore;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,12 +49,14 @@ public class IngameScoreUI : MonoBehaviour
     void OnScoreWentUp(int _amount)
     {
         currentScore += _amount;
+        ScoreUpFeedback?.PlayFeedbacks();
         scoreText.text = currentScore.ToString("F0");
     }
 
     void OnScoreWentDown(int _amount)
     {
         currentScore -= _amount;
+        ScoreDownFeedback?.PlayFeedbacks();
         scoreText.text = currentScore.ToString("F0");
     }
 }
