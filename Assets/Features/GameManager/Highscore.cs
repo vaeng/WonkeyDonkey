@@ -20,7 +20,7 @@ public class Highscore : MonoBehaviour
         FallenCrateCount = 0;
         DeliveredCrateCount = 0;
         TotalScore = 0;
-        StartCoroutine(DelayedSubscribtion());
+        StartCoroutine(DelayedSubscription());
     }
 
     void OnDisable()
@@ -33,7 +33,7 @@ public class Highscore : MonoBehaviour
         }
     }
 
-    private IEnumerator DelayedSubscribtion()
+    private IEnumerator DelayedSubscription()
     {
         yield return new WaitForSeconds(0.5f);
         StackableItemPhysics.OnItemFallen += OnCrateFallen;

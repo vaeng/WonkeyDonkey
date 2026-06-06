@@ -17,7 +17,7 @@ public class IngameScoreUI : MonoBehaviour
     {
         int currentScore = 0;
         scoreText.text = currentScore.ToString("F0");
-        StartCoroutine(DelayedSubscribtion());
+        StartCoroutine(DelayedSubscription());
     }
 
     // Update is called once per frame
@@ -26,7 +26,7 @@ public class IngameScoreUI : MonoBehaviour
         
     }
 
-    IEnumerator DelayedSubscribtion()
+    IEnumerator DelayedSubscription()
     {
         yield return new WaitForSeconds(0.5f);
         _highscore = FindAnyObjectByType<Highscore>();

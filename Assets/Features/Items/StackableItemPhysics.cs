@@ -41,14 +41,18 @@ public class StackableItemPhysics : MonoBehaviour
 
     public static System.Action OnItemFallen;
 
+    public bool IsDelivered = false;
+
     private Rigidbody rb;
     private Collider cargoCollider;
     private Collider itemCollider;
     private Carriage carriage;
 
-    private bool hasFallen;
+    public bool hasFallen;
     private bool isWobbling;
     private float fallDirection;
+
+    private bool levelEnded;
 
     private void Awake()
     {
@@ -61,11 +65,34 @@ public class StackableItemPhysics : MonoBehaviour
     {
         if (!allItems.Contains(this))
             allItems.Add(this);
+
+        StartCoroutine(DelayedSubscription());
     }
 
     private void OnDisable()
     {
+        var levelFlow = FindAnyObjectByType<LevelFlow>();
+        if(levelFlow != null)
+        {
+            levelFlow.OnLevelEnded -= OnLevelEnded;
+        }
         allItems.Remove(this);
+    }
+
+
+    private IEnumerator DelayedSubscription()
+    {
+        yield return new WaitForSeconds(0.5f);
+        var levelFlow = FindAnyObjectByType<LevelFlow>();
+        if(levelFlow != null)
+        {
+            levelFlow.OnLevelEnded += OnLevelEnded;
+        }
+    } 
+
+    void OnLevelEnded()
+    {
+        levelEnded = true;
     }
 
     public void Initialize(Carriage carriage)
@@ -124,7 +151,7 @@ public class StackableItemPhysics : MonoBehaviour
 
     private void Update()
     {
-        if(hasFallen)
+        if(hasFallen|| IsDelivered)
             return;
         float heightToDespawn = heightToDespawnOverride > 0? heightToDespawnOverride : CalculateHeightToDespawn();
         if (transform.position.y < heightToDespawn)
@@ -374,17 +401,24 @@ public class StackableItemPhysics : MonoBehaviour
 
     private IEnumerator TumbleAndDespawnAfterDelay()
     {
-        OnItemFallen?.Invoke();
-        float tumbleDuration = 3f;
-        float elapsed = 0f;
-        float tumbleDistance = 1.0f;
-        while (elapsed < tumbleDuration)
+        if(levelEnded)
         {
-            transform.Rotate(Vector3.forward, 360f * Time.deltaTime);
-            transform.Translate(Vector3.back * tumbleDistance * Time.deltaTime, Space.World);
-            elapsed += Time.deltaTime;
-            yield return null;
+            yield break;
+        } else
+        {
+            OnItemFallen?.Invoke();
+            hasFallen = true;
+            float tumbleDuration = 3f;
+            float elapsed = 0f;
+            float tumbleDistance = 1.0f;
+            while (elapsed < tumbleDuration)
+            {
+                transform.Rotate(Vector3.forward, 360f * Time.deltaTime);
+                transform.Translate(Vector3.back * tumbleDistance * Time.deltaTime, Space.World);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 }

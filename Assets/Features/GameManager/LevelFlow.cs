@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using System;
 
 public class LevelFlow : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class LevelFlow : MonoBehaviour
     [Header("End")]
     [SerializeField] private float slowDownTime = 0.5f;
     [SerializeField] private float distanceToStopItemsBeforeFinish = 5f;
+
+    public event Action OnLevelEnded;
 
     private float timeLeft;
     private float slowDownTimer;
@@ -84,6 +87,7 @@ public class LevelFlow : MonoBehaviour
     private void StartEnding()
     {
         endingStarted = true;
+        OnLevelEnded?.Invoke();
         slowDownTimer = 0f;
 
         if (laneMovement != null)
