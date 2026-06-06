@@ -51,23 +51,9 @@ public class Highscore : MonoBehaviour
         TotalScore += pickedUpReward;
     }
 
-    public float GetTallestStackHeight()
-    {
-        var crates = FindObjectsByType<StackableItemPhysics>();
-        var height = 0;
-        foreach (var crate in crates)
-        {
-            if (crate.transform.position.y > height)
-            {
-                height = (int)crate.transform.position.y;
-            }
-        }
-        return height;
-    }
-
     public float GetTotalScore()
     {
-        return TotalScore * GetTallestStackHeight();
+        return TotalScore;
     }
 
     public float GetHighScore()
