@@ -124,10 +124,12 @@ public class StackableItemPhysics : MonoBehaviour
 
     private void Update()
     {
+        if(hasFallen)
+            return;
         float heightToDespawn = heightToDespawnOverride > 0? heightToDespawnOverride : CalculateHeightToDespawn();
         if (transform.position.y < heightToDespawn)
         {
-            OnItemFallen?.Invoke();
+            hasFallen = true;
             StartCoroutine(TumbleAndDespawnAfterDelay());
         }
     }
@@ -372,6 +374,7 @@ public class StackableItemPhysics : MonoBehaviour
 
     private IEnumerator TumbleAndDespawnAfterDelay()
     {
+        OnItemFallen?.Invoke();
         float tumbleDuration = 3f;
         float elapsed = 0f;
         float tumbleDistance = 1.0f;
