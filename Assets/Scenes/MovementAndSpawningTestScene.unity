@@ -2177,6 +2177,7 @@ MonoBehaviour:
   rewardItemPrefab: {fileID: 0}
   RewardsPerCrate: 10
   delayBetweenRewards: 0.1
+  redItemCollectorBorder: {fileID: 1362172764}
 --- !u!1 &886563640 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cb24d722abf56ba4e8c8f6822ea21f09, type: 3}

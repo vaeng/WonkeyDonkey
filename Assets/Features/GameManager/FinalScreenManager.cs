@@ -8,6 +8,7 @@ public class FinalScreenManager : MonoBehaviour
     [SerializeField] private GameObject rewardItemPrefab;
     [SerializeField] private int RewardsPerCrate = 10;
     [SerializeField] private float delayBetweenRewards = 0.1f;
+    [SerializeField] private GameObject redItemCollectorBorder;
 
     Highscore highscore;
     void OnEnable()
@@ -44,6 +45,7 @@ public class FinalScreenManager : MonoBehaviour
 
     private IEnumerator StartLevelEndSequence()
     {
+        redItemCollectorBorder.SetActive(false);
         yield return new WaitForSeconds(delayBeforeMovingBoxes);
         var possibleRespawnPoints = FindObjectsByType<ItemSpawnPointTag>(FindObjectsInactive.Include);
         var collectedItems = FindObjectsByType<StackableItemPhysics>();
