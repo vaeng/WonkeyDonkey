@@ -1934,6 +1934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwipeInput
   minSwipeDistance: 10
+  directionChangeDistance: 25
   invertHorizontalInput: 0
   useKeyboardInput: 1
 --- !u!54 &826179258
@@ -1998,7 +1999,7 @@ MonoBehaviour:
   laneSystem: {fileID: 1398317069}
   animationSystem: {fileID: 826179259}
   laneStepPerSwipe: 0.5
-  sideMoveSpeed: 10
+  sideMoveSpeed: 3
   startCenterLane: 3
 --- !u!1 &828505936
 GameObject:
