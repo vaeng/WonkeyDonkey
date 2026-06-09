@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{a164bced-feb1-4aa2-8403-882d0e8e29d8}">
+		<property name="assetPath">
+			<value>_Sonojas_ Mananitas Michoacanas.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>143.54575963718821</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{63c62f79-18de-4042-9cb6-aeaf35b439f0}</destination>
+		</relationship>
+	</object>
+</objects>
