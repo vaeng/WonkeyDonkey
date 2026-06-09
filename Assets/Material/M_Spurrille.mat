@@ -115,7 +115,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _GrainColorBlend: 0.5
-    - _GrainScale: 16.7
+    - _GrainScale: 17.1
     - _GrainShine: 1.57
     - _Metallic: 0
     - _NoiseScale: -1.1
@@ -147,8 +147,8 @@ Material:
     - _Blur: {r: -0.13, g: 1.11, b: 0, a: 0}
     - _Blur2: {r: 0, g: 1.87, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color_Sand_High: {r: 0.7735849, g: 0.59499776, b: 0.36124954, a: 1}
-    - _Color_Sand_Low: {r: 0.4811321, g: 0.2916296, b: 0.102127105, a: 1}
+    - _Color_Sand_High: {r: 0.65882355, g: 0.54901963, b: 0.28235295, a: 1}
+    - _Color_Sand_Low: {r: 0.3301887, g: 0.19569935, b: 0.10435208, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShineColor: {r: 0.3207547, g: 0.22709656, b: 0.122552514, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
