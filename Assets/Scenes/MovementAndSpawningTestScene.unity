@@ -2608,12 +2608,12 @@ MonoBehaviour:
   redItemCollectorBorder: {fileID: 1362172764}
   pauseButton: {fileID: 470687632}
   inGameScoreDisplay: {fileID: 800290605}
-  GoodsLostDisplayText: {fileID: 300309192}
-  GoodsLostDisplayNumber: {fileID: 1833486862}
-  GoodsDeliveredDisplayText: {fileID: 674474715}
-  GoodsDeliveredDisplayNumber: {fileID: 1070632435}
-  CurrentHighscoreDisplayText: {fileID: 1509393385}
-  CurrentHighscoreDisplayNumber: {fileID: 1434034529}
+  GoodsLostDisplayText: {fileID: 300309194}
+  GoodsLostDisplayNumber: {fileID: 1833486864}
+  GoodsDeliveredDisplayText: {fileID: 674474717}
+  GoodsDeliveredDisplayNumber: {fileID: 1070632437}
+  CurrentHighscoreDisplayText: {fileID: 1509393387}
+  CurrentHighscoreDisplayNumber: {fileID: 1434034531}
 --- !u!1 &886563640 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cb24d722abf56ba4e8c8f6822ea21f09, type: 3}
