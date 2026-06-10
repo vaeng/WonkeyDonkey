@@ -12,6 +12,7 @@ public class FinalScreenManager : MonoBehaviour
     [SerializeField] private GameObject redItemCollectorBorder;
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private GameObject inGameScoreDisplay;
+    [SerializeField] private GameObject ReplayButton;
 
     [SerializeField] private UnityEngine.UI.Text GoodsLostDisplayText;
     [SerializeField] private UnityEngine.UI.Text GoodsLostDisplayNumber;
@@ -56,6 +57,7 @@ public class FinalScreenManager : MonoBehaviour
 
     private IEnumerator StartLevelEndSequence()
     {
+        // deactivate all
         GoodsLostDisplayText.gameObject.SetActive(false);
         GoodsLostDisplayNumber.gameObject.SetActive(false);
         GoodsDeliveredDisplayText.gameObject.SetActive(false);
@@ -68,11 +70,11 @@ public class FinalScreenManager : MonoBehaviour
         // don't show score
         inGameScoreDisplay.SetActive(false);
         // show goods lost
+        yield return new WaitForSeconds(0.2f);
         GoodsLostDisplayText.gameObject.SetActive(true);
         GoodsLostDisplayNumber.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(0.2f);
-        inGameScoreDisplay.SetActive(true);
         var ingameScoreUI = inGameScoreDisplay.GetComponent<IngameScoreUI>();
         if (ingameScoreUI == null)
         {
@@ -81,9 +83,18 @@ public class FinalScreenManager : MonoBehaviour
         }
         ingameScoreUI.ResetScore();
         ingameScoreUI.gameObject.SetActive(true);
-        // start with negative score
-        ingameScoreUI.OnScoreWentDown(highscore.FallenCrateCount * highscore.fallenCratePenalty);
+        inGameScoreDisplay.SetActive(true);
+        GoodsLostDisplayNumber.text = 0.ToString();
+        for (int i = 0; i < highscore.FallenCrateCount; i++)
+        {
+            // count up
+            ingameScoreUI.OnScoreWentDown(highscore.fallenCratePenalty);
+            GoodsLostDisplayNumber.text = (i + 1).ToString();
+            yield return new WaitForSeconds(0.2f);
+        }
+
         
+        yield return new WaitForSeconds(0.4f);
 
 
         yield return new WaitForSeconds(delayBeforeMovingBoxes);
@@ -143,7 +154,8 @@ public class FinalScreenManager : MonoBehaviour
         CurrentHighscoreDisplayText.gameObject.SetActive(true);
         if (highscore != null)
         {
-            int rewardCount = highscore.DeliveredCrateCount * RewardsPerCrate;
+            CurrentHighscoreDisplayNumber.text = highscore.GetHighScore().ToString("F0");
+            int rewardCount = Mathf.Min(highscore.DeliveredCrateCount, 2*deliveredItemsCounter - highscore.FallenCrateCount)  * RewardsPerCrate;
             var rewardSpawnPoint = FindAnyObjectByType<RewardSpawnPointTag>();
             for (int i = 0; i < rewardCount; i++)
             {
