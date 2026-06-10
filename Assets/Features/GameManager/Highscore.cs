@@ -5,8 +5,8 @@ using System;
 public class Highscore : MonoBehaviour
 {
     [Header("Score Tracking")]
-    [SerializeField] private int fallenCratePenalty = 50;
-    [SerializeField] private int pickedUpReward = 100;
+    [SerializeField] public int fallenCratePenalty = 50;
+    [SerializeField] public int pickedUpReward = 100;
     public int FallenCrateCount { get; private set; }
     public int DeliveredCrateCount { get; private set; }
     public int TotalScore { get; private set; }

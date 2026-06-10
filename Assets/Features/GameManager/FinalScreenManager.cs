@@ -13,6 +13,13 @@ public class FinalScreenManager : MonoBehaviour
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private GameObject inGameScoreDisplay;
 
+    [SerializeField] private UnityEngine.UI.Text GoodsLostDisplayText;
+    [SerializeField] private UnityEngine.UI.Text GoodsLostDisplayNumber;
+    [SerializeField] private UnityEngine.UI.Text GoodsDeliveredDisplayText;
+    [SerializeField] private UnityEngine.UI.Text GoodsDeliveredDisplayNumber;
+    [SerializeField] private UnityEngine.UI.Text CurrentHighscoreDisplayText;
+    [SerializeField] private UnityEngine.UI.Text CurrentHighscoreDisplayNumber;
+
 
     Highscore highscore;
     void OnEnable()
@@ -49,19 +56,41 @@ public class FinalScreenManager : MonoBehaviour
 
     private IEnumerator StartLevelEndSequence()
     {
+        GoodsLostDisplayText.gameObject.SetActive(false);
+        GoodsLostDisplayNumber.gameObject.SetActive(false);
+        GoodsDeliveredDisplayText.gameObject.SetActive(false);
+        GoodsDeliveredDisplayNumber.gameObject.SetActive(false);
+        CurrentHighscoreDisplayText.gameObject.SetActive(false);
+        CurrentHighscoreDisplayNumber.gameObject.SetActive(false);
+        redItemCollectorBorder.SetActive(false);
         // don't show pause
         pauseButton.SetActive(false);
         // don't show score
         inGameScoreDisplay.SetActive(false);
         // show goods lost
-        // start with negative score
-        // count up
-        // show old highscore
-        // show new highscore if beaten
+        GoodsLostDisplayText.gameObject.SetActive(true);
+        GoodsLostDisplayNumber.gameObject.SetActive(true);
 
-        redItemCollectorBorder.SetActive(false);
+        yield return new WaitForSeconds(0.2f);
+        inGameScoreDisplay.SetActive(true);
+        var ingameScoreUI = inGameScoreDisplay.GetComponent<IngameScoreUI>();
+        if (ingameScoreUI == null)
+        {
+            Debug.LogError("IngameScoreUI component not found on inGameScoreDisplay object.");
+            yield break;
+        }
+        ingameScoreUI.ResetScore();
+        ingameScoreUI.gameObject.SetActive(true);
+        // start with negative score
+        ingameScoreUI.OnScoreWentDown(highscore.FallenCrateCount * highscore.fallenCratePenalty);
+        
+
 
         yield return new WaitForSeconds(delayBeforeMovingBoxes);
+        GoodsDeliveredDisplayText.gameObject.SetActive(true);
+        int deliveredItemsCounter = 0;
+        GoodsDeliveredDisplayNumber.text = deliveredItemsCounter.ToString("F0");
+        GoodsDeliveredDisplayNumber.gameObject.SetActive(true);
 
         var possibleRespawnPoints = FindObjectsByType<ItemSpawnPointTag>(FindObjectsInactive.Include);
 
@@ -73,6 +102,10 @@ public class FinalScreenManager : MonoBehaviour
             {
                 break;
             }
+            // count up
+            deliveredItemsCounter++;
+            ingameScoreUI.OnScoreWentUp(highscore.pickedUpReward);
+            GoodsDeliveredDisplayNumber.text = deliveredItemsCounter.ToString("F0");
 
             if (possibleRespawnPoints.Length == 0)
             {
@@ -98,10 +131,16 @@ public class FinalScreenManager : MonoBehaviour
 
             yield return new WaitForSeconds(delayBetweenRemovals);
         }
+
+        // show new highscore if beaten
         if (highscore != null && highscore.GetTotalScore() >= highscore.GetHighScore())
         {
+            CurrentHighscoreDisplayText.text = "New\nHighscore!";
             newHighscorePrefab.SetActive(true);
         }
+        // show old highscore
+        CurrentHighscoreDisplayNumber.gameObject.SetActive(true);
+        CurrentHighscoreDisplayText.gameObject.SetActive(true);
         if (highscore != null)
         {
             int rewardCount = highscore.DeliveredCrateCount * RewardsPerCrate;

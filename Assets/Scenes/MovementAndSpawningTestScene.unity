@@ -536,6 +536,90 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 220639635}
   m_CullTransparentMesh: 1
+--- !u!1 &300309192
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 300309193}
+  - component: {fileID: 300309195}
+  - component: {fileID: 300309194}
+  m_Layer: 5
+  m_Name: GoodsLostText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &300309193
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300309192}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1872606267}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 381.6, y: 477.8}
+  m_SizeDelta: {x: 200, y: 200}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &300309194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300309192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.81960785, g: 0.043137256, b: 0.5137255, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: f6d4ace7c1d17324b9330a835305f695, type: 3}
+    m_FontSize: 90
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 300
+    m_Alignment: 5
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
+    m_LineSpacing: 0.6
+  m_Text: 'Goods Lost
+
+
+
+
+'
+--- !u!222 &300309195
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300309192}
+  m_CullTransparentMesh: 1
 --- !u!1 &333706363
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,7 +1538,7 @@ GameObject:
   - component: {fileID: 674474718}
   - component: {fileID: 674474717}
   m_Layer: 5
-  m_Name: LeftSideText
+  m_Name: GoodsDeliveredText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1512,10 +1596,14 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 0.6
-  m_Text: 'Goods Delivered
+  m_Text: '
 
 
-    Goods Lost
+
+
+    Goods Delivered
+
+
 
 
 '
@@ -2356,7 +2444,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &828505937
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2520,6 +2608,12 @@ MonoBehaviour:
   redItemCollectorBorder: {fileID: 1362172764}
   pauseButton: {fileID: 470687632}
   inGameScoreDisplay: {fileID: 800290605}
+  GoodsLostDisplayText: {fileID: 300309192}
+  GoodsLostDisplayNumber: {fileID: 1833486862}
+  GoodsDeliveredDisplayText: {fileID: 674474715}
+  GoodsDeliveredDisplayNumber: {fileID: 1070632435}
+  CurrentHighscoreDisplayText: {fileID: 1509393385}
+  CurrentHighscoreDisplayNumber: {fileID: 1434034529}
 --- !u!1 &886563640 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cb24d722abf56ba4e8c8f6822ea21f09, type: 3}
@@ -2902,7 +2996,7 @@ GameObject:
   - component: {fileID: 1070632438}
   - component: {fileID: 1070632437}
   m_Layer: 5
-  m_Name: GoodsDeliveredText
+  m_Name: GoodsDeliveredNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2924,7 +3018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 624.7, y: 562.7}
+  m_AnchoredPosition: {x: 624.7, y: 473}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1070632437
@@ -3807,7 +3901,7 @@ GameObject:
   - component: {fileID: 1434034532}
   - component: {fileID: 1434034531}
   m_Layer: 5
-  m_Name: HighScoreText
+  m_Name: HighScoreNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3827,9 +3921,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1872606267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 624.7, y: 90.69995}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -31.400023, y: 4}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1434034531
@@ -3859,7 +3953,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 300
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
@@ -4268,7 +4362,7 @@ GameObject:
   - component: {fileID: 1509393388}
   - component: {fileID: 1509393387}
   m_Layer: 5
-  m_Name: Highscore
+  m_Name: HighscoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4288,9 +4382,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1872606267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 381.59998, y: 92}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -31.400024, y: 191}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1509393387
@@ -4320,13 +4414,15 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 300
-    m_Alignment: 5
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 0.8
-  m_Text: Highscore
+  m_Text: 'Current
+
+    Highscore'
 --- !u!222 &1509393388
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5348,7 +5444,7 @@ GameObject:
   - component: {fileID: 1833486865}
   - component: {fileID: 1833486864}
   m_Layer: 5
-  m_Name: GoodsLostText
+  m_Name: GoodsLostNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5370,7 +5466,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 624.7, y: 473}
+  m_AnchoredPosition: {x: 624.7, y: 562.7}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1833486864
@@ -5604,6 +5700,7 @@ RectTransform:
   - {fileID: 1260868121}
   - {fileID: 828505937}
   - {fileID: 674474716}
+  - {fileID: 300309193}
   - {fileID: 1070632436}
   - {fileID: 1833486863}
   - {fileID: 1995528189}
@@ -5973,7 +6070,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1995528189
 RectTransform:
   m_ObjectHideFlags: 0
