@@ -6,9 +6,13 @@ public class FinalScreenManager : MonoBehaviour
     [SerializeField] private float delayBeforeMovingBoxes = 1.5f;
     [SerializeField] private float delayBetweenRemovals = 0.3f;
     [SerializeField] private GameObject rewardItemPrefab;
+    [SerializeField] private GameObject newHighscorePrefab;
     [SerializeField] private int RewardsPerCrate = 10;
     [SerializeField] private float delayBetweenRewards = 0.1f;
     [SerializeField] private GameObject redItemCollectorBorder;
+    [SerializeField] private GameObject pauseButton;
+    [SerializeField] private GameObject inGameScoreDisplay;
+
 
     Highscore highscore;
     void OnEnable()
@@ -19,7 +23,7 @@ public class FinalScreenManager : MonoBehaviour
     void OnDisable()
     {
         var levelFlow = FindAnyObjectByType<LevelFlow>();
-        if(levelFlow != null)
+        if (levelFlow != null)
         {
             levelFlow.OnLevelEnded -= OnLevelEnded;
         }
@@ -30,12 +34,12 @@ public class FinalScreenManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         var levelFlow = FindAnyObjectByType<LevelFlow>();
-        if(levelFlow != null)
+        if (levelFlow != null)
         {
             levelFlow.OnLevelEnded += OnLevelEnded;
         }
         highscore = FindAnyObjectByType<Highscore>();
-    } 
+    }
 
     void OnLevelEnded()
     {
@@ -45,37 +49,64 @@ public class FinalScreenManager : MonoBehaviour
 
     private IEnumerator StartLevelEndSequence()
     {
+        // don't show pause
+        pauseButton.SetActive(false);
+        // don't show score
+        inGameScoreDisplay.SetActive(false);
+        // show goods lost
+        // start with negative score
+        // count up
+        // show old highscore
+        // show new highscore if beaten
+
         redItemCollectorBorder.SetActive(false);
+
         yield return new WaitForSeconds(delayBeforeMovingBoxes);
+
         var possibleRespawnPoints = FindObjectsByType<ItemSpawnPointTag>(FindObjectsInactive.Include);
-        var collectedItems = FindObjectsByType<StackableItemPhysics>();
 
-        foreach(var item in collectedItems)
+        while (true)
         {
-            if(item)
+            var item = FindAnyObjectByType<StackableItemPhysics>();
+
+            if (item == null)
             {
-                if(item.IsDelivered)
-                {
-                    continue;
-                }
-                item.IsDelivered = true;
-
-                if(possibleRespawnPoints.Length == 0)
-                {
-                    Destroy(item.gameObject);
-                    continue;
-                }
-                var randomPoint = possibleRespawnPoints[Random.Range(0, possibleRespawnPoints.Length)].transform.position;
-                item.transform.position = randomPoint;
-                yield return new WaitForSeconds(delayBetweenRemovals);
+                break;
             }
-        }
 
-        if(highscore != null)
+            if (possibleRespawnPoints.Length == 0)
+            {
+                Destroy(item.gameObject);
+            }
+            else
+            {
+                var randomPoint = possibleRespawnPoints[Random.Range(0, possibleRespawnPoints.Length)].transform.position;
+                var rb = item.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                    rb.position = randomPoint;
+                }
+                else
+                {
+                    item.transform.position = randomPoint;
+                }
+                Destroy(item.GetComponent<StackableItemPhysics>());
+
+            }
+
+            yield return new WaitForSeconds(delayBetweenRemovals);
+        }
+        if (highscore != null && highscore.GetTotalScore() >= highscore.GetHighScore())
+        {
+            newHighscorePrefab.SetActive(true);
+        }
+        if (highscore != null)
         {
             int rewardCount = highscore.DeliveredCrateCount * RewardsPerCrate;
             var rewardSpawnPoint = FindAnyObjectByType<RewardSpawnPointTag>();
-            for(int i = 0; i < rewardCount; i++)
+            for (int i = 0; i < rewardCount; i++)
             {
                 var randomQuaternion = Random.rotation;
                 Instantiate(rewardItemPrefab, rewardSpawnPoint.transform.position, randomQuaternion);
@@ -84,5 +115,5 @@ public class FinalScreenManager : MonoBehaviour
             }
         }
 
-    } 
+    }
 }
