@@ -12,7 +12,7 @@ public class AnimationSystem : MonoBehaviour
         rider?.SetGoal(goal);
         riderHat?.SetGoal(goal);
         waggon?.SetGoal(goal);
-        wheel?.SetGoal(goal);
+        wheel?.SetGoal(goal/2);
     }
 
     public void Animate(float time)

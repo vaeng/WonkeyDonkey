@@ -10,7 +10,7 @@ public class LaneMovement : MonoBehaviour
 
     [Header("Lane Movement")]
     [SerializeField] private float laneStepPerSwipe = 0.5f;
-    [SerializeField] private float sideMoveSpeed = 10f;
+    [SerializeField] private float sideMoveSpeed = 5f;
 
     [Header("Start")]
     [SerializeField] private float startCenterLane = 3f;
@@ -21,6 +21,8 @@ public class LaneMovement : MonoBehaviour
 
     private float minCenterLane;
     private float maxCenterLane;
+
+    private int heldDirection;
 
     public float CurrentCenterLane => currentCenterLane;
 
@@ -43,6 +45,7 @@ public class LaneMovement : MonoBehaviour
 
         swipeInput.OnSwipeLeft += MoveLeft;
         swipeInput.OnSwipeRight += MoveRight;
+        swipeInput.OnSwipeReleased += StopLaneMovement;
     }
 
     private void OnDisable()
@@ -52,6 +55,7 @@ public class LaneMovement : MonoBehaviour
 
         swipeInput.OnSwipeLeft -= MoveLeft;
         swipeInput.OnSwipeRight -= MoveRight;
+        swipeInput.OnSwipeReleased -= StopLaneMovement;
     }
 
     private void FixedUpdate()
@@ -62,23 +66,46 @@ public class LaneMovement : MonoBehaviour
             sideMoveSpeed * Time.fixedDeltaTime
         );
 
+        if (heldDirection != 0 && HasReachedTargetLane())
+            MoveInHeldDirection();
+
         KeepPlayerAtWorldCenter();
     }
 
     private void MoveLeft()
     {
+        heldDirection = -1;
         SetTargetLane(currentCenterLane - laneStepPerSwipe);
         animationSystem?.StartAnimation(1f);
     }
 
     private void MoveRight()
     {
+        heldDirection = 1;
         SetTargetLane(currentCenterLane + laneStepPerSwipe);
         animationSystem?.StartAnimation(-1f);
 
         //fmod spielt einen oneshot aus der Bank Donkey ab
         FMODUnity.RuntimeManager.PlayOneShot("event:/Donkey");
         FMODUnity.RuntimeManager.PlayOneShot("event:/Knarz");
+    }
+
+    private void MoveInHeldDirection()
+    {
+        if (heldDirection < 0)
+            MoveLeft();
+        else if (heldDirection > 0)
+            MoveRight();
+    }
+
+    private void StopLaneMovement()
+    {
+        heldDirection = 0;
+    }
+
+    private bool HasReachedTargetLane()
+    {
+        return Mathf.Approximately(currentWorldOffsetX, targetWorldOffsetX);
     }
 
     private void SetTargetLane(float lane)
