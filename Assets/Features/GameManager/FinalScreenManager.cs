@@ -100,7 +100,7 @@ public class FinalScreenManager : MonoBehaviour
         yield return new WaitForSeconds(delayBeforeMovingBoxes);
         GoodsDeliveredDisplayText.gameObject.SetActive(true);
         int deliveredItemsCounter = 0;
-        GoodsDeliveredDisplayNumber.text = deliveredItemsCounter.ToString("F0");
+        GoodsDeliveredDisplayNumber.text = deliveredItemsCounter.ToString("N0");
         GoodsDeliveredDisplayNumber.gameObject.SetActive(true);
 
         var possibleRespawnPoints = FindObjectsByType<ItemSpawnPointTag>(FindObjectsInactive.Include);
@@ -116,7 +116,7 @@ public class FinalScreenManager : MonoBehaviour
             // count up
             deliveredItemsCounter++;
             ingameScoreUI.OnScoreWentUp(highscore.pickedUpReward);
-            GoodsDeliveredDisplayNumber.text = deliveredItemsCounter.ToString("F0");
+            GoodsDeliveredDisplayNumber.text = deliveredItemsCounter.ToString("N0");
 
             if (possibleRespawnPoints.Length == 0)
             {
@@ -154,7 +154,7 @@ public class FinalScreenManager : MonoBehaviour
         CurrentHighscoreDisplayText.gameObject.SetActive(true);
         if (highscore != null)
         {
-            CurrentHighscoreDisplayNumber.text = highscore.GetHighScore().ToString("F0");
+            CurrentHighscoreDisplayNumber.text = highscore.GetHighScore().ToString("N0");
             int rewardCount = Mathf.Min(highscore.DeliveredCrateCount, 2*deliveredItemsCounter - highscore.FallenCrateCount)  * RewardsPerCrate;
             var rewardSpawnPoint = FindAnyObjectByType<RewardSpawnPointTag>();
             for (int i = 0; i < rewardCount; i++)

@@ -16,7 +16,7 @@ public class IngameScoreUI : MonoBehaviour
     void Start()
     {
         int currentScore = 0;
-        scoreText.text = currentScore.ToString("F0");
+        scoreText.text = currentScore.ToString("N0");
         StartCoroutine(DelayedSubscription());
     }
 
@@ -50,19 +50,19 @@ public class IngameScoreUI : MonoBehaviour
     {
         currentScore += _amount;
         ScoreUpFeedback?.PlayFeedbacks();
-        scoreText.text = currentScore.ToString("F0");
+        scoreText.text = currentScore.ToString("N0");
     }
 
     public void OnScoreWentDown(int _amount)
     {
         currentScore -= _amount;
         ScoreDownFeedback?.PlayFeedbacks();
-        scoreText.text = currentScore.ToString("F0");
+        scoreText.text = currentScore.ToString("N0");
     }
 
     public void ResetScore()
     {
         currentScore = 0;
-        scoreText.text = currentScore.ToString("F0");
+        scoreText.text = currentScore.ToString("N0");
     }
 }
