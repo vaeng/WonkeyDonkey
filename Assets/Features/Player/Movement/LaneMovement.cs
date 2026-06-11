@@ -1,4 +1,5 @@
 using UnityEngine;
+using FMODUnity;
 
 public class LaneMovement : MonoBehaviour
 {
@@ -7,6 +8,13 @@ public class LaneMovement : MonoBehaviour
     [SerializeField] private Carriage carriage;
     [SerializeField] private LaneSystem laneSystem;
     [SerializeField] private AnimationSystem animationSystem;
+    [SerializeField] private EventReference donkeyScreamSoundEvent, creakingSoundEvent;
+    [SerializeField] private EventReference donkeyHoovesSoundEvent;
+    private FMOD.Studio.EventInstance donkeyHoovesInstance;
+    private bool isHoovesSoundPlaying = false;
+
+    [SerializeField] private float donkeyScreamCoolDown = 0.2f, creakingCoolDown;
+    private float donkeyScreamLastSoundTime, creakingLastSoundTime;
 
     [Header("Lane Movement")]
     [SerializeField] private float laneStepPerSwipe = 0.5f;
@@ -72,11 +80,31 @@ public class LaneMovement : MonoBehaviour
         KeepPlayerAtWorldCenter();
     }
 
+    // Sound Beim Start abspielen
+    public void StartRun()
+    {
+        donkeyHoovesInstance = FMODUnity.RuntimeManager.CreateInstance(donkeyHoovesSoundEvent);
+        donkeyHoovesInstance.start();
+        isHoovesSoundPlaying = true;
+    }
+
+    // Sound beenden Wenn Spieler bei Finish angekommen ist
+    public void OnFinish()
+    {
+        if (isHoovesSoundPlaying)
+        {
+            donkeyHoovesInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            donkeyHoovesInstance.release();
+            isHoovesSoundPlaying = false;
+        }
+    }
     private void MoveLeft()
     {
         heldDirection = -1;
         SetTargetLane(currentCenterLane - laneStepPerSwipe);
         animationSystem?.StartAnimation(1f);
+
+        PlaySoundEffectWhenMoving();
     }
 
     private void MoveRight()
@@ -85,9 +113,7 @@ public class LaneMovement : MonoBehaviour
         SetTargetLane(currentCenterLane + laneStepPerSwipe);
         animationSystem?.StartAnimation(-1f);
 
-        //fmod spielt einen oneshot aus der Bank Donkey ab
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Donkey");
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Knarz");
+        PlaySoundEffectWhenMoving();
     }
 
     private void MoveInHeldDirection()
@@ -96,6 +122,25 @@ public class LaneMovement : MonoBehaviour
             MoveLeft();
         else if (heldDirection > 0)
             MoveRight();
+    }
+
+    private void PlaySoundEffectWhenMoving()
+    {
+        float donkeyScreamtimeSinceLastSound = Time.time - donkeyScreamLastSoundTime;
+
+        if (donkeyScreamtimeSinceLastSound >= donkeyScreamCoolDown)
+        {
+            RuntimeManager.PlayOneShot(donkeyScreamSoundEvent, transform.position);
+            donkeyScreamLastSoundTime = Time.time;
+        }
+
+        float creakingTimeSinceLastSound = Time.time - creakingLastSoundTime;
+
+        if (creakingTimeSinceLastSound >= creakingCoolDown)
+        {
+            RuntimeManager.PlayOneShot(creakingSoundEvent, transform.position);
+            creakingLastSoundTime = Time.time;
+        }
     }
 
     private void StopLaneMovement()

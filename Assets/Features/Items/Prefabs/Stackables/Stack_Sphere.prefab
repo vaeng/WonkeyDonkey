@@ -199,7 +199,7 @@ MonoBehaviour:
       Data3: -1210443367
       Data4: 21299102
     Path: event:/Cactusload
-  minCollisionForce: 1
+  minCollisionForce: 0.4
   coolDown: 0.2
 --- !u!1001 &4797549657951075815
 PrefabInstance:
