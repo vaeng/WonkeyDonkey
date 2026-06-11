@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FinalScreenManager : MonoBehaviour
@@ -14,6 +16,7 @@ public class FinalScreenManager : MonoBehaviour
     [SerializeField] private GameObject inGameScoreDisplay;
     [SerializeField] private GameObject ReplayButton;
     [SerializeField] private MusicManager musicManager;
+    [SerializeField] private List<RotateWheel> wheelsToRotate;
 
     [SerializeField] private UnityEngine.UI.Text GoodsLostDisplayText;
     [SerializeField] private UnityEngine.UI.Text GoodsLostDisplayNumber;
@@ -57,6 +60,11 @@ public class FinalScreenManager : MonoBehaviour
             musicManager.PlayNewHighScoreSound();
             musicManager.PlayWinningMusic();
             musicManager.StopDonkeyHoovesSound();
+        }
+
+        foreach (var wheel in wheelsToRotate)
+        {
+            wheel.StopRotation();
         }
 
         StartCoroutine(StartLevelEndSequence());
