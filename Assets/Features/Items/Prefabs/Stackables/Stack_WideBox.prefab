@@ -138,6 +138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 164020706516679539, guid: f42d98fe6654ece47a21538617fc3790, type: 3}
+    - {fileID: -1942404101426504596, guid: f42d98fe6654ece47a21538617fc3790, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -169,5 +170,5 @@ MonoBehaviour:
       Data3: 1973561263
       Data4: -1135568574
     Path: event:/ChestLoad
-  minCollisionForce: 0.5
+  minCollisionForce: 0.2
   coolDown: 0.2
