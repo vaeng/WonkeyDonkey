@@ -2424,6 +2424,29 @@ MonoBehaviour:
   carriage: {fileID: 2037516943}
   laneSystem: {fileID: 1398317069}
   animationSystem: {fileID: 826179259}
+  donkeyScreamSoundEvent:
+    Guid:
+      Data1: -730321189
+      Data2: 1098373429
+      Data3: 1721335686
+      Data4: 1729458872
+    Path: event:/DonkeyScream
+  creakingSoundEvent:
+    Guid:
+      Data1: -2112121745
+      Data2: 1160756573
+      Data3: 1099516069
+      Data4: -56814234
+    Path: event:/Knarz
+  donkeyHoovesSoundEvent:
+    Guid:
+      Data1: -1283334678
+      Data2: 1280773043
+      Data3: -1245857649
+      Data4: 1865686760
+    Path: event:/DonkeyHufe
+  donkeyScreamCoolDown: 5
+  creakingCoolDown: 4
   laneStepPerSwipe: 0.5
   sideMoveSpeed: 3
   startCenterLane: 3

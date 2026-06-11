@@ -200,7 +200,7 @@ MonoBehaviour:
       Data3: 1942858680
       Data4: -1012703963
     Path: event:/CheeseLoad
-  minCollisionForce: 1
+  minCollisionForce: 0.3
   coolDown: 0.2
 --- !u!1001 &8949540881853441319
 PrefabInstance:
