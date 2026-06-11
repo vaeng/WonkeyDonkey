@@ -73,6 +73,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 224c52eaaa430f042971e9751dcff23f, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: -8284212594040310126}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 224c52eaaa430f042971e9751dcff23f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7565454787368126930}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 224c52eaaa430f042971e9751dcff23f, type: 3}
@@ -84,6 +87,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 224c52eaaa430f042971e9751dcff23f, type: 3}
   m_PrefabInstance: {fileID: 4319561456876167543}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-8284212594040310126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3977597197400120358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9388a234115dfd94db539be56cc15272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeSoundWhenCollide
+  soundEvent:
+    Guid:
+      Data1: 1783039256
+      Data2: 1186106474
+      Data3: 1942858680
+      Data4: -1012703963
+    Path: event:/CheeseLoad
+  minCollisionForce: 0.3
+  coolDown: 0.05
 --- !u!54 &7565454787368126930
 Rigidbody:
   m_ObjectHideFlags: 0
