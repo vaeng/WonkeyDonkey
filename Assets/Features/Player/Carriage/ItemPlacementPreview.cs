@@ -25,6 +25,10 @@ public class ItemPlacementPreview : MonoBehaviour
     private float previewDepth = 0.5f;
     private float raycastStartHeight = 100f;
 
+    private GameObject currentPreviewModel;
+    private GameObject currentPreviewSource;
+    private bool currentPreviewWillFall;
+
     private void Awake()
     {
         SetPreviewVisible(false);
@@ -139,9 +143,10 @@ public class ItemPlacementPreview : MonoBehaviour
         SetBox(
             previewItemBox,
             new Vector3(spotPosition.x, itemBottomY + itemHeight * 0.5f, spotPosition.z),
-            new Vector3(itemWidth, itemHeight, previewDepth)
+            Vector3.one
         );
 
+        SetPreviewModel(item, false);
         SetPreviewVisible(true);
     }
 
@@ -165,10 +170,114 @@ public class ItemPlacementPreview : MonoBehaviour
         SetBox(
             previewItemBox,
             new Vector3(spotPosition.x, bottomY + itemHeight * 0.5f, spotPosition.z),
-            new Vector3(itemWidth, itemHeight, previewDepth)
+            Vector3.one
         );
 
+        SetPreviewModel(item, true);
         SetPreviewVisible(true);
+    }
+
+    private void SetPreviewModel(CollectableItem item, bool itemWillFall)
+    {
+        GameObject source = GetPreviewSource(item);
+
+        if (source == null)
+            return;
+
+        if (currentPreviewSource == source && currentPreviewWillFall == itemWillFall)
+        {
+            PlacePreviewModel(source);
+            return;
+        }
+
+        ClearPreviewModel();
+
+        currentPreviewSource = source;
+        currentPreviewWillFall = itemWillFall;
+
+        currentPreviewModel = Instantiate(source);
+        currentPreviewModel.name = source.name + "_Preview";
+
+        currentPreviewModel.transform.SetParent(previewItemBox.transform, false);
+
+        PlacePreviewModel(source);
+        PreparePreviewModel(currentPreviewModel, itemWillFall);
+    }
+
+    private GameObject GetPreviewSource(CollectableItem item)
+    {
+        if (item.StackedPrefab != null)
+            return item.StackedPrefab;
+
+        return item.gameObject;
+    }
+
+    private void PlacePreviewModel(GameObject source)
+    {
+        if (currentPreviewModel == null || source == null)
+            return;
+
+        currentPreviewModel.transform.SetParent(previewItemBox.transform, false);
+        currentPreviewModel.transform.localPosition = Vector3.zero;
+        currentPreviewModel.transform.localRotation = Quaternion.identity;
+        currentPreviewModel.transform.localScale = source.transform.localScale;
+    }
+
+    private void PreparePreviewModel(GameObject model, bool itemWillFall)
+    {
+        Material itemMaterial = itemWillFall ? fallItemMaterial : normalItemMaterial;
+
+        MonoBehaviour[] scripts = model.GetComponentsInChildren<MonoBehaviour>();
+
+        foreach (MonoBehaviour script in scripts)
+        {
+            script.enabled = false;
+        }
+
+        Rigidbody[] rigidbodies = model.GetComponentsInChildren<Rigidbody>();
+
+        foreach (Rigidbody rigidbody in rigidbodies)
+        {
+            Destroy(rigidbody);
+        }
+
+        Collider[] colliders = model.GetComponentsInChildren<Collider>();
+
+        foreach (Collider collider in colliders)
+        {
+            Destroy(collider);
+        }
+
+        MeshRenderer[] renderers = model.GetComponentsInChildren<MeshRenderer>();
+
+        foreach (MeshRenderer renderer in renderers)
+        {
+            if (itemMaterial == null)
+                continue;
+
+            Material[] materials = new Material[renderer.sharedMaterials.Length];
+
+            for (int i = 0; i < materials.Length; i++)
+            {
+                materials[i] = itemMaterial;
+            }
+
+            renderer.sharedMaterials = materials;
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+        }
+    }
+
+    private void ClearPreviewModel()
+    {
+        if (currentPreviewModel != null)
+        {
+            Destroy(currentPreviewModel);
+            currentPreviewModel = null;
+        }
+
+        currentPreviewSource = null;
+        currentPreviewWillFall = false;
     }
 
     private float FindFreeBottomY(Vector3 center, float itemWidth, float itemHeight)
@@ -286,6 +395,9 @@ public class ItemPlacementPreview : MonoBehaviour
 
         if (previewItemBox != null)
             previewItemBox.SetActive(visible);
+
+        if (!visible)
+            ClearPreviewModel();
     }
 
     private void OnDrawGizmosSelected()

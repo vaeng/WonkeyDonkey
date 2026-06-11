@@ -46,17 +46,23 @@ public class IngameScoreUI : MonoBehaviour
         }
     }
 
-    void OnScoreWentUp(int _amount)
+    public void OnScoreWentUp(int _amount)
     {
         currentScore += _amount;
         ScoreUpFeedback?.PlayFeedbacks();
         scoreText.text = currentScore.ToString("F0");
     }
 
-    void OnScoreWentDown(int _amount)
+    public void OnScoreWentDown(int _amount)
     {
         currentScore -= _amount;
         ScoreDownFeedback?.PlayFeedbacks();
+        scoreText.text = currentScore.ToString("F0");
+    }
+
+    public void ResetScore()
+    {
+        currentScore = 0;
         scoreText.text = currentScore.ToString("F0");
     }
 }
