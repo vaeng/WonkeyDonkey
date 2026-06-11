@@ -3869,7 +3869,7 @@ MonoBehaviour:
   spawnInterval: 2
   spawnIntervalDecreaseRate: 0.05
   spawnIntervalMin: 0.5
-  spawnZPosition: 50
+  spawnZPosition: 80
   itemYPosition: 0.5
   worldMoveSpeed: 6
   minSpawnLane: 2
@@ -5416,7 +5416,7 @@ MonoBehaviour:
   finishLineZ: 0
   avoidRepeatForSpawns: 3
   worldMoveSpeed: 6
-  spawnAheadDistance: 200
+  spawnAheadDistance: 500
   despawnBehindDistance: 30
 --- !u!4 &1827828317
 Transform:
