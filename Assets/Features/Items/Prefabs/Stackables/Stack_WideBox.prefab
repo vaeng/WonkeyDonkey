@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1942404101426504596, guid: f42d98fe6654ece47a21538617fc3790, type: 3}
+      propertyPath: minCollisionForce
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 463239662497383127, guid: f42d98fe6654ece47a21538617fc3790, type: 3}
       propertyPath: m_LinearDamping
       value: 10
@@ -136,5 +140,34 @@ PrefabInstance:
     - {fileID: 164020706516679539, guid: f42d98fe6654ece47a21538617fc3790, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2834646521571764583, guid: f42d98fe6654ece47a21538617fc3790, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4718816210009672126}
   m_SourcePrefab: {fileID: 100100000, guid: f42d98fe6654ece47a21538617fc3790, type: 3}
+--- !u!1 &1251163126188882224 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2834646521571764583, guid: f42d98fe6654ece47a21538617fc3790, type: 3}
+  m_PrefabInstance: {fileID: 3894392970033156183}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-4718816210009672126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251163126188882224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9388a234115dfd94db539be56cc15272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeSoundWhenCollide
+  soundEvent:
+    Guid:
+      Data1: -1845673925
+      Data2: 1281976050
+      Data3: 1973561263
+      Data4: -1135568574
+    Path: event:/ChestLoad
+  minCollisionForce: 0.5
+  coolDown: 0.2
