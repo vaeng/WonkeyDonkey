@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -1942404101426504596, guid: f42d98fe6654ece47a21538617fc3790, type: 3}
       propertyPath: minCollisionForce
-      value: 2
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 463239662497383127, guid: f42d98fe6654ece47a21538617fc3790, type: 3}
       propertyPath: m_LinearDamping

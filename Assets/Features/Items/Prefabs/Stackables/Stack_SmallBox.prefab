@@ -179,5 +179,5 @@ MonoBehaviour:
       Data3: 1973561263
       Data4: -1135568574
     Path: event:/ChestLoad
-  minCollisionForce: 2
+  minCollisionForce: 1.2
   coolDown: 0.2
