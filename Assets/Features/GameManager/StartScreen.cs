@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class StartScreen : MonoBehaviour
 {
     [SerializeField] private GameObject startScreen;
+        [SerializeField] private MusicManager musicManager;
 
     private bool started;
 
@@ -17,6 +18,8 @@ public class StartScreen : MonoBehaviour
 
         if (startScreen != null)
             startScreen.SetActive(true);
+
+        musicManager?.PlayMenuMusic();
     }
 
     private void Update()
@@ -50,6 +53,7 @@ public class StartScreen : MonoBehaviour
 
     public void StartGame()
     {
+        musicManager.PlayLevelMusic();
         started = true;
         Time.timeScale = 1f;
 
@@ -67,5 +71,6 @@ public class StartScreen : MonoBehaviour
         UnityEngine.SceneManagement.Scene currentScene = SceneManager.GetActiveScene();
 
         SceneManager.LoadScene(currentScene.name);
+        musicManager.StopMusic();
     }
 }

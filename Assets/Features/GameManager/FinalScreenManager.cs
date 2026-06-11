@@ -13,6 +13,7 @@ public class FinalScreenManager : MonoBehaviour
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private GameObject inGameScoreDisplay;
     [SerializeField] private GameObject ReplayButton;
+    [SerializeField] private MusicManager musicManager;
 
     [SerializeField] private UnityEngine.UI.Text GoodsLostDisplayText;
     [SerializeField] private UnityEngine.UI.Text GoodsLostDisplayNumber;
@@ -51,6 +52,7 @@ public class FinalScreenManager : MonoBehaviour
 
     void OnLevelEnded()
     {
+        musicManager?.PlayWinningMusic();
         StartCoroutine(StartLevelEndSequence());
     }
 
