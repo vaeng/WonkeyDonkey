@@ -7,6 +7,7 @@ public class LaneMovement : MonoBehaviour
     [SerializeField] private Carriage carriage;
     [SerializeField] private LaneSystem laneSystem;
     [SerializeField] private AnimationSystem animationSystem;
+    [SerializeField] private WheelDustEffect wheelDustEffect;
 
     [Header("Lane Movement")]
     [SerializeField] private float laneStepPerSwipe = 0.5f;
@@ -77,6 +78,9 @@ public class LaneMovement : MonoBehaviour
         heldDirection = -1;
         SetTargetLane(currentCenterLane - laneStepPerSwipe);
         animationSystem?.StartAnimation(1f);
+
+        if (wheelDustEffect != null)
+            wheelDustEffect.PlayDust();
     }
 
     private void MoveRight()
@@ -84,6 +88,9 @@ public class LaneMovement : MonoBehaviour
         heldDirection = 1;
         SetTargetLane(currentCenterLane + laneStepPerSwipe);
         animationSystem?.StartAnimation(-1f);
+
+        if (wheelDustEffect != null)
+            wheelDustEffect.PlayDust();
 
         //fmod spielt einen oneshot aus der Bank Donkey ab
         FMODUnity.RuntimeManager.PlayOneShot("event:/Donkey");
