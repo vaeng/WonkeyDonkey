@@ -53,6 +53,7 @@ public class FinalScreenManager : MonoBehaviour
     void OnLevelEnded()
     {
         musicManager?.PlayWinningMusic();
+        musicManager?.StopDonkeyHoovesSound();
         StartCoroutine(StartLevelEndSequence());
     }
 

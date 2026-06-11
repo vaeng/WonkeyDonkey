@@ -2674,6 +2674,13 @@ MonoBehaviour:
       Data3: 1031203514
       Data4: -534651800
     Path: event:/Soundtrack Win
+  donkeyHoovesEvent:
+    Guid:
+      Data1: -1283334678
+      Data2: 1280773043
+      Data3: -1245857649
+      Data4: 1865686760
+    Path: event:/DonkeyHufe
 --- !u!1 &886563640 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cb24d722abf56ba4e8c8f6822ea21f09, type: 3}
@@ -5471,7 +5478,7 @@ MonoBehaviour:
   finishSegmentPrefab: {fileID: 4521223830304431437, guid: fda9effb94926ac44bba2fe45f4a61c2, type: 3}
   segmentLength: 20
   startSegmentCount: 5
-  levelDuration: 35
+  levelDuration: 5
   finishLineZ: 0
   avoidRepeatForSpawns: 3
   worldMoveSpeed: 6

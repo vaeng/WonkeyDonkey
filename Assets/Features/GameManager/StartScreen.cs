@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class StartScreen : MonoBehaviour
 {
     [SerializeField] private GameObject startScreen;
-        [SerializeField] private MusicManager musicManager;
+    [SerializeField] private MusicManager musicManager;
 
     private bool started;
 
@@ -54,6 +54,8 @@ public class StartScreen : MonoBehaviour
     public void StartGame()
     {
         musicManager.PlayLevelMusic();
+        musicManager?.PlayDonkeyHoovesSound();
+
         started = true;
         Time.timeScale = 1f;
 
