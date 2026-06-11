@@ -847,7 +847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &470687633
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2676,18 +2676,18 @@ MonoBehaviour:
     Path: event:/Soundtrack Win
   winningSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1785894793
+      Data2: 1263912325
+      Data3: -781916513
+      Data4: -1667315972
+    Path: event:/WinSound
   newHighScoreSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1962548204
+      Data2: 1297183572
+      Data3: -1585033059
+      Data4: 1290011050
+    Path: event:/NewHighScoreSound
   donkeyHoovesEvent:
     Guid:
       Data1: -1283334678
@@ -3941,6 +3941,7 @@ MonoBehaviour:
   laneMovement: {fileID: 826179260}
   itemPrefabs:
   - {fileID: 1913678160417714669, guid: 52ad1ac6c6dbd214599efc49f8c66236, type: 3}
+  - {fileID: 1251163126188882224, guid: 882d356d27445cb41a80dd59a47c306c, type: 3}
   - {fileID: 1310453082972999147, guid: a2bd0ebb675d1f642a1beb7758cd81f8, type: 3}
   - {fileID: 1310453082972999147, guid: 99f258a29c9237a4a87267857523af3e, type: 3}
   - {fileID: 1913678160417714669, guid: 002f5752ae2a1c0419cb87ae56194742, type: 3}
@@ -5492,7 +5493,7 @@ MonoBehaviour:
   finishSegmentPrefab: {fileID: 4521223830304431437, guid: fda9effb94926ac44bba2fe45f4a61c2, type: 3}
   segmentLength: 20
   startSegmentCount: 5
-  levelDuration: 5
+  levelDuration: 35
   finishLineZ: 0
   avoidRepeatForSpawns: 3
   worldMoveSpeed: 6
