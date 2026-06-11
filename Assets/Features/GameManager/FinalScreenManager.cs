@@ -52,8 +52,13 @@ public class FinalScreenManager : MonoBehaviour
 
     void OnLevelEnded()
     {
-        musicManager?.PlayWinningMusic();
-        musicManager?.StopDonkeyHoovesSound();
+        if (musicManager != null)
+        {
+            musicManager.PlayNewHighScoreSound();
+            musicManager.PlayWinningMusic();
+            musicManager.StopDonkeyHoovesSound();
+        }
+
         StartCoroutine(StartLevelEndSequence());
     }
 
@@ -151,6 +156,7 @@ public class FinalScreenManager : MonoBehaviour
         {
             CurrentHighscoreDisplayText.text = "New\nHighscore!";
             newHighscorePrefab.SetActive(true);
+            musicManager?.PlayNewHighScoreSound();
         }
         // show old highscore
         CurrentHighscoreDisplayNumber.gameObject.SetActive(true);

@@ -7,12 +7,14 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private EventReference menuMusicEvent;
     [SerializeField] private EventReference levelMusicEvent;
     [SerializeField] private EventReference winningMusicEvent;
+    [SerializeField] private EventReference winningSound, newHighScoreSound;
     [SerializeField] private EventReference donkeyHoovesEvent;
     private FMOD.Studio.EventInstance donkeyHoovesInstance;
     private bool isHoovesSoundPlaying = false;
 
     private FMOD.Studio.EventInstance currentMusicInstance;
 
+    // Looping Sounds (Music and Hooves)
     public void PlayMenuMusic()
     {
         SwitchMusic(menuMusicEvent);
@@ -69,5 +71,16 @@ public class MusicManager : MonoBehaviour
         // Neue Musik starten
         currentMusicInstance = FMODUnity.RuntimeManager.CreateInstance(newMusicEvent);
         currentMusicInstance.start();
+    }
+
+    // One Shots
+    public void PlayWinningSound()
+    {
+        //RuntimeManager.PlayOneShot(winningSound);
+    }
+
+    public void PlayNewHighScoreSound()
+    {
+        RuntimeManager.PlayOneShot(newHighScoreSound);
     }
 }
