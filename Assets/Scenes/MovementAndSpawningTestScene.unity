@@ -2424,6 +2424,7 @@ MonoBehaviour:
   carriage: {fileID: 2037516943}
   laneSystem: {fileID: 1398317069}
   animationSystem: {fileID: 826179259}
+  wheelDustEffect: {fileID: 2037516946}
   laneStepPerSwipe: 0.5
   sideMoveSpeed: 3
   startCenterLane: 3
@@ -2608,6 +2609,7 @@ MonoBehaviour:
   redItemCollectorBorder: {fileID: 1362172764}
   pauseButton: {fileID: 470687632}
   inGameScoreDisplay: {fileID: 800290605}
+  ReplayButton: {fileID: 0}
   GoodsLostDisplayText: {fileID: 300309194}
   GoodsLostDisplayNumber: {fileID: 1833486864}
   GoodsDeliveredDisplayText: {fileID: 674474717}
@@ -3239,6 +3241,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3126082447803235502, guid: ee184374ef987fb4d8725d4d97e41d79, type: 3}
   m_PrefabInstance: {fileID: 3818095827462246727}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1148943816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1148943817}
+  m_Layer: 0
+  m_Name: DustPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1148943817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148943816}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.05, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 129994676}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1242606902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3609,6 +3642,12 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8914993081466029131, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1148943817}
+    - targetCorrespondingSourceObject: {fileID: 8914993081466029131, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1688681633}
     - targetCorrespondingSourceObject: {fileID: 8504466944051845089, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 886563641}
@@ -5158,6 +5197,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2037516942}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1688681632
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1688681633}
+  m_Layer: 0
+  m_Name: DustPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1688681633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688681632}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0000022649765, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.803, y: -0.05, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 129994676}
+  m_LocalEulerAnglesHint: {x: -81.291, y: 0, z: 0}
 --- !u!1 &1723050415
 GameObject:
   m_ObjectHideFlags: 0
@@ -6144,6 +6214,7 @@ GameObject:
   - component: {fileID: 2037516943}
   - component: {fileID: 2037516944}
   - component: {fileID: 2037516945}
+  - component: {fileID: 2037516946}
   m_Layer: 7
   m_Name: Carriage
   m_TagString: Untagged
@@ -6287,6 +6358,23 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   axesMultiplyer: {x: 0, y: 0, z: 10}
+--- !u!114 &2037516946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2037516938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f184973e5a4a4c047a5f0f5e9e76efe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WheelDustEffect
+  dustPrefab: {fileID: 4703061153200743257, guid: 795f325b3a3ea714791ec628891857d8, type: 3}
+  dustPoints:
+  - {fileID: 1148943817}
+  - {fileID: 1688681633}
+  effectCooldown: 0.12
 --- !u!1 &2114919608
 GameObject:
   m_ObjectHideFlags: 0
