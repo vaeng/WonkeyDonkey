@@ -13,10 +13,12 @@ public class ItemSpawner : MonoBehaviour
     [SerializeField] private float spawnInterval = 1.5f;
     [SerializeField] private float spawnIntervalDecreaseRate = 0.05f;
     [SerializeField] private float spawnIntervalMin = 0.5f;
+    [SerializeField] private float minDistanceBeforeFirstItem = 10f;
 
 
     [Header("Spawn Position")]
     [SerializeField] private float spawnZPosition = 25f;
+    private float temporarySpawnZPosition = 10f;
     [SerializeField] private float itemYPosition = 0.5f;
 
     [Header("Movement")]
@@ -33,6 +35,26 @@ public class ItemSpawner : MonoBehaviour
     private bool canSpawnItems = true;
 
     public float SpawnZPosition => spawnZPosition;
+
+    private void Awake()
+    {
+        float distanceBetweenSpawns = worldMoveSpeed * spawnInterval;
+        int cargoToSpawn = Mathf.CeilToInt(spawnZPosition / distanceBetweenSpawns);
+
+        temporarySpawnZPosition = spawnZPosition;
+
+        for (int i = 0; i < cargoToSpawn; i++)
+        {
+            temporarySpawnZPosition -= distanceBetweenSpawns;
+
+            if (temporarySpawnZPosition > minDistanceBeforeFirstItem)
+            {
+                SpawnItem();
+            }
+        }
+
+        temporarySpawnZPosition = spawnZPosition;
+    }
 
     private void Update()
     {
@@ -67,7 +89,7 @@ public class ItemSpawner : MonoBehaviour
         float visualX = laneMovement.GetVisualWorldXForRoadX(roadX);
 
         GameObject prefab = itemPrefabs[Random.Range(0, itemPrefabs.Length)];
-        GameObject item = Instantiate(prefab, new Vector3(visualX, itemYPosition, spawnZPosition), Quaternion.identity);
+        GameObject item = Instantiate(prefab, new Vector3(visualX, itemYPosition, temporarySpawnZPosition), Quaternion.identity);
 
         WorldMover mover = item.GetComponent<WorldMover>();
 
