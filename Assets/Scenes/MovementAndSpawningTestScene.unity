@@ -2337,7 +2337,7 @@ MonoBehaviour:
   donkey: {fileID: 1089321267}
   carrotStick: {fileID: 1005394693}
   rider: {fileID: 886563642}
-  riderHat: {fileID: 1841394568}
+  riderHat: {fileID: 0}
   waggon: {fileID: 2037516945}
   wheel: {fileID: 814686343}
 --- !u!114 &826179260
@@ -3101,12 +3101,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148943816}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.05, z: 0.7}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: -0.884, y: -0.52000004, z: -1.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 129994676}
+  m_Father: {fileID: 2037516942}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1242606902
 PrefabInstance:
@@ -3114,7 +3114,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 746827769}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3175,10 +3175,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1841394568}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
 --- !u!1 &1260868120
 GameObject:
@@ -3465,19 +3462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8914993081466029131, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1148943817}
-    - targetCorrespondingSourceObject: {fileID: 8914993081466029131, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1688681633}
-    - targetCorrespondingSourceObject: {fileID: 8504466944051845089, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 886563641}
-    - targetCorrespondingSourceObject: {fileID: 8504466944051845089, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1841394565}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2715857483919576464, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
       insertIndex: -1
@@ -5042,12 +5027,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688681632}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0000022649765, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.803, y: -0.05, z: 0.7}
+  m_LocalRotation: {x: -0, y: 1, z: -0.0000022649765, w: 0}
+  m_LocalPosition: {x: 0.91899997, y: -0.52000004, z: -1.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 129994676}
+  m_Father: {fileID: 2037516942}
   m_LocalEulerAnglesHint: {x: -81.291, y: 0, z: 0}
 --- !u!1 &1723050415
 GameObject:
@@ -5338,17 +5323,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1833486862}
   m_CullTransparentMesh: 1
---- !u!114 &1841394568 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7185610235584722903, guid: 477adad91f08ac44a8b9cd9bce0a9b5e, type: 3}
-  m_PrefabInstance: {fileID: 1359412209}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5c8520c2dd9f9e46a6da41033dc61c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MoveAnim
 --- !u!1 &1852831624
 GameObject:
   m_ObjectHideFlags: 0
@@ -5868,6 +5842,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1148943817}
+  - {fileID: 1688681633}
   - {fileID: 447263215}
   - {fileID: 1684649152}
   - {fileID: 1981988839}
@@ -6154,3 +6130,4 @@ SceneRoots:
   - {fileID: 826179256}
   - {fileID: 1305541646}
   - {fileID: 809149589}
+  - {fileID: 1242606902}
