@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2290002840152075271}
   - component: {fileID: -7028195566574531313}
   - component: {fileID: -1744094246344202081}
+  - component: {fileID: -5881412393034501646}
   m_Layer: 8
   m_Name: Stack_LBox
   m_TagString: Untagged
@@ -200,6 +201,29 @@ MonoBehaviour:
   angleToFreezeAsStraight: 0.5
   uprightSpeed: 90
   uprightAngularBrake: 25
+  IsDelivered: 0
+  hasFallen: 0
+--- !u!114 &-5881412393034501646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310453082972999147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9388a234115dfd94db539be56cc15272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeSoundWhenCollide
+  soundEvent:
+    Guid:
+      Data1: -1845673925
+      Data2: 1281976050
+      Data3: 1973561263
+      Data4: -1135568574
+    Path: event:/ChestLoad
+  minCollisionForce: 0.2
+  coolDown: 0.2
 --- !u!1001 &2243854634636012875
 PrefabInstance:
   m_ObjectHideFlags: 0

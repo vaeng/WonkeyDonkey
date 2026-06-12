@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FinalScreenManager : MonoBehaviour
@@ -13,6 +15,8 @@ public class FinalScreenManager : MonoBehaviour
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private GameObject inGameScoreDisplay;
     [SerializeField] private GameObject ReplayButton;
+    [SerializeField] private MusicManager musicManager;
+    [SerializeField] private List<RotateWheel> wheelsToRotate;
 
     [SerializeField] private UnityEngine.UI.Text GoodsLostDisplayText;
     [SerializeField] private UnityEngine.UI.Text GoodsLostDisplayNumber;
@@ -51,6 +55,18 @@ public class FinalScreenManager : MonoBehaviour
 
     void OnLevelEnded()
     {
+        if (musicManager != null)
+        {
+            musicManager.PlayNewHighScoreSound();
+            musicManager.PlayWinningMusic();
+            musicManager.StopDonkeyHoovesSound();
+        }
+
+        foreach (var wheel in wheelsToRotate)
+        {
+            wheel.StopRotation();
+        }
+
         StartCoroutine(StartLevelEndSequence());
     }
 
@@ -100,7 +116,7 @@ public class FinalScreenManager : MonoBehaviour
         yield return new WaitForSeconds(delayBeforeMovingBoxes);
         GoodsDeliveredDisplayText.gameObject.SetActive(true);
         int deliveredItemsCounter = 0;
-        GoodsDeliveredDisplayNumber.text = deliveredItemsCounter.ToString("F0");
+        GoodsDeliveredDisplayNumber.text = deliveredItemsCounter.ToString("N0");
         GoodsDeliveredDisplayNumber.gameObject.SetActive(true);
 
         var possibleRespawnPoints = FindObjectsByType<ItemSpawnPointTag>(FindObjectsInactive.Include);
@@ -116,7 +132,7 @@ public class FinalScreenManager : MonoBehaviour
             // count up
             deliveredItemsCounter++;
             ingameScoreUI.OnScoreWentUp(highscore.pickedUpReward);
-            GoodsDeliveredDisplayNumber.text = deliveredItemsCounter.ToString("F0");
+            GoodsDeliveredDisplayNumber.text = deliveredItemsCounter.ToString("N0");
 
             if (possibleRespawnPoints.Length == 0)
             {
@@ -148,13 +164,14 @@ public class FinalScreenManager : MonoBehaviour
         {
             CurrentHighscoreDisplayText.text = "New\nHighscore!";
             newHighscorePrefab.SetActive(true);
+            musicManager?.PlayNewHighScoreSound();
         }
         // show old highscore
         CurrentHighscoreDisplayNumber.gameObject.SetActive(true);
         CurrentHighscoreDisplayText.gameObject.SetActive(true);
         if (highscore != null)
         {
-            CurrentHighscoreDisplayNumber.text = highscore.GetHighScore().ToString("F0");
+            CurrentHighscoreDisplayNumber.text = highscore.GetHighScore().ToString("N0");
             int rewardCount = Mathf.Min(highscore.DeliveredCrateCount, 2*deliveredItemsCounter - highscore.FallenCrateCount)  * RewardsPerCrate;
             var rewardSpawnPoint = FindAnyObjectByType<RewardSpawnPointTag>();
             for (int i = 0; i < rewardCount; i++)

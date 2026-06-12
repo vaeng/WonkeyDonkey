@@ -17,10 +17,10 @@ public class ScoreScreen : MonoBehaviour
         if (highscore != null)
         {
 
-            TotalScoreText.text = highscore.GetTotalScore().ToString("F0");
+            TotalScoreText.text = highscore.GetTotalScore().ToString("N0");
             GoodsLostText.text = highscore.FallenCrateCount.ToString();
             GoodsDeliveredText.text = highscore.DeliveredCrateCount.ToString();
-            HighscoreText.text = highscore.GetHighScore().ToString("F0");
+            HighscoreText.text = highscore.GetHighScore().ToString("N0");
         }
     }
 

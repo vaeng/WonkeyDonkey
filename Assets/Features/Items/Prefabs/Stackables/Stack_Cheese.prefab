@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3879000031163238543}
   - component: {fileID: -5792935691919772157}
   - component: {fileID: 1502668414691344116}
+  - component: {fileID: -7552930528325342108}
   m_Layer: 8
   m_Name: Stack_Cheese
   m_TagString: Untagged
@@ -178,6 +179,29 @@ MonoBehaviour:
   angleToFreezeAsStraight: 0.5
   uprightSpeed: 90
   uprightAngularBrake: 25
+  IsDelivered: 0
+  hasFallen: 0
+--- !u!114 &-7552930528325342108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1913678160417714669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9388a234115dfd94db539be56cc15272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeSoundWhenCollide
+  soundEvent:
+    Guid:
+      Data1: 1783039256
+      Data2: 1186106474
+      Data3: 1942858680
+      Data4: -1012703963
+    Path: event:/CheeseLoad
+  minCollisionForce: 0.3
+  coolDown: 0.2
 --- !u!1001 &8949540881853441319
 PrefabInstance:
   m_ObjectHideFlags: 0

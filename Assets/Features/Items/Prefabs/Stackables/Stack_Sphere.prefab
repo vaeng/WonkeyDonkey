@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7773570193694299882}
   - component: {fileID: 1550185379544226808}
   - component: {fileID: 6808190241168163424}
+  - component: {fileID: 5375257586945889295}
   m_Layer: 8
   m_Name: Stack_Sphere
   m_TagString: Untagged
@@ -177,6 +178,29 @@ MonoBehaviour:
   angleToFreezeAsStraight: 0.5
   uprightSpeed: 90
   uprightAngularBrake: 25
+  IsDelivered: 0
+  hasFallen: 0
+--- !u!114 &5375257586945889295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310453082972999147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9388a234115dfd94db539be56cc15272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeSoundWhenCollide
+  soundEvent:
+    Guid:
+      Data1: -458860833
+      Data2: 1122902159
+      Data3: -1210443367
+      Data4: 21299102
+    Path: event:/Cactusload
+  minCollisionForce: 0.2
+  coolDown: 0.2
 --- !u!1001 &4797549657951075815
 PrefabInstance:
   m_ObjectHideFlags: 0
