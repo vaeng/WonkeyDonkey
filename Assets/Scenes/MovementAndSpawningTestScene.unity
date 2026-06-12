@@ -3108,75 +3108,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2037516942}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1242606902
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 8134e60516a68724a9d0aef91ea14ce7, type: 2}
-    - target: {fileID: -7511558181221131132, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2100000, guid: cd3bf7039783d214b8a591ddd624a9b9, type: 2}
-    - target: {fileID: -7511558181221131132, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: 'm_Materials.Array.data[2]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 3df5386a3530bb5409cfb5562bb756f7, type: 2}
-    - target: {fileID: 919132149155446097, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
-      propertyPath: m_Name
-      value: Hombrie_Hut
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6286be8c135eea94cb56f36fb394c308, type: 3}
 --- !u!1 &1260868120
 GameObject:
   m_ObjectHideFlags: 0
@@ -3708,6 +3639,7 @@ MonoBehaviour:
   spawnInterval: 2
   spawnIntervalDecreaseRate: 0.05
   spawnIntervalMin: 0.5
+  minDistanceBeforeFirstItem: 10
   spawnZPosition: 80
   itemYPosition: 0.5
   worldMoveSpeed: 6
@@ -6130,4 +6062,3 @@ SceneRoots:
   - {fileID: 826179256}
   - {fileID: 1305541646}
   - {fileID: 809149589}
-  - {fileID: 1242606902}

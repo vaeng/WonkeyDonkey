@@ -109,13 +109,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MakeSoundWhenCollide
   soundEvent:
     Guid:
-      Data1: 1783039256
-      Data2: 1186106474
-      Data3: 1942858680
-      Data4: -1012703963
-    Path: event:/CheeseLoad
-  minCollisionForce: 0.3
-  coolDown: 0.05
+      Data1: 1642124589
+      Data2: 1205234513
+      Data3: 1681465731
+      Data4: -1028924576
+    Path: event:/CarrotLoad
+  minCollisionForce: 1
+  coolDown: 0.1
 --- !u!54 &7565454787368126930
 Rigidbody:
   m_ObjectHideFlags: 0
